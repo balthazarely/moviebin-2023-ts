@@ -67,3 +67,57 @@ exports.getNestedUserCollections = functions.https.onRequest(
     });
   }
 );
+
+exports.getNestedUserCollectionsAndDocs = functions.https.onRequest(
+  async (req, res) => {
+    cors(req, res, async () => {
+      const data = {
+        userId: req.body.req.userId,
+      };
+      try {
+        // Retrieve the document
+        const docRef = admin.firestore().collection("users").doc(data.userId);
+        const doc = await docRef.get();
+        const subcollections = await docRef.listCollections();
+
+        const collectionData = [];
+
+        // Loop through each subcollection
+        for (const subcollection of subcollections) {
+          const subcollectionName = subcollection.id;
+
+          let query = subcollection.limit(4);
+          const querySnapshot = await query.get();
+
+          // If querySnapshot only has one document, skip the orderBy method
+          if (querySnapshot.size > 1) {
+            query = query.orderBy("order");
+          }
+
+          const documents = [];
+
+          // Loop through the first 4 documents in the subcollection
+          querySnapshot.forEach((doc) => {
+            const documentData = doc.data();
+            documents.push(documentData);
+          });
+
+          // Add the subcollection name and the first 4 documents to the collectionData array
+          collectionData.push({
+            name: subcollectionName,
+            documents: documents.slice(0, 4),
+            // documents: documents,
+          });
+        }
+
+        res.status(200).json(collectionData);
+      } catch (error) {
+        console.error(error);
+        throw new functions.https.HttpsError(
+          "internal",
+          "An error occurred while getting the nested collections."
+        );
+      }
+    });
+  }
+);

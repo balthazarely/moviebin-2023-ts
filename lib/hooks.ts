@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { getNestedUserCollections } from "./api";
+import {
+  getNestedUserCollections,
+  getNestedUserCollectionsAndDocs,
+} from "./api";
 import { useDocumentData } from "react-firebase-hooks/firestore";
 import { doc } from "firebase/firestore";
-import { auth } from "./firebase";
+import { auth, db, firestore } from "./firebase";
 
 // Custom hook to read  auth record and user profile doc
 export function useUserData() {
@@ -32,6 +35,34 @@ export function useNestedUserCollections() {
   }, [user]);
 
   return { nestedCollections };
+}
+
+export function useNestedUserCollectionsAndDocs() {
+  // @ts-ignore
+  const [user] = useAuthState(auth);
+  const [nestedCollectionsAndDocs, setNestedCollectionsAndDocs] =
+    useState<any>(null);
+  const [loadingLists, setLoadingLists] = useState<boolean>(false);
+
+  useEffect(() => {
+    async function fetchData() {
+      if (user) {
+        try {
+          setLoadingLists(true);
+          const response = await getNestedUserCollectionsAndDocs(user.uid);
+          setNestedCollectionsAndDocs(response);
+        } catch (error) {
+          console.log(error);
+        } finally {
+          setLoadingLists(false);
+        }
+      }
+    }
+
+    fetchData();
+  }, [user]);
+
+  return { nestedCollectionsAndDocs, loadingLists };
 }
 
 export function useOtherUserNestedCollections(id: any) {

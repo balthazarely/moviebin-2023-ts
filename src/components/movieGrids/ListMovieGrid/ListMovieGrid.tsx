@@ -14,10 +14,11 @@ export function ListMovieGrid({
   deleteMovie,
   listname,
 }: any) {
-  const [activeId, setActiveId] = useState<any>(null);
-  const [gridType, setGridType] = useState<string>("col");
   const router = useRouter();
   const { sortBy } = router.query;
+
+  const [activeId, setActiveId] = useState<any>(null);
+  const [gridType, setGridType] = useState<string>("col");
 
   useEffect(() => {
     if (sortBy) {
@@ -57,26 +58,11 @@ export function ListMovieGrid({
     <>
       <div className="mt-2 mb-2 flex items-center justify-between">
         <h1 className="text-3xl font-bold">{listname}</h1>
-        <div>
-          <button
-            onClick={() => setSortQueryParam("grid")}
-            className={`btn btn-square  ${
-              gridType === "grid" ? "btn-outline" : ""
-            }`}
-          >
-            Grid
-          </button>
-          <button
-            onClick={() => setSortQueryParam("col")}
-            className={`btn btn-square   ${
-              gridType === "col" ? "btn-outline" : ""
-            } `}
-          >
-            Col
-          </button>
-        </div>
+        <GridTypeSelect
+          setSortQueryParam={setSortQueryParam}
+          gridType={gridType}
+        />
       </div>
-
       <DndContext
         id="0"
         collisionDetection={closestCenter}
@@ -96,7 +82,7 @@ export function ListMovieGrid({
                 gridAutoFlow: "row dense",
               }}
             >
-              {movies.map((movie: any, idx: any) => (
+              {movies.map((movie: any, idx: number) => (
                 <ListMovieItem
                   idx={idx}
                   gridType={gridType}
@@ -125,5 +111,28 @@ export function ListMovieGrid({
         </div>
       </DndContext>
     </>
+  );
+}
+
+function GridTypeSelect({ setSortQueryParam, gridType }: any) {
+  return (
+    <div>
+      <button
+        onClick={() => setSortQueryParam("grid")}
+        className={`btn btn-square  ${
+          gridType === "grid" ? "btn-outline" : ""
+        }`}
+      >
+        Grid
+      </button>
+      <button
+        onClick={() => setSortQueryParam("col")}
+        className={`btn btn-square   ${
+          gridType === "col" ? "btn-outline" : ""
+        } `}
+      >
+        Col
+      </button>
+    </div>
   );
 }

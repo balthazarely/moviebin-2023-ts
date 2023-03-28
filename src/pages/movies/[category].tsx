@@ -1,7 +1,7 @@
 // import { MovieGrid } from "@/components/MovieGrid";
-import { MovieGrid } from "@/components/MovieGrid";
+import { MovieGrid } from "@/components/movieGrids";
+
 import { useRouter } from "next/router";
-// import { MovieGrid } from "@/components/MovieGrid";
 import { useContext, useEffect, useState } from "react";
 
 import { useAuthState } from "react-firebase-hooks/auth";

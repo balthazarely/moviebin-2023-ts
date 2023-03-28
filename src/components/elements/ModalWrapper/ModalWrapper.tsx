@@ -12,10 +12,7 @@ export function ModalWrapper({ children }: any) {
         id="my-modal-6"
         className="modal-toggle"
       />
-      <div
-        onClick={() => dispatch({ type: "CLOSE_MODAL" })}
-        className="modal modal-bottom sm:modal-middle "
-      >
+      <div className="modal modal-bottom sm:modal-middle ">
         <div className="modal-box">{children}</div>
       </div>
     </div>

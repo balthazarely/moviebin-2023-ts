@@ -12,9 +12,9 @@ export default function App({ Component, pageProps }: AppProps) {
     <GlobalProvider>
       <QueryClientProvider client={queryClient}>
         <Navbar>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
+          {/* <Layout> */}
+          <Component {...pageProps} />
+          {/* </Layout> */}
         </Navbar>
       </QueryClientProvider>
     </GlobalProvider>

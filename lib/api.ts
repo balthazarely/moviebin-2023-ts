@@ -26,3 +26,18 @@ export const getNestedUserCollections = async (uid: any) => {
   const response = await res.json();
   return response;
 };
+
+export const getNestedUserCollectionsAndDocs = async (uid: any) => {
+  const res = await fetch(
+    "https://us-central1-fir-todo-9081a.cloudfunctions.net/getNestedUserCollectionsAndDocs",
+    {
+      method: "POST",
+      body: JSON.stringify({ req: { userId: uid } }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  const response = await res.json();
+  return response;
+};

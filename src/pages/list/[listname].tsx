@@ -1,17 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/router";
 import { collection } from "firebase/firestore";
-// import { auth, db } from "lib/firebase";
 import { useCollectionDataOnce } from "react-firebase-hooks/firestore";
-// import DraggableGrid from "@/components/DraggableGrid";
-// import {
-//   deleteCollection,
-//   deleteMovieFromDB,
-//   updateDocumentOrderInDB,
-// } from "lib/firebaseFunctions";
-
-// import { formatMoviesForDnD } from "lib/utils";
-// import { UserContext } from "lib/context";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "../../../lib/firebase";
 import { formatMoviesForDnD } from "../../../lib/utils";
@@ -22,7 +12,7 @@ import {
 } from "../../../lib/firebaseFunctions";
 import { ListMovieGrid } from "@/components/movieGrids";
 import { UIContext } from "../../../lib/context";
-import { ModalWrapper } from "@/components/elements";
+import { FullPageLoader, ModalWrapper } from "@/components/elements";
 
 export default function Listname() {
   // Hooks
@@ -49,6 +39,10 @@ export default function Listname() {
     }
   }, [movies, listname]);
 
+  if (loading) {
+    return <FullPageLoader />;
+  }
+
   return (
     <div>
       <ListMovieGrid
@@ -59,14 +53,20 @@ export default function Listname() {
       />
       <div className="flex justify-center mt-4">
         <button
-          className="btn btn-error"
+          className="btn btn-primary"
           onClick={() => dispatch({ type: "OPEN_MODAL" })}
         >
           Delete Collection
         </button>
       </div>
       <ModalWrapper>
-        <div className=" h-full w-full text-center relative">
+        <div className=" h-full  w-full text-center relative">
+          <button
+            className="btn btn-sm bg-base-100 absolute border-none -top-4 -right-4"
+            onClick={() => dispatch({ type: "CLOSE_MODAL" })}
+          >
+            x
+          </button>
           <h3 className="font-bold text-lg">
             Are you sure you want to delete this collection?
           </h3>
@@ -85,8 +85,6 @@ export default function Listname() {
   );
 
   async function deleteMovie(id: any) {
-    console.log(id);
-
     try {
       deleteMovieFromDB(id, listname);
     } catch (error) {
