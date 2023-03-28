@@ -1,0 +1,1 @@
+export { MiniMovieGrid } from "./MiniMovieGrid";

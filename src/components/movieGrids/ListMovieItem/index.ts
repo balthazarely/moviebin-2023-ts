@@ -1,0 +1,1 @@
+export { ListMovieItem } from "./ListMovieItem";
