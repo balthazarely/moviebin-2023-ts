@@ -2,11 +2,10 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { useContext, useState } from "react";
 import {
   addMovieToCollection,
-  addMovieToNewCollection,
+  createAndAddToCollection,
 } from "../../../../lib/firebaseFunctions";
-import { auth } from "../../../../lib/firebase";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
-import { ModalWrapper } from "@/components/elements";
+import { FullPageLoader, ModalWrapper } from "@/components/elements";
 import { UIContext } from "../../../../lib/context";
 
 export function MovieGrid({
@@ -16,6 +15,8 @@ export function MovieGrid({
   refetchCollectionList,
   query,
 }: any) {
+  const { dispatch } = useContext(UIContext);
+
   const {
     isLoading,
     isError,
@@ -37,7 +38,7 @@ export function MovieGrid({
   );
 
   if (isLoading) {
-    return <h2>Loading...</h2>;
+    return <FullPageLoader />;
   }
 
   if (isError) {
@@ -46,6 +47,9 @@ export function MovieGrid({
 
   return (
     <>
+      <button onClick={() => dispatch({ type: "OPEN_MODAL" })}>
+        lord test bgm
+      </button>
       <div
         style={{
           display: "grid",
@@ -83,51 +87,48 @@ function MovieCardWrapper({
   const [dbLoading, setDbLoading] = useState(false);
   const [newCollectionName, setNewCollectionName] = useState("");
   const [dbError, setDbError] = useState("");
-  const [isNewCollectionModalOpen, setIsNewCollectionModalOpen] =
-    useState(false);
+  const { dispatch } = useContext(UIContext);
 
-  const { state, dispatch } = useContext(UIContext);
-
-  async function addToCollection(movie: any, collectionName: any) {
-    // Should also make a global DBLoading so that this isnt just callable from here
+  async function addMovieToNewCollection(movie: any) {
     try {
       setDbLoading(true);
-      addMovieToCollection(movie, collectionName, auth.currentUser?.uid);
-    } catch (error) {
-      console.log(error);
-    } finally {
+      await createAndAddToCollection({
+        movie,
+        newCollectionName,
+        nestedCollections,
+        setDbLoading,
+        setDbError,
+        setNewCollectionName,
+      });
       setDbLoading(false);
+      await refetchCollectionList();
+    } catch (error) {
+    } finally {
+      toggleModalAndClearForm("CLOSE_MODAL");
     }
   }
 
-  async function createAndAddToCollection(movie: any) {
-    if (!nestedCollections?.includes(newCollectionName)) {
-      console.log("attempting to make new list");
+  async function addMovieToExistingCollection(movie: any, collectionName: any) {
+    const elem = document.activeElement as HTMLElement;
+    if (elem) {
+      elem?.blur();
       try {
         setDbLoading(true);
-        await addMovieToNewCollection(
-          movie,
-          newCollectionName,
-          auth.currentUser?.uid
-        );
+        await addMovieToCollection(movie, collectionName);
         await refetchCollectionList();
+        setDbLoading(false);
       } catch (error) {
-        console.log(error);
-        setDbError(JSON.stringify(error));
       } finally {
-        setIsNewCollectionModalOpen(false);
+        toggleModalAndClearForm("CLOSE_MODAL");
       }
-    } else {
-      console.error("list already existis");
-      setDbError("list already existis");
     }
   }
 
-  function openModalAndClearForm() {
+  const toggleModalAndClearForm = (modalState: string) => {
     setDbError("");
     setNewCollectionName("");
-    setIsNewCollectionModalOpen(true);
-  }
+    dispatch({ type: modalState });
+  };
 
   return (
     <div className="relative  group hover:border-white border-4 border-transparent cursor-pointer">
@@ -141,88 +142,77 @@ function MovieCardWrapper({
         </label>
         <ul
           tabIndex={0}
-          className="dropdown-content menu p-2 shadow bg-base-100 rounded-box  w-52 "
+          className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52  "
         >
-          {nestedCollections?.map((list: any) => {
+          {nestedCollections?.map((list: any, idx: number) => {
             return (
-              <li>
-                <button
-                  className="text-xs"
-                  key={list}
-                  disabled={dbLoading}
-                  onClick={() => addToCollection(movie, list)}
-                >
+              <li className="text-xs" key={idx}>
+                <div onClick={() => addMovieToExistingCollection(movie, list)}>
                   Add to {list}
-                </button>
+                </div>
               </li>
             );
           })}
           <li>
-            <button className="text-xs" onClick={() => openModalAndClearForm()}>
+            <button
+              className="text-xs"
+              onClick={() => toggleModalAndClearForm("OPEN_MODAL")}
+            >
               Add to new collection
             </button>
           </li>
         </ul>
+        <ModalWrapper>
+          <CreateCollectionModal
+            addMovieToNewCollection={addMovieToNewCollection}
+            newCollectionName={newCollectionName}
+            setNewCollectionName={setNewCollectionName}
+            movie={movie}
+            dbError={dbError}
+            setDbError={setDbError}
+          />
+        </ModalWrapper>
       </div>
-      <CreateCollectionModal
-        isNewCollectionModalOpen={isNewCollectionModalOpen}
-        setIsNewCollectionModalOpen={setIsNewCollectionModalOpen}
-        createAndAddToCollection={createAndAddToCollection}
-        newCollectionName={newCollectionName}
-        setNewCollectionName={setNewCollectionName}
-        movie={movie}
-        dbError={dbError}
-      />
     </div>
   );
 }
 
 function CreateCollectionModal({
-  isNewCollectionModalOpen,
-  setIsNewCollectionModalOpen,
-  createAndAddToCollection,
+  addMovieToNewCollection,
   setNewCollectionName,
   newCollectionName,
   movie,
   dbError,
+  toggleModalAndClearForm,
 }: any) {
   return (
-    <div>
-      <input
-        type="checkbox"
-        checked={isNewCollectionModalOpen}
-        id="my-modal-6"
-        className="modal-toggle"
-      />
-      <div className="modal modal-bottom sm:modal-middle ">
-        <div className="modal-box">
-          <div className="h-full w-full text-center relative">
-            <button
-              onClick={() => setIsNewCollectionModalOpen(false)}
-              className="btn btn-sm bg-base-100 absolute border-none -top-4 -right-4"
-            >
-              x
-            </button>
-            <h3 className="font-bold text-lg">Add to collecion</h3>
-            {/* <p className="p2-4">This might take a couple seconds so hang tight</p> */}
-            <div className="flex justify-center mt-4 gap-4 flex-col">
-              <input
-                type="text"
-                value={newCollectionName}
-                onChange={(e) => setNewCollectionName(e.target.value)}
-                className="input w-full "
-              />
-              <h1> {dbError}</h1>
-              <button
-                className="btn-primary btn"
-                onClick={() => createAndAddToCollection(movie)}
-              >
-                Create new collection with movie
-              </button>
-            </div>
-          </div>
+    <>
+      <div className="h-full w-full text-center relative">
+        {movie.title}
+        <button
+          onClick={() => toggleModalAndClearForm("CLOSE_MODAL")}
+          className="btn btn-sm bg-base-100 absolute border-none -top-4 -right-4"
+        >
+          x
+        </button>
+        <h3 className="font-bold text-lg">Add to collecion</h3>
+        <div className="flex justify-center mt-4 gap-4 flex-col">
+          <input
+            type="text"
+            value={newCollectionName}
+            onChange={(e) => setNewCollectionName(e.target.value)}
+            className="input w-full input-bordered input-primary  "
+          />
+          <h1> {dbError}</h1>
+          <button
+            className="btn-primary btn"
+            disabled={newCollectionName.length < 1}
+            onClick={() => addMovieToNewCollection(movie)}
+          >
+            Create new collection with movie
+          </button>
         </div>
       </div>
-    </div>
+    </>
   );
 }

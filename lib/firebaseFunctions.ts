@@ -1,6 +1,7 @@
 import { deleteDoc, doc } from "firebase/firestore";
 import { auth, db, firestore, googleProvider } from "./firebase";
 import { signInWithPopup, signOut } from "firebase/auth";
+import toast from "react-hot-toast";
 
 export async function signUserInViaGoogle() {
   await signInWithPopup(auth, googleProvider);
@@ -27,6 +28,7 @@ export async function updateDocumentOrderInDB(movies: any, listname: string) {
       thing.ref.update(tmp);
     });
   } catch (error) {
+    toast.error(`Something went wrong...`);
     console.log(error);
   } finally {
     console.log("db written success");
@@ -44,10 +46,10 @@ export async function deleteMovieFromDB(id: any, listname: any) {
       id.toString()
     );
     await deleteDoc(movieDoc);
+    toast.success(`Movie deleted from ${listname}`);
   } catch (error) {
+    toast.error(`Something went wrong...`);
     console.log(error);
-  } finally {
-    console.log("Movie deleted from DB");
   }
 }
 
@@ -70,21 +72,18 @@ export async function deleteCollection(name: any, uid: string) {
   return res.json();
 }
 
-export async function addMovieToCollection(
-  movie: any,
-  collectionName: any,
-  userId: any
-) {
-  try {
-    let sizeForCount = await firestore
-      .collection("users")
-      .doc(auth.currentUser?.uid)
-      .collection(collectionName)
-      .get()
-      .then(function (querySnapshot) {
-        return querySnapshot.size;
-      });
+async function getCollectionSize(collectionName: string) {
+  const querySnapshot = await firestore
+    .collection("users")
+    .doc(auth.currentUser?.uid)
+    .collection(collectionName)
+    .get();
+  return querySnapshot.size;
+}
 
+export async function addMovieToCollection(movie: any, collectionName: any) {
+  try {
+    const sizeForCount = await getCollectionSize(collectionName);
     await firestore
       .collection("users")
       .doc(auth.currentUser?.uid)
@@ -94,35 +93,44 @@ export async function addMovieToCollection(
         movieId: movie.id,
         movieTitle: movie.title,
         image: movie.poster_path,
-        order: sizeForCount ? sizeForCount : 0,
+        order: sizeForCount || 0,
       });
+    toast.success(`${movie.title} added to ${collectionName}`);
   } catch (error) {
     console.log(error);
+    toast.error(`Something went wrong...`);
   } finally {
     console.log("movie added to collection");
   }
 }
 
-export async function addMovieToNewCollection(
-  movie: any,
-  newCollectionName: any,
-  userId: any
-) {
-  try {
-    const data = {
-      movieId: movie.id,
-      movieTitle: movie.title,
-      image: movie.poster_path,
-    };
-    await firestore
-      .collection("users")
-      .doc(userId)
-      .collection(newCollectionName)
-      .doc(movie.id.toString())
-      .set(data);
-  } catch (error) {
-    console.log(error);
-  } finally {
-    console.log("movie added to new collection");
+export async function createAndAddToCollection({
+  movie,
+  newCollectionName,
+  nestedCollections,
+  setDbError,
+}: any) {
+  if (!nestedCollections?.includes(newCollectionName)) {
+    try {
+      const collectionRef = firestore
+        .collection("users")
+        .doc(auth.currentUser?.uid)
+        .collection(newCollectionName);
+      const sizeForCount = await getCollectionSize(newCollectionName);
+      await collectionRef.doc(movie.id.toString()).set({
+        movieId: movie.id,
+        movieTitle: movie.title,
+        image: movie.poster_path,
+        order: sizeForCount ?? 0,
+      });
+
+      toast.success(`${movie.title}  added to ${newCollectionName}`);
+    } catch (error) {
+      setDbError(JSON.stringify(error));
+      toast.error(`Something went wrong: ${error}`);
+    }
+  } else {
+    console.error("List already exists");
+    setDbError("List already exists");
   }
 }

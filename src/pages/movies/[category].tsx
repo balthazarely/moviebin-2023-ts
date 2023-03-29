@@ -1,5 +1,8 @@
 // import { MovieGrid } from "@/components/MovieGrid";
+import { FullPageLoader } from "@/components/elements";
+import { PageWidthWrapper } from "@/components/layout";
 import { MovieGrid } from "@/components/movieGrids";
+import { useQuery } from "@tanstack/react-query";
 
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
@@ -15,33 +18,43 @@ import { auth } from "../../../lib/firebase";
 export default function Movies() {
   const router = useRouter();
   const { category } = router.query;
-  const [nestedCollections, setNestedCollections] = useState([]);
   // @ts-ignore
   const [user] = useAuthState(auth);
 
-  useEffect(() => {
-    if (user) {
-      refetchCollectionList();
+  const { isLoading, error, data, refetch } = useQuery(
+    ["nestCats", user],
+    async () => {
+      try {
+        return getNestedUserCollections(user?.uid);
+      } catch (error) {
+        throw new Error(`An error occurred: ${error}`);
+      }
+    },
+    {
+      enabled: !!user,
     }
-  }, [user]);
-
-  async function refetchCollectionList() {
-    const nested = await getNestedUserCollections(user?.uid);
-    setNestedCollections(nested);
+  );
+  if (isLoading) {
+    return <FullPageLoader />;
   }
+
+  if (error) {
+    return <div>Error: {JSON.stringify(error)}</div>;
+  }
+
   return (
-    <div>
-      {category && nestedCollections ? (
+    <PageWidthWrapper>
+      {category && data ? (
         <MovieGrid
           query={category}
           fetchFn={getMovies}
           title={category}
-          nestedCollections={nestedCollections}
-          refetchCollectionList={refetchCollectionList}
+          nestedCollections={data}
+          refetchCollectionList={refetch}
         />
       ) : (
-        <div>NOTHING</div>
+        <FullPageLoader />
       )}
-    </div>
+    </PageWidthWrapper>
   );
 }

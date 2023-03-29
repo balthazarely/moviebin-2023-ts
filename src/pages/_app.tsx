@@ -5,6 +5,7 @@ import GlobalProvider from "../../lib/context";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Layout } from "@/components/layout";
 import { Navbar } from "@/components/navigation";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function App({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(() => new QueryClient());
@@ -14,7 +15,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <Navbar>
           {/* <Layout> */}
           <Component {...pageProps} />
-          {/* </Layout> */}
+          <Toaster />
         </Navbar>
       </QueryClientProvider>
     </GlobalProvider>

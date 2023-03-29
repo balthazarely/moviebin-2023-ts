@@ -90,9 +90,9 @@ exports.getNestedUserCollectionsAndDocs = functions.https.onRequest(
           const querySnapshot = await query.get();
 
           // If querySnapshot only has one document, skip the orderBy method
-          if (querySnapshot.size > 1) {
-            query = query.orderBy("order");
-          }
+          // if (querySnapshot.size > 1) {
+          //   query = query.orderBy("order");
+          // }
 
           const documents = [];
 

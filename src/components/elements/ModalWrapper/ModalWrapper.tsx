@@ -5,12 +5,13 @@ export function ModalWrapper({ children }: any) {
   const { state, dispatch } = useContext(UIContext);
 
   return (
-    <div>
+    <div className="">
       <input
         type="checkbox"
         checked={state?.isModalOpen}
         id="my-modal-6"
         className="modal-toggle"
+        readOnly
       />
       <div className="modal modal-bottom sm:modal-middle ">
         <div className="modal-box">{children}</div>

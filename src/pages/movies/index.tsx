@@ -1,3 +1,5 @@
+import { FullPageLoader } from "@/components/elements";
+import { PageWidthWrapper } from "@/components/layout";
 import { MiniMovieGrid } from "@/components/movieGrids";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
@@ -32,7 +34,7 @@ function QueryParam({ param }: any) {
   );
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <FullPageLoader />;
   }
 
   if (error) {
@@ -40,16 +42,16 @@ function QueryParam({ param }: any) {
   }
 
   return (
-    <div className="mt-6">
+    <PageWidthWrapper className="mt-6">
       <Link href={`/movies/${param}`}>
         <h2 className=" text-xl font-bold capitalize">
           {param.replace(/_/g, " ")}
         </h2>
       </Link>
       <div className="flex gap-4">
-        {data?.results?.slice(0, 4).map((movie: any) => {
+        {data?.results?.slice(0, 4).map((movie: any, idx: number) => {
           return (
-            <div className=" cursor-pointer ">
+            <div className=" cursor-pointer " key={idx}>
               <img
                 src={`https://image.tmdb.org/t/p/w200/${movie.poster_path}`}
               />
@@ -57,6 +59,6 @@ function QueryParam({ param }: any) {
           );
         })}
       </div>
-    </div>
+    </PageWidthWrapper>
   );
 }

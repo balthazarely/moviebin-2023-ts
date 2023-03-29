@@ -4,24 +4,23 @@ import { FullPageLoader } from "@/components/elements";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useContext, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { getNestedUserCollectionsAndDocs } from "../../lib/api";
-import { auth, db, firestore } from "../../lib/firebase";
-import {
-  useNestedUserCollections,
-  useNestedUserCollectionsAndDocs,
-} from "../../lib/hooks";
-// import { auth, db, firestore } from "../../../lib/firebase";
+import { auth, firestore } from "../../lib/firebase";
+import toast, { Toaster } from "react-hot-toast";
+import { PageWidthWrapper } from "@/components/layout";
 
 export default function Profile() {
   const router = useRouter();
   const { tab } = router.query;
   // @ts-ignore
   const [user] = useAuthState(auth);
+  const [userReviews, setUserReviews] = useState<any>([]);
+  const [tabSelected, setTabSelected] = useState<string>("lists");
 
-  const { isLoading, error, data } = useQuery(
-    ["myFirestoreDataasf", user],
+  const { isLoading, error, data, refetch } = useQuery(
+    ["nestedCollectionData", user],
     async () => {
       try {
         const response = await getNestedUserCollectionsAndDocs(user?.uid);
@@ -34,9 +33,6 @@ export default function Profile() {
       enabled: !!user,
     }
   );
-
-  const [userReviews, setUserReviews] = useState<any>([]);
-  const [tabSelected, setTabSelected] = useState<string>("lists");
 
   const getMovieUserReviews = async () => {
     // Make this a hook to get realtime updatres
@@ -96,11 +92,8 @@ export default function Profile() {
   if (error) {
     return <div>Error: {JSON.stringify(error)}</div>;
   }
-
-  console.log("data", data); // Add this line to log the data returned by the query
-
   return (
-    <div className="">
+    <PageWidthWrapper>
       <div className="flex justify-start items-center gap-6">
         <img
           className="rounded-full w-16"
@@ -181,6 +174,6 @@ export default function Profile() {
           </div>
         )}
       </div>
-    </div>
+    </PageWidthWrapper>
   );
 }

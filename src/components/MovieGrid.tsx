@@ -6,6 +6,7 @@ import {
   addMovieToNewCollection,
 } from "../../lib/firebaseFunctions";
 import { auth } from "../../lib/firebase";
+import toast, { Toaster } from "react-hot-toast";
 
 export function MovieGrid({
   fetchFn,
@@ -41,8 +42,6 @@ export function MovieGrid({
   if (isError) {
     return <h2>"error"</h2>;
   }
-
-  console.log(data);
 
   return (
     <>
@@ -88,7 +87,6 @@ function MovieCardWrapper({
 
   async function createAndAddToCollection(movie: any) {
     if (!nestedCollections?.includes(newCollectionName)) {
-      console.log("attempting to make new list");
       try {
         setDbLoading(true);
         await addMovieToNewCollection(

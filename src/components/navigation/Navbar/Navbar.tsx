@@ -28,6 +28,7 @@ export function Navbar({ children }: any) {
         id="my-drawer-3"
         type="checkbox"
         checked={isDrawerOpen}
+        readOnly
         className="drawer-toggle"
       />
       <div className="drawer-content flex flex-col">
@@ -71,12 +72,10 @@ export function Navbar({ children }: any) {
           </div>
         </div>
         <div className="bg-neutral flex-grow">
-          <div className="max-w-4xl px-2 h-full flex-grow w-full mx-auto">
-            {children}
-          </div>
+          <div className="h-full flex-grow w-full ">{children}</div>
         </div>
-        <div className="bg-red-700 ">
-          <div className="max-w-4xl px-2 w-full mx-auto">Footer</div>
+        <div className="bg-base-200 ">
+          <div className="max-w-4xl px-2 w-full mx-auto py-10"></div>
         </div>
       </div>
       <div className="drawer-side">

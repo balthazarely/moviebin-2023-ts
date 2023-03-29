@@ -13,6 +13,8 @@ import {
 import { ListMovieGrid } from "@/components/movieGrids";
 import { UIContext } from "../../../lib/context";
 import { FullPageLoader, ModalWrapper } from "@/components/elements";
+import toast, { Toaster } from "react-hot-toast";
+import { PageWidthWrapper } from "@/components/layout";
 
 export default function Listname() {
   // Hooks
@@ -26,6 +28,7 @@ export default function Listname() {
 
   // State
   const [movies, setMovies] = useState([]);
+  const [deleteFnLoading, setDeleteFnLoading] = useState(false);
 
   useEffect(() => {
     if (docs) {
@@ -44,7 +47,7 @@ export default function Listname() {
   }
 
   return (
-    <div>
+    <PageWidthWrapper>
       <ListMovieGrid
         movies={movies}
         setMovies={setMovies}
@@ -74,14 +77,14 @@ export default function Listname() {
           <div className="flex justify-center mt-4 gap-4">
             <button
               onClick={deleteListCollection}
-              className={`btn  btn-error `}
+              className={`btn btn-error ${deleteFnLoading && "loading"}`}
             >
               Proceed
             </button>
           </div>
         </div>
       </ModalWrapper>
-    </div>
+    </PageWidthWrapper>
   );
 
   async function deleteMovie(id: any) {
@@ -104,9 +107,11 @@ export default function Listname() {
 
   async function deleteListCollection() {
     try {
+      setDeleteFnLoading(true);
       await deleteCollection(listname, user!.uid).then(() => {
         dispatch({ type: "CLOSE_MODAL" });
         router.push("/profile");
+        toast.success(`${listname} deleted`);
       });
     } catch (error) {
       console.error(error);
