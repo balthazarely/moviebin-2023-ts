@@ -7,6 +7,7 @@ import {
 import { useDocumentData } from "react-firebase-hooks/firestore";
 import { doc } from "firebase/firestore";
 import { auth, db, firestore } from "./firebase";
+import { useQuery } from "@tanstack/react-query";
 
 // Custom hook to read  auth record and user profile doc
 export function useUserData() {
@@ -84,3 +85,36 @@ export function useOtherUserNestedCollections(id: any) {
 
   return { nestedCollections };
 }
+
+export const useNestedUserCollectionsHook = () => {
+  // @ts-ignore
+  const [user] = useAuthState(auth);
+
+  const {
+    isLoading,
+    error,
+    data: nestedCollectionsFromHook,
+    refetch,
+  } = useQuery(
+    ["nestCats", user],
+    async () => {
+      try {
+        console.log("fetching via Hoook");
+
+        return getNestedUserCollections(user?.uid);
+      } catch (error) {
+        throw new Error(`An error occurred: ${error}`);
+      }
+    },
+    {
+      enabled: !!user,
+    }
+  );
+
+  return {
+    isLoading,
+    error,
+    nestedCollectionsFromHook,
+    refetch,
+  };
+};

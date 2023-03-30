@@ -1,4 +1,4 @@
-import { FullPageLoader } from "@/components/elements";
+import { FullPageLoader, SearchInput } from "@/components/elements";
 import { PageWidthWrapper } from "@/components/layout";
 import { MiniMovieGrid } from "@/components/movieGrids";
 import { useQuery } from "@tanstack/react-query";
@@ -20,15 +20,18 @@ export default function Index() {
   const params = ["top_rated", "now_playing"];
 
   return (
-    <div>
-      {params.map((param) => (
-        <QueryParam key={param} param={param} />
-      ))}
-    </div>
+    <PageWidthWrapper className="mt-6 ">
+      <SearchInput />
+      <div>
+        {params.map((param) => (
+          <MovieGrid key={param} param={param} />
+        ))}
+      </div>
+    </PageWidthWrapper>
   );
 }
 
-function QueryParam({ param }: any) {
+function MovieGrid({ param }: any) {
   const { isLoading, error, data } = useQuery([param + "-index-query"], () =>
     fetchData(param)
   );
@@ -42,23 +45,25 @@ function QueryParam({ param }: any) {
   }
 
   return (
-    <PageWidthWrapper className="mt-6">
+    <>
       <Link href={`/movies/${param}`}>
-        <h2 className=" text-xl font-bold capitalize">
+        <h2 className="text-xl font-bold capitalize">
           {param.replace(/_/g, " ")}
         </h2>
       </Link>
-      <div className="flex gap-4">
-        {data?.results?.slice(0, 4).map((movie: any, idx: number) => {
+      <div className="flex gap-4 justify-between">
+        {data?.results?.slice(0, 5).map((movie: any, idx: number) => {
           return (
-            <div className=" cursor-pointer " key={idx}>
-              <img
-                src={`https://image.tmdb.org/t/p/w200/${movie.poster_path}`}
-              />
-            </div>
+            <Link href={`/movie/${movie.id}`}>
+              <div className="cursor-pointer" key={idx}>
+                <img
+                  src={`https://image.tmdb.org/t/p/w200/${movie.poster_path}`}
+                />
+              </div>
+            </Link>
           );
         })}
       </div>
-    </PageWidthWrapper>
+    </>
   );
 }

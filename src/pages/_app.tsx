@@ -3,9 +3,10 @@ import type { AppProps } from "next/app";
 import { useState } from "react";
 import GlobalProvider from "../../lib/context";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Layout } from "@/components/layout";
 import { Navbar } from "@/components/navigation";
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { AddMovieToCollectionModal, ModalWrapper } from "@/components/elements";
 
 export default function App({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(() => new QueryClient());
@@ -13,10 +14,11 @@ export default function App({ Component, pageProps }: AppProps) {
     <GlobalProvider>
       <QueryClientProvider client={queryClient}>
         <Navbar>
-          {/* <Layout> */}
           <Component {...pageProps} />
           <Toaster />
         </Navbar>
+        <AddMovieToCollectionModal />
+        <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </GlobalProvider>
   );

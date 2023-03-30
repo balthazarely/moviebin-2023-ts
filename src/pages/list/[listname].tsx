@@ -25,6 +25,7 @@ export default function Listname() {
   const [user] = useAuthState(auth);
   const query = collection(db, "users", `${user?.uid}/${listname}`);
   const [docs, loading, error] = useCollectionDataOnce(query);
+  console.log(listname);
 
   // State
   const [movies, setMovies] = useState([]);

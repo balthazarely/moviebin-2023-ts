@@ -1,0 +1,1 @@
+export { SmallLoader } from "./SmallLoader";

@@ -6,17 +6,36 @@ const UIReducer = (state: any, action: any) => {
       return { ...state, isModalOpen: true };
     case "CLOSE_MODAL":
       return { ...state, isModalOpen: false };
+    case "OPEN_ADD_MOVIE_MODAL":
+      return { ...state, isAddMovieModalOpen: true };
+    case "CLOSE_ADD_MOVIE_MODAL":
+      return { ...state, isAddMovieModalOpen: false };
+    case "ADD_TEMP_MOVIE":
+      return {
+        ...state,
+        tempMovie: action.payload,
+      };
+    case "REMOVE_TEMP_MOVIE":
+      return {
+        ...state,
+        tempMovie: null,
+      };
     default:
       return state;
   }
 };
 
 type InitialStateType = {
-  isDrawerOpen: boolean;
   isModalOpen: boolean;
+  isAddMovieModalOpen: boolean;
+  tempMovie: any;
 };
 
-const initialState = { isDrawerOpen: false, isModalOpen: false };
+const initialState = {
+  isModalOpen: false,
+  isAddMovieModalOpen: false,
+  tempMovie: null,
+};
 
 export const UIContext = createContext<{
   state: InitialStateType;

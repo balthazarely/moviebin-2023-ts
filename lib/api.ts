@@ -12,6 +12,13 @@ export const getMovie = async (id: any) => {
   return res.json();
 };
 
+export const searchForMovies = async (query: any) => {
+  const res = await fetch(
+    `https://api.themoviedb.org/3/search/movie?api_key=5e9bd2fa585826bdfc4233fb6424f425&language=en-US&page=1&include_adult=false&query=${query}`
+  );
+  return res.json();
+};
+
 export const getNestedUserCollections = async (uid: any) => {
   const res = await fetch(
     "https://us-central1-fir-todo-9081a.cloudfunctions.net/getNestedUserCollections",

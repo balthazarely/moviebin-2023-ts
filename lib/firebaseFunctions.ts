@@ -107,30 +107,21 @@ export async function addMovieToCollection(movie: any, collectionName: any) {
 export async function createAndAddToCollection({
   movie,
   newCollectionName,
-  nestedCollections,
-  setDbError,
 }: any) {
-  if (!nestedCollections?.includes(newCollectionName)) {
-    try {
-      const collectionRef = firestore
-        .collection("users")
-        .doc(auth.currentUser?.uid)
-        .collection(newCollectionName);
-      const sizeForCount = await getCollectionSize(newCollectionName);
-      await collectionRef.doc(movie.id.toString()).set({
-        movieId: movie.id,
-        movieTitle: movie.title,
-        image: movie.poster_path,
-        order: sizeForCount ?? 0,
-      });
-
-      toast.success(`${movie.title}  added to ${newCollectionName}`);
-    } catch (error) {
-      setDbError(JSON.stringify(error));
-      toast.error(`Something went wrong: ${error}`);
-    }
-  } else {
-    console.error("List already exists");
-    setDbError("List already exists");
+  try {
+    const collectionRef = firestore
+      .collection("users")
+      .doc(auth.currentUser?.uid)
+      .collection(newCollectionName.replace(/\s+/g, " ").trim());
+    const sizeForCount = await getCollectionSize(newCollectionName);
+    await collectionRef.doc(movie.id.toString()).set({
+      movieId: movie.id,
+      movieTitle: movie.title,
+      image: movie.poster_path,
+      order: sizeForCount ?? 0,
+    });
+    toast.success(`${movie.title}  added to ${newCollectionName}`);
+  } catch (error) {
+    toast.error(`Something went wrong: ${error}`);
   }
 }

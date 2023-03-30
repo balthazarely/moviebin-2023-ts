@@ -57,7 +57,7 @@ export default function Profile() {
     }
   };
 
-  function toggleTabs(tab: string) {
+  const toggleTabs = (tab: string) => {
     setTabSelected(tab);
     router.push(
       {
@@ -67,7 +67,7 @@ export default function Profile() {
       undefined,
       { shallow: true }
     );
-  }
+  };
 
   useEffect(() => {
     if (tab) {
@@ -83,10 +83,6 @@ export default function Profile() {
 
   if (!user) {
     return <FullPageLoader />;
-  }
-
-  if (isLoading) {
-    return <div>Loading...</div>;
   }
 
   if (error) {
@@ -127,36 +123,38 @@ export default function Profile() {
         </button>
       </div>
       <div>
-        {isLoading && <FullPageLoader />}
-        {tabSelected === "lists" && (
-          <div className="w-full">
-            <h3 className="mb-2 text-lg font-black w-full">My Movie Lists</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2">
-              {data?.map((list: any, idx: any) => {
-                return (
-                  <div key={idx} className="mb-4">
-                    <Link href={`/list/${list.name}`}>
-                      <div className="font-bold"> {list.name}</div>
+        {tabSelected === "lists" &&
+          (!isLoading ? (
+            <div className="w-full">
+              <h3 className="mb-2 text-lg font-black w-full">My Movie Lists</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2">
+                {data?.map((list: any, idx: any) => {
+                  return (
+                    <div key={idx} className="mb-4">
+                      <Link href={`/list/${list.name}`}>
+                        <div className="font-bold"> {list.name}</div>
 
-                      <div className="flex">
-                        {list?.documents.map((doc: any) => {
-                          return (
-                            <div key={doc.movieId}>
-                              <img
-                                className="h-28"
-                                src={`https://image.tmdb.org/t/p/w200/${doc.image}`}
-                              />
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </Link>
-                  </div>
-                );
-              })}
+                        <div className="flex">
+                          {list?.documents.map((doc: any) => {
+                            return (
+                              <div key={doc.movieId}>
+                                <img
+                                  className="h-28"
+                                  src={`https://image.tmdb.org/t/p/w200/${doc.image}`}
+                                />
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </Link>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
-          </div>
-        )}
+          ) : (
+            <>LOADING</>
+          ))}
         {tabSelected === "reviews" && (
           <div className="w-full">
             <h3 className="mt-10 font-extrabold underline underline-offset-4 w-full">
