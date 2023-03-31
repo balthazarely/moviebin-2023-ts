@@ -12,6 +12,7 @@ import { auth, firestore } from "../../lib/firebase";
 import { PageWidthWrapper } from "@/components/layout";
 import { useDocumentDataOnce } from "react-firebase-hooks/firestore";
 import { CollectionMovieGrid } from "@/components/movieGrids";
+import { toast } from "react-hot-toast";
 
 export default function Collections() {
   const router = useRouter();

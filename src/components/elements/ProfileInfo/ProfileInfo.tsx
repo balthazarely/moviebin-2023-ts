@@ -21,9 +21,10 @@ export function ProfileInfo({
       { shallow: true }
     );
   };
+
   return (
     <div>
-      <div className="flex justify-start items-center gap-6">
+      <div className="flex justify-start items-center gap-6 mt-6">
         <img
           className="rounded-full w-16"
           referrerPolicy="no-referrer"

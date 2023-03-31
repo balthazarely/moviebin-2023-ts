@@ -32,17 +32,17 @@ export function ListMovieGrid({
 
   return (
     <>
-      <div className="mt-2 py-2 mb-2 flex items-center justify-between ">
+      <div className="mt-8 py-2 mb-2 flex items-center justify-between ">
         <div className="flex gap-4 items-center ">
           <h1 className="text-3xl font-bold">{listname}</h1>
           <button
-            className="btn btn-sm text-white transition-all duration-500 bg-gradient-to-tl to-primary via-accent from-primary  bg-size-200 bg-pos-0 hover:bg-pos-100"
+            className="btn btn-xs text-white transition-all duration-500 bg-gradient-to-tl to-primary via-accent from-primary  bg-size-200 bg-pos-0 hover:bg-pos-100"
             onClick={() => {
               setModalTypeOpen("magic-collection");
               dispatch({ type: "OPEN_MODAL" });
             }}
           >
-            magic Playlist <VscWand className="ml-2 text-lg " />
+            Make magic Playlist <VscWand className="ml-2 text-lg " />
           </button>
         </div>
         <GridTypeSelect

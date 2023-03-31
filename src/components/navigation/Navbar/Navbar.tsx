@@ -105,7 +105,7 @@ export function Navbar({ children }: any) {
         <div className="bg-neutral flex-grow">
           <div className="h-full flex-grow w-full ">{children}</div>
         </div>
-        <div className="bg-base-200 ">
+        <div className="bg-neutral ">
           <div className="max-w-4xl px-2 w-full mx-auto py-10"></div>
         </div>
       </div>

@@ -50,7 +50,7 @@ export default function Listname() {
   }
 
   return (
-    <PageWidthWrapper>
+    <PageWidthWrapper className="">
       <ListMovieGrid
         setModalTypeOpen={setModalTypeOpen}
         movies={movies}
