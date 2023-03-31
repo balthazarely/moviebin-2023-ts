@@ -56,7 +56,6 @@ export function MovieGrid({ fetchFn, title, query }: any) {
       >
         {data?.pages.map((page: any) =>
           page?.results?.map((movie: any, idx: any) => (
-            // <MovieCardWrapper key={idx} movie={movie} userData={userData} />
             <MovieCard key={idx} movie={movie}>
               <AddMovieCollectionDropdown
                 movie={movie}
@@ -75,20 +74,3 @@ export function MovieGrid({ fetchFn, title, query }: any) {
     </>
   );
 }
-
-// function MovieCardWrapper({ movie, userData }: any) {
-//   return (
-//     <div className="relative aspect-2/3 group hover:border-white border-4 border-transparent cursor-pointer">
-//       <Link href={`/movie/${movie.id}`}>
-//         <img
-//           className="w-full h-full object-cover"
-//           src={`https://image.tmdb.org/t/p/w200/${movie.poster_path}`}
-//         />
-//       </Link>
-// <AddMovieCollectionDropdown
-//   movie={movie}
-//   recentCollection={userData?.recentCollection}
-// />
-//     </div>
-//   );
-// }

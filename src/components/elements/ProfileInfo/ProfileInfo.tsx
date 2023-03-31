@@ -14,7 +14,7 @@ export function ProfileInfo({
     setTabSelected(tab);
     router.push(
       {
-        pathname: `/profile`,
+        pathname: `/collections`,
         query: { tab: tab },
       },
       undefined,

@@ -63,7 +63,7 @@ export function Navbar({ children }: any) {
                     <Link href="/movies">Movies</Link>
                   </li>
                   <li>
-                    <Link href="/profile">Profile</Link>
+                    <Link href="/collections">Collections</Link>
                   </li>
                   <li>
                     <Link href="/users">Users</Link>
@@ -124,7 +124,9 @@ export function Navbar({ children }: any) {
                   <div onClick={() => navigateToLink("/movies")}>Movies</div>
                 </li>
                 <li>
-                  <div onClick={() => navigateToLink("/profile")}>Profile</div>
+                  <div onClick={() => navigateToLink("/collections")}>
+                    Collections
+                  </div>
                 </li>
                 <li>
                   <div onClick={() => navigateToLink("/users")}>Users</div>

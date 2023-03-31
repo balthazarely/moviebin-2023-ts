@@ -6,29 +6,32 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "../../../lib/firebase";
 import { formatMoviesForDnD } from "../../../lib/utils";
 import {
-  deleteCollection,
   deleteMovieFromDB,
   updateDocumentOrderInDB,
 } from "../../../lib/firebaseFunctions";
+
 import { ListMovieGrid } from "@/components/movieGrids";
 import { UIContext } from "../../../lib/context";
 import { FullPageLoader, ModalWrapper } from "@/components/elements";
-import toast, { Toaster } from "react-hot-toast";
 import { PageWidthWrapper } from "@/components/layout";
+import {
+  DeleteCollectionModal,
+  MagicCollectionModal,
+} from "@/components/modals";
 
 export default function Listname() {
   // Hooks
   const router = useRouter();
   const { listname } = router.query;
-  const { state, dispatch } = useContext(UIContext);
+  const { dispatch } = useContext(UIContext);
   // @ts-ignore
   const [user] = useAuthState(auth);
   const query = collection(db, "users", `${user?.uid}/${listname}`);
   const [docs, loading, error] = useCollectionDataOnce(query);
 
   // State
+  const [modalTypeOpen, setModalTypeOpen] = useState("");
   const [movies, setMovies] = useState([]);
-  const [deleteFnLoading, setDeleteFnLoading] = useState(false);
 
   useEffect(() => {
     if (docs) {
@@ -49,6 +52,7 @@ export default function Listname() {
   return (
     <PageWidthWrapper>
       <ListMovieGrid
+        setModalTypeOpen={setModalTypeOpen}
         movies={movies}
         setMovies={setMovies}
         deleteMovie={deleteMovie}
@@ -56,43 +60,30 @@ export default function Listname() {
       />
       <div className="flex justify-center mt-4">
         <button
-          className="btn btn-primary"
-          onClick={() => dispatch({ type: "OPEN_MODAL" })}
+          className="btn  btn-outline btn-error"
+          onClick={() => {
+            setModalTypeOpen("delete-collection");
+            dispatch({ type: "OPEN_MODAL" });
+          }}
         >
           Delete Collection
         </button>
       </div>
       <ModalWrapper>
-        <div className=" h-full  w-full text-center relative">
-          <button
-            className="btn btn-sm bg-base-100 absolute border-none -top-4 -right-4"
-            onClick={() => dispatch({ type: "CLOSE_MODAL" })}
-          >
-            x
-          </button>
-          <h3 className="font-bold text-lg">
-            Are you sure you want to delete this collection?
-          </h3>
-          <p className="p2-4">This might take a couple seconds so hang tight</p>
-          <div className="flex justify-center mt-4 gap-4">
-            <button
-              onClick={deleteListCollection}
-              className={`btn btn-error ${deleteFnLoading && "loading"}`}
-            >
-              Proceed
-            </button>
-          </div>
-        </div>
+        {modalTypeOpen === "magic-collection" && (
+          <MagicCollectionModal movies={movies} />
+        )}
+
+        {modalTypeOpen === "delete-collection" && (
+          <DeleteCollectionModal listname={listname} />
+        )}
       </ModalWrapper>
     </PageWidthWrapper>
   );
 
   async function deleteMovie(id: any) {
     try {
-      deleteMovieFromDB(id, listname);
-    } catch (error) {
-      // console.log(error);
-    } finally {
+      await deleteMovieFromDB(id, listname);
       const filteredMovies: any = movies
         .filter((movie: any) => movie.movieId !== id)
         .map((movie: any, idx: any) => {
@@ -102,20 +93,6 @@ export default function Listname() {
           };
         });
       setMovies(filteredMovies);
-    }
-  }
-
-  async function deleteListCollection() {
-    try {
-      setDeleteFnLoading(true);
-      await deleteCollection(listname, user!.uid).then(() => {
-        dispatch({ type: "CLOSE_MODAL" });
-        router.push("/profile");
-        toast.success(`${listname} deleted`);
-      });
-    } catch (error) {
-      // console.error(error);
-    } finally {
-    }
+    } catch (error) {}
   }
 }

@@ -13,7 +13,7 @@ import { PageWidthWrapper } from "@/components/layout";
 import { useDocumentDataOnce } from "react-firebase-hooks/firestore";
 import { CollectionMovieGrid } from "@/components/movieGrids";
 
-export default function Profile() {
+export default function Collections() {
   const router = useRouter();
   const { tab } = router.query;
   // @ts-ignore

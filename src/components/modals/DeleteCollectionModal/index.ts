@@ -1,0 +1,1 @@
+export { DeleteCollectionModal } from "./DeleteCollectionModal";

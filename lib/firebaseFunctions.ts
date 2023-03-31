@@ -13,7 +13,7 @@ import toast from "react-hot-toast";
 export async function signUserInViaGoogle() {
   try {
     await signInWithPopup(auth, googleProvider);
-    window.location.href = "/profile";
+    window.location.href = "/collections";
   } catch (error) {}
 }
 
@@ -62,23 +62,28 @@ export async function deleteMovieFromDB(id: any, listname: any) {
   }
 }
 
-export async function deleteCollection(name: any, uid: string) {
-  const res = await fetch(
-    "https://us-central1-fir-todo-9081a.cloudfunctions.net/deleteCollection",
-    {
-      method: "POST",
-      body: JSON.stringify({
-        req: {
-          collection: name,
-          userId: uid,
+export async function deleteCollection(collectionName: any) {
+  try {
+    const res = await fetch(
+      "https://us-central1-fir-todo-9081a.cloudfunctions.net/deleteCollection",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          req: {
+            collection: collectionName,
+            userId: auth.currentUser?.uid,
+          },
+        }),
+        headers: {
+          "Content-Type": "application/json",
         },
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
-  return res.json();
+      }
+    );
+    const response = await res.json();
+    window.location.href = "/collections";
+    toast.success(`${collectionName} deleted`);
+    return response;
+  } catch (error) {}
 }
 
 async function getCollectionSize(collectionName: string) {
@@ -89,27 +94,6 @@ async function getCollectionSize(collectionName: string) {
     .get();
   return querySnapshot.size;
 }
-
-// export async function addMovieToCollection(movie: any, collectionName: any) {
-//   try {
-//     const sizeForCount = await getCollectionSize(collectionName);
-//     await firestore
-//       .collection("users")
-//       .doc(auth.currentUser?.uid)
-//       .collection(collectionName)
-//       .doc(movie.id.toString())
-//       .set({
-//         movieId: movie.id,
-//         movieTitle: movie.title,
-//         image: movie.poster_path,
-//         order: sizeForCount || 0,
-//         createdAt: serverTimestamp(),
-//       });
-//     toast.success(`${movie.title} added to ${collectionName}`);
-//   } catch (error) {
-//     toast.error(`Something went wrong...`);
-//   }
-// }
 
 export async function addMovieToCollection(movie: any, collectionName: any) {
   const userDocRef = firestore.collection("users").doc(auth.currentUser?.uid);
@@ -155,6 +139,39 @@ export async function createAndAddToCollection({
     toast.success(`${movie.title}  added to ${newCollectionName}`);
   } catch (error) {
     toast.error(`Something went wrong: ${error}`);
+  }
+}
+
+export async function createAndAddMultipleDocumentsToCollection(
+  movies: any,
+  newCollectionName: any
+): Promise<any> {
+  try {
+    const userDocRef = firestore.collection("users").doc(auth.currentUser?.uid);
+    // Need to check that this playlist doesnt by name, and if so, need to add some chars
+    const collectionRef = userDocRef.collection(
+      newCollectionName.replace(/\s+/g, " ").trim()
+    );
+    const sizeForCount = await getCollectionSize(newCollectionName);
+    const promises = [];
+    for (const movie of movies) {
+      const promise = collectionRef.doc(movie.id.toString()).set({
+        movieId: movie.id,
+        movieTitle: movie.title,
+        image: movie.poster_path,
+        order: sizeForCount ?? 0,
+        createdAt: serverTimestamp(),
+      });
+      promises.push(promise);
+    }
+    await Promise.all(promises);
+    toast.success(`${movies.length} movies added to ${newCollectionName}`);
+    return Promise.resolve(
+      `${movies.length} movies added to ${newCollectionName}`
+    );
+  } catch (error) {
+    toast.error(`Something went wrong: ${error}`);
+    return Promise.reject(`Something went wrong: ${error}`);
   }
 }
 

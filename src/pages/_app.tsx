@@ -6,8 +6,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Navbar } from "@/components/navigation";
 import { Toaster } from "react-hot-toast";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { AddMovieToCollectionModal } from "@/components/elements";
 import { AuthCheck } from "@/components/layout";
+import { AddMovieToCollectionModal } from "@/components/modals";
 
 const toastConfig = {
   success: {

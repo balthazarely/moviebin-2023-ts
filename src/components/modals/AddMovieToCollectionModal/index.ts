@@ -1,0 +1,1 @@
+export { AddMovieToCollectionModal } from "./AddMovieToCollectionModal";

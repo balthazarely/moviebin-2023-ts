@@ -20,7 +20,7 @@ export function CollectionMovieGrid({ isLoading, data, users }: any) {
           {users?.recentCollection?.length !== 0 ? (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
               {[1, 2, 3, 4, 5, 6, 7, 8, 9]?.map((list: any, idx: any) => {
-                return <CollectionGroupSkeletonCard />;
+                return <CollectionGroupSkeletonCard key={idx} />;
               })}
             </div>
           ) : (

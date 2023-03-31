@@ -3,7 +3,7 @@ export { SmallLoader } from "./SmallLoader";
 export { MovieCard } from "./MovieCard";
 export { SearchInput } from "./SearchInput";
 export { AddMovieCollectionDropdown } from "./AddMovieCollectionDropdown";
-export { AddMovieToCollectionModal } from "./AddMovieToCollectionModal";
+export { AddMovieToCollectionModal } from "./AddMovieToCollectionModalOLD";
 export { ModalWrapper } from "./ModalWrapper";
 export { ProfileReviews } from "./ProfileReviews";
 export { ProfileInfo } from "./ProfileInfo";
