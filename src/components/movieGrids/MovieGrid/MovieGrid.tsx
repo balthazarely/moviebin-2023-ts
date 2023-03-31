@@ -7,8 +7,15 @@ import { auth, firestore } from "../../../../lib/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useDocumentData } from "react-firebase-hooks/firestore";
 import { MovieCard } from "@/components/movieCards";
+import { Movie } from "../../../../lib/types";
 
-export function MovieGrid({ fetchFn, title, query }: any) {
+interface IMovieGridProps {
+  fetchFn: ({ query, params }: any) => any;
+  title: string;
+  query: string;
+}
+
+export function MovieGrid({ fetchFn, title, query }: IMovieGridProps) {
   // @ts-ignore
   const [user] = useAuthState(auth);
   const docRef = firestore.collection("users").doc(user?.uid?.toString());
@@ -42,7 +49,6 @@ export function MovieGrid({ fetchFn, title, query }: any) {
   if (isError) {
     return <h2>"error"</h2>;
   }
-  console.log(data);
 
   return (
     <>
@@ -55,8 +61,8 @@ export function MovieGrid({ fetchFn, title, query }: any) {
         }}
       >
         {data?.pages.map((page: any) =>
-          page?.results?.map((movie: any, idx: any) => (
-            <MovieCard key={idx} movie={movie}>
+          page?.results?.map((movie: Movie) => (
+            <MovieCard key={movie.id} movie={movie}>
               <AddMovieCollectionDropdown
                 movie={movie}
                 recentCollection={userData?.recentCollection}
@@ -65,8 +71,8 @@ export function MovieGrid({ fetchFn, title, query }: any) {
           ))
         )}
       </div>
-      <div className="btn-containe w-full flex justify-center mt-16">
-        <button className="btn btn-primary" onClick={() => fetchNextPage()}>
+      <div className="btn-containe mt-16 flex w-full justify-center">
+        <button className="btn-primary btn" onClick={() => fetchNextPage()}>
           Load More
         </button>
       </div>

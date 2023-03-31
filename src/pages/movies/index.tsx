@@ -1,21 +1,10 @@
 import { FullPageLoader, SearchInput } from "@/components/elements";
 import { PageWidthWrapper } from "@/components/layout";
 import { MovieCard } from "@/components/movieCards";
-import { MiniMovieGrid } from "@/components/movieGrids";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-
-async function fetchData(param: string) {
-  try {
-    const response = await fetch(
-      `https://api.themoviedb.org/3/movie/${param}?api_key=5e9bd2fa585826bdfc4233fb6424f425&language=en-US&page=1`
-    );
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    // console.error(error);
-  }
-}
+import { getMovie } from "../../../lib/api";
+import { Movie } from "../../../lib/types";
 
 export default function Index() {
   const params = ["top_rated", "now_playing"];
@@ -32,9 +21,9 @@ export default function Index() {
   );
 }
 
-function MovieGrid({ param }: any) {
+function MovieGrid({ param }: { param: string }) {
   const { isLoading, error, data } = useQuery([param + "-index-query"], () =>
-    fetchData(param)
+    getMovie(param)
   );
 
   if (isLoading) {
@@ -48,12 +37,12 @@ function MovieGrid({ param }: any) {
   return (
     <>
       <Link href={`/movies/${param}`}>
-        <h2 className="text-xl font-bold capitalize hover:text-white duration-100 transition-all cursor-pointer">
+        <h2 className="cursor-pointer text-xl font-bold capitalize transition-all duration-100 hover:text-white">
           {param.replace(/_/g, " ")}
         </h2>
       </Link>
-      <div className="flex gap-4 justify-between">
-        {data?.results?.slice(0, 5).map((movie: any, idx: number) => {
+      <div className="flex justify-between gap-4">
+        {data?.results?.slice(0, 5).map((movie: Movie, idx: number) => {
           return <MovieCard key={idx} movie={movie} />;
         })}
       </div>

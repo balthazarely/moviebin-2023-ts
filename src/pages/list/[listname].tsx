@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { collection } from "firebase/firestore";
 import { useCollectionDataOnce } from "react-firebase-hooks/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, db } from "../../../lib/firebase";
+import { auth, db, FirebaseUser } from "../../../lib/firebase";
 import { formatMoviesForDnD } from "../../../lib/utils";
 import {
   deleteMovieFromDB,
@@ -18,6 +18,7 @@ import {
   DeleteCollectionModal,
   MagicCollectionModal,
 } from "@/components/modals";
+import { FirestoreMovie, NestedDataDocs } from "../../../lib/types";
 
 export default function Listname() {
   // Hooks
@@ -25,13 +26,13 @@ export default function Listname() {
   const { listname } = router.query;
   const { dispatch } = useContext(UIContext);
   // @ts-ignore
-  const [user] = useAuthState(auth);
+  const [user]: FirebaseUser = useAuthState(auth);
   const query = collection(db, "users", `${user?.uid}/${listname}`);
   const [docs, loading, error] = useCollectionDataOnce(query);
 
   // State
-  const [modalTypeOpen, setModalTypeOpen] = useState("");
-  const [movies, setMovies] = useState([]);
+  const [modalTypeOpen, setModalTypeOpen] = useState<string>("");
+  const [movies, setMovies] = useState<FirestoreMovie[]>([]);
 
   useEffect(() => {
     if (docs) {
@@ -56,11 +57,11 @@ export default function Listname() {
         movies={movies}
         setMovies={setMovies}
         deleteMovie={deleteMovie}
-        listname={listname}
+        listname={listname?.toString()}
       />
-      <div className="flex justify-center mt-4">
+      <div className="mt-4 flex justify-center">
         <button
-          className="btn  btn-outline btn-error"
+          className="btn-outline  btn-error btn"
           onClick={() => {
             setModalTypeOpen("delete-collection");
             dispatch({ type: "OPEN_MODAL" });

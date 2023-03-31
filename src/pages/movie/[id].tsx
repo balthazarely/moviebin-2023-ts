@@ -2,7 +2,6 @@ import { GetServerSideProps } from "next";
 import fetch from "node-fetch";
 import { getPlaiceholder } from "plaiceholder";
 import Image from "next/image";
-import { useState } from "react";
 import { PageWidthWrapper } from "@/components/layout";
 import { useNestedUserCollectionsHook } from "../../../lib/hooks";
 import {
@@ -11,34 +10,53 @@ import {
 } from "@/components/elements";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useDocumentData } from "react-firebase-hooks/firestore";
-import { auth, firestore } from "../../../lib/firebase";
+import { auth, FirebaseUser, firestore } from "../../../lib/firebase";
+import { UserDoc } from "../../../lib/types";
 
-type MovieProps = {
-  movie: {
-    title: string;
-    poster_path: string;
-    overview: string;
+interface IMovieProps {
+  movie: Movie;
+  imagesProps: ImageProps;
+}
+
+type ImageProps = {
+  img: {
+    src: string;
+    width: number;
+    height: number;
   };
-  imagesProps: {
-    img: {
-      src: string;
-      width: number;
-      height: number;
-    };
-    base64: string;
-    blurhash: string;
-  };
+  base64: string;
+  blurhash: string;
 };
 
-const MoviePage = ({ movie, imagesProps }: MovieProps) => {
+type Movie = {
+  adult: string;
+  backdrop_path: string;
+  belongs_to_collection: any;
+  budget: number;
+  genres: any[];
+  genre_id: number[];
+  homepage: string;
+  id: number;
+  original_language: string;
+  original_title: string;
+  overview: string;
+  popularity: number;
+  poster_path: string;
+  release_date: string;
+  title: string;
+  video: boolean;
+  vote_average: number;
+  vote_count: number;
+  // There are more properties to this....
+};
+
+const MoviePage = ({ movie, imagesProps }: IMovieProps) => {
   // @ts-ignore
-  const [user] = useAuthState(auth);
+  const [user]: FirebaseUser = useAuthState(auth);
   const docRef = firestore.collection("users").doc(user?.uid?.toString());
   // @ts-ignore
-  const [userData] = useDocumentData(docRef);
-
-  const { isLoading, error, nestedCollectionsFromHook, refetch } =
-    useNestedUserCollectionsHook();
+  const [userData] = useDocumentData<UserDoc>(docRef);
+  const { isLoading, error } = useNestedUserCollectionsHook();
 
   if (isLoading) {
     return <FullPageLoader />;
@@ -55,11 +73,17 @@ const MoviePage = ({ movie, imagesProps }: MovieProps) => {
     </div>
   );
 
-  function MovieDetails({ movie, userData }: any) {
+  function MovieDetails({
+    movie,
+    userData,
+  }: {
+    movie: Movie;
+    userData: UserDoc | undefined;
+  }) {
     return (
       <PageWidthWrapper>
-        <div className="relative h-96 z-50 sm:pt-24 p-10 gap-4 grid grid-cols-1 sm:grid-cols-4">
-          <div className="flex justify-center col-span-1">
+        <div className="relative z-50 grid h-96 grid-cols-1 gap-4 p-10 sm:grid-cols-4 sm:pt-24">
+          <div className="col-span-1 flex justify-center">
             <Image
               src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
               alt={movie.title}
@@ -68,7 +92,7 @@ const MoviePage = ({ movie, imagesProps }: MovieProps) => {
               className=" aspect-2/3  object-contain"
             />
           </div>
-          <div className=" sm:col-span-3 col-span-1 mt-4">
+          <div className=" col-span-1 mt-4 sm:col-span-3">
             <div className="ml-4">
               <div className="flex justify-between">
                 <h1 className="text-4xl font-extrabold text-gray-100">
@@ -83,10 +107,10 @@ const MoviePage = ({ movie, imagesProps }: MovieProps) => {
               <h3 className="text-xl text-gray-100">
                 {movie?.release_date.slice(0, 4)}
               </h3>
-              <div className="text-sm flex gap-2 mt-2">
+              <div className="mt-2 flex gap-2 text-sm">
                 {movie?.genres?.map((genre: any, idx: number) => {
                   return (
-                    <div className="badge badge-sm badge-primary">
+                    <div key={idx} className="badge-primary badge badge-sm">
                       {genre.name}
                     </div>
                   );
@@ -100,13 +124,11 @@ const MoviePage = ({ movie, imagesProps }: MovieProps) => {
     );
   }
 
-  function MovieBackground({ imagesProps }: any) {
-    const [imageLoaded, setImageLoaded] = useState(false);
-
+  function MovieBackground({ imagesProps }: { imagesProps: ImageProps }) {
     return (
-      <div className="z-0 h-96 bg-base-100 w-full bg-center	bg-no-repeat bg-cover bg-transparent absolute top-0 left-0">
-        <div className="z-10 absolute top-0 left-0 bg-neutral bg-opacity-40 w-full h-full"></div>
-        <div className=" z-10 absolute top-0 left-0 bg-gradient-to-t from-neutral from-10% to-transparent to-90% w-full h-full"></div>
+      <div className="absolute top-0 left-0 z-0 h-96	w-full bg-base-100 bg-transparent bg-cover bg-center bg-no-repeat">
+        <div className="absolute top-0 left-0 z-10 h-full w-full bg-neutral bg-opacity-40"></div>
+        <div className=" from-10% to-90% absolute top-0 left-0 z-10 h-full w-full bg-gradient-to-t from-neutral to-transparent"></div>
         <Image
           src={imagesProps.img.src}
           placeholder="blur"
@@ -116,24 +138,8 @@ const MoviePage = ({ movie, imagesProps }: MovieProps) => {
             objectFit: "cover",
           }}
           fill
-          // onLoad={() => setImageLoaded(true)}
           alt={imagesProps.img.src}
         />
-        {/* <Image
-          src={imagesProps.base64}
-          placeholder="blur"
-          blurDataURL={imagesProps.base64}
-          layout="fill"
-          sizes="100vw"
-          className={`transition-all duration-300 ${
-            imageLoaded ? "opacity-0" : "opacity-100"
-          }`}
-          style={{
-            objectFit: "cover",
-          }}
-          alt={imagesProps.img.src} 
-        />
-          */}
       </div>
     );
   }

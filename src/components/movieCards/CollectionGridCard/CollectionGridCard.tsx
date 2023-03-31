@@ -18,29 +18,29 @@ export function CollectionGridCard({
           idx === null ? "opacity-0" : "opacity-100"
         }`}
       >
-        {idx === null ? "" : idx + 1}
+        {/* {idx === null ? "" : idx + 1} */}
       </div>
       <RiDragMoveFill
         {...attributes}
         {...listeners}
-        className="absolute top-0 right-0 hover:bg-base-100 bg-opacity-70 bg-base-200 rounded-sm w-10 h-10 p-3  text-3xl"
+        className="absolute top-0 right-0 h-10 w-10 rounded-sm bg-base-200 bg-opacity-70 p-3 text-3xl  hover:bg-base-100"
       />
       <div>
         <img
-          className=" w-full h-full object-cover"
+          className=" h-full w-full object-cover"
           src={`https://image.tmdb.org/t/p/w200/${image}`}
         />
       </div>
       <div className="flex w-full justify-between">
-        <h2 className="text-xs font-bold p-2 text-left">{title}</h2>
-        <div className="dropdown dropdown-top dropdown-end">
+        <h2 className="p-2 text-left text-xs font-bold">{title}</h2>
+        <div className="dropdown-end dropdown dropdown-top">
           <label tabIndex={0} className="btn  ">
-            <HiOutlineDotsHorizontal className="text-sm w-4 h-4" />
+            <HiOutlineDotsHorizontal className="h-4 w-4 text-sm" />
           </label>
 
           <ul
             tabIndex={0}
-            className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
+            className="dropdown-content menu rounded-box w-52 bg-base-100 p-2 shadow"
           >
             <li onClick={() => deleteMovie(id)}>
               <div className="text-xs">Remove</div>

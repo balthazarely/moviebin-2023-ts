@@ -6,7 +6,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../../../lib/firebase";
 import { signUserOut } from "../../../../lib/firebaseFunctions";
 
-export function Navbar({ children }: any) {
+export function Navbar({ children }: { children: React.ReactNode }) {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const router = useRouter();
   // const { user } = useContext(UserContext);
@@ -19,7 +19,7 @@ export function Navbar({ children }: any) {
   };
 
   return (
-    <div className="drawer 0">
+    <div className="0 drawer">
       <input
         id="my-drawer-3"
         type="checkbox"
@@ -29,18 +29,18 @@ export function Navbar({ children }: any) {
       />
       <div className="drawer-content flex flex-col">
         {/* <!-- Navbar --> */}
-        <div className="w-full navbar bg-base-300 sticky top-0 z-50">
+        <div className="navbar sticky top-0 z-50 w-full bg-base-300">
           <div className="flex-none lg:hidden">
             <label
               htmlFor="my-drawer-3"
               onClick={() => setIsDrawerOpen(!isDrawerOpen)}
-              className="btn btn-square btn-ghost"
+              className="btn-ghost btn-square btn"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
-                className="inline-block w-6 h-6 stroke-current"
+                className="inline-block h-6 w-6 stroke-current"
               >
                 <path
                   strokeLinecap="round"
@@ -51,10 +51,10 @@ export function Navbar({ children }: any) {
               </svg>
             </label>
           </div>
-          <div className="flex-1 px-2 mx-2 text-xl font-black ">
+          <div className="mx-2 flex-1 px-2 text-xl font-black ">
             <div className=" ">movieMate</div>
           </div>
-          <div className="flex-none hidden lg:block">
+          <div className="hidden flex-none lg:block">
             <ul className="menu menu-horizontal">
               {/* <!-- Navbar menu content here --> */}
               {user ? (
@@ -68,18 +68,21 @@ export function Navbar({ children }: any) {
                   <li>
                     <Link href="/users">Users</Link>
                   </li>
-                  <div className="dropdown dropdown-end">
+                  <div className="dropdown-end dropdown">
                     <label
                       tabIndex={0}
-                      className="btn btn-ghost btn-circle avatar"
+                      className="btn-ghost btn-circle avatar btn"
                     >
                       <div className="w-8 rounded-full">
-                        <img src={user?.photoURL ?? ""} />
+                        <img
+                          referrerPolicy="no-referrer"
+                          src={user?.photoURL ?? ""}
+                        />
                       </div>
                     </label>
                     <ul
                       tabIndex={0}
-                      className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
+                      className="dropdown-content menu rounded-box menu-compact mt-3 w-52 bg-base-100 p-2 shadow"
                     >
                       <li className="">
                         <Link href="/" className=" w-full">
@@ -96,17 +99,17 @@ export function Navbar({ children }: any) {
                 </>
               ) : (
                 <Link href="/login">
-                  <button className="btn btn-primary">Login</button>
+                  <button className="btn-primary btn">Login</button>
                 </Link>
               )}
             </ul>
           </div>
         </div>
-        <div className="bg-neutral flex-grow">
-          <div className="h-full flex-grow w-full ">{children}</div>
+        <div className="flex-grow bg-neutral">
+          <div className="h-full w-full flex-grow ">{children}</div>
         </div>
         <div className="bg-neutral ">
-          <div className="max-w-4xl px-2 w-full mx-auto py-10"></div>
+          <div className="mx-auto w-full max-w-4xl px-2 py-10"></div>
         </div>
       </div>
       <div className="drawer-side">
@@ -115,7 +118,7 @@ export function Navbar({ children }: any) {
           onClick={() => setIsDrawerOpen(false)}
           className="drawer-overlay "
         ></label>
-        <ul className="menu p-4 w-80 bg-base-100 flex flex-col justify-between">
+        <ul className="menu flex w-80 flex-col justify-between bg-base-100 p-4">
           {/* <!-- Sidebar content here --> */}
           {user ? (
             <>
@@ -133,9 +136,9 @@ export function Navbar({ children }: any) {
                 </li>
               </div>
               <div className="w-full">
-                <div className="flex gap-2 items-center mb-4">
+                <div className="mb-4 flex items-center gap-2">
                   <img
-                    className="rounded-full w-12"
+                    className="w-12 rounded-full"
                     referrerPolicy="no-referrer"
                     src={user?.photoURL ?? ""}
                     alt="Image"

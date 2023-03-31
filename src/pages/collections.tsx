@@ -8,21 +8,21 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { getNestedUserCollectionsAndDocs } from "../../lib/api";
-import { auth, firestore } from "../../lib/firebase";
+import { auth, FirebaseUser, firestore } from "../../lib/firebase";
 import { PageWidthWrapper } from "@/components/layout";
 import { useDocumentDataOnce } from "react-firebase-hooks/firestore";
 import { CollectionMovieGrid } from "@/components/movieGrids";
-import { toast } from "react-hot-toast";
+import { UserDoc } from "../../lib/types";
 
 export default function Collections() {
   const router = useRouter();
   const { tab } = router.query;
   // @ts-ignore
-  const [user] = useAuthState(auth);
+  const [user]: FirebaseUser = useAuthState(auth);
   const [tabSelected, setTabSelected] = useState<string>("lists");
   const docRef = firestore.collection("users").doc(user?.uid?.toString());
   // @ts-ignore
-  const [users] = useDocumentDataOnce(docRef);
+  const [userDoc] = useDocumentDataOnce<UserDoc>(docRef);
 
   const { isLoading, error, data } = useQuery(
     ["nestedCollectionData", user],
@@ -45,7 +45,7 @@ export default function Collections() {
     }
   }, [tab]);
 
-  if (!user || !users) {
+  if (!user || !userDoc) {
     return <FullPageLoader />;
   }
 
@@ -53,11 +53,14 @@ export default function Collections() {
     return <div>Error: {JSON.stringify(error)}</div>;
   }
 
+  console.log(user);
+  console.log(userDoc);
+
   return (
     <PageWidthWrapper>
       <ProfileInfo
         user={user}
-        users={users}
+        userDoc={userDoc}
         setTabSelected={setTabSelected}
         tabSelected={tabSelected}
         data={data}
@@ -67,7 +70,7 @@ export default function Collections() {
           <CollectionMovieGrid
             data={data}
             isLoading={isLoading}
-            users={users}
+            users={userDoc}
           />
         )}
 

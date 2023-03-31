@@ -10,7 +10,11 @@ export default function Movies() {
   return (
     <PageWidthWrapper className="pb-16">
       {category ? (
-        <MovieGrid query={category} fetchFn={getMovies} title={category} />
+        <MovieGrid
+          query={category.toString()}
+          fetchFn={getMovies}
+          title={category.toString()}
+        />
       ) : (
         <FullPageLoader />
       )}

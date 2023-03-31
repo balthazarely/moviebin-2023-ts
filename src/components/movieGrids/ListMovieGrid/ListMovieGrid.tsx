@@ -9,6 +9,7 @@ import { useContext, useEffect, useState } from "react";
 import { UIContext } from "../../../../lib/context";
 import { VscWand } from "react-icons/vsc";
 import { ListMovieItem } from "../ListMovieItem";
+import { Test } from "../Test";
 
 export function ListMovieGrid({
   movies,
@@ -23,6 +24,7 @@ export function ListMovieGrid({
 
   const [activeId, setActiveId] = useState<any>(null);
   const [gridType, setGridType] = useState<string>("col");
+  const [isDraggingCustom, setIsDraggingCustom] = useState(false);
 
   useEffect(() => {
     if (sortBy) {
@@ -32,17 +34,18 @@ export function ListMovieGrid({
 
   return (
     <>
-      <div className="mt-8 py-2 mb-2 flex items-center justify-between ">
-        <div className="flex gap-4 items-center ">
+      <div className="mt-2 mb-2 flex items-center justify-between py-2 ">
+        <div className="flex items-center gap-4 ">
           <h1 className="text-3xl font-bold">{listname}</h1>
           <button
-            className="btn btn-xs text-white transition-all duration-500 bg-gradient-to-tl to-primary via-accent from-primary  bg-size-200 bg-pos-0 hover:bg-pos-100"
+            className="btn-sm btn bg-gradient-to-tl from-accent via-secondary to-primary bg-size-200 bg-pos-0 text-white transition-all duration-500 hover:bg-pos-100"
+            // className="btn bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white btn-sm "
             onClick={() => {
               setModalTypeOpen("magic-collection");
               dispatch({ type: "OPEN_MODAL" });
             }}
           >
-            Make magic Playlist <VscWand className="ml-2 text-lg " />
+            Magic Playlist <VscWand className="ml-2 text-lg " />
           </button>
         </div>
         <GridTypeSelect
@@ -78,13 +81,14 @@ export function ListMovieGrid({
                   id={movie.id}
                   title={movie.movieTitle}
                   image={movie.image}
+                  isDraggingCustom={isDraggingCustom}
                 />
               ))}
             </div>
           </SortableContext>
-          <DragOverlay>
+          {/* <DragOverlay>
             {activeId ? (
-              <ListMovieItem
+              <Test
                 idx={null}
                 // className="h-full"
                 gridType={gridType}
@@ -93,8 +97,10 @@ export function ListMovieGrid({
                 title={activeId.movieTitle}
                 image={activeId.image}
               />
-            ) : null}
-          </DragOverlay>
+            ) : (
+              <></>
+            )}
+          </DragOverlay> */}
         </div>
       </DndContext>
     </>
@@ -113,6 +119,10 @@ export function ListMovieGrid({
   }
 
   function handleDragStart(event: any) {
+    setIsDraggingCustom(false);
+    console.log("drag start");
+
+    setTimeout(() => setIsDraggingCustom(true), 200);
     const foundItem = movies.find((movie: any) => movie.id === event.active.id);
     setActiveId(foundItem);
   }
@@ -134,13 +144,13 @@ function GridTypeSelect({ setSortQueryParam, gridType }: any) {
     <div className="btn-group  ">
       <button
         onClick={() => setSortQueryParam("grid")}
-        className={`btn btn-sm   ${gridType === "grid" ? "btn-active" : ""}`}
+        className={`btn   ${gridType === "grid" ? "btn-active" : ""}`}
       >
         Grid
       </button>
       <button
         onClick={() => setSortQueryParam("col")}
-        className={`btn btn-sm  ${gridType === "col" ? "btn-active" : ""}`}
+        className={`btn   ${gridType === "col" ? "btn-active" : ""}`}
       >
         Col
       </button>

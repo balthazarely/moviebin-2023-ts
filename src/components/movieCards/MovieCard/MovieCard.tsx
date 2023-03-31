@@ -1,20 +1,23 @@
 import Link from "next/link";
 import React from "react";
+import { Movie } from "../../../../lib/types";
 
-export function MovieCard({ movie, children }: any) {
+export function MovieCard({
+  movie,
+  children,
+}: {
+  movie: Movie;
+  children?: React.ReactNode;
+}) {
   return (
-    <div className="relative aspect-2/3  rounded-sm group hover:border-gray-100 border-4 border-transparent duration-100 transition-all cursor-pointer">
+    <div className="group relative  aspect-2/3 cursor-pointer rounded-sm border-4 border-transparent transition-all duration-100 hover:border-gray-100">
       <Link href={`/movie/${movie.id}`}>
         <img
-          className="w-full h-full object-cover rounded-sm "
+          className="h-full w-full rounded-sm object-cover "
           src={`https://image.tmdb.org/t/p/w200/${movie.poster_path}`}
         />
       </Link>
       {children}
-      {/* <AddMovieCollectionDropdown
-          movie={movie}
-          recentCollection={userData?.recentCollection}
-        /> */}
     </div>
   );
 }

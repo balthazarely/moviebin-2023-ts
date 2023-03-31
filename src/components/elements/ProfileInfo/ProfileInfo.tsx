@@ -1,14 +1,24 @@
 import { useRouter } from "next/router";
 import React from "react";
+import { FirebaseUser } from "../../../../lib/firebase";
+import { NestedDataCollectionDocs, UserDoc } from "../../../../lib/types";
 import { convertToDate } from "../../../../lib/utils";
+
+interface IProfileInfoProps {
+  user: FirebaseUser;
+  userDoc: UserDoc;
+  setTabSelected: (tab: string) => void;
+  tabSelected: string;
+  data: NestedDataCollectionDocs[];
+}
 
 export function ProfileInfo({
   user,
-  users,
+  userDoc,
   setTabSelected,
   tabSelected,
   data,
-}: any) {
+}: IProfileInfoProps) {
   const router = useRouter();
   const toggleTabs = (tab: string) => {
     setTabSelected(tab);
@@ -24,9 +34,9 @@ export function ProfileInfo({
 
   return (
     <div>
-      <div className="flex justify-start items-center gap-6 mt-6">
+      <div className="mt-6 flex items-center justify-start gap-6">
         <img
-          className="rounded-full w-16"
+          className="w-16 rounded-full"
           referrerPolicy="no-referrer"
           src={user?.photoURL ?? ""}
           alt="Image"
@@ -34,14 +44,14 @@ export function ProfileInfo({
         <div>
           <h2 className="text-xl font-bold">{user?.displayName}</h2>
           <h4 className="text-xs">
-            Member since {convertToDate(users?.createdAt.toDate())}
+            Member since {convertToDate(userDoc?.createdAt.toDate())}
           </h4>
         </div>
       </div>
       <div className="tabs mt-6 mb-4">
         <button
           onClick={() => toggleTabs("lists")}
-          className={`tab tab-lifted ${
+          className={`tab-lifted tab ${
             tabSelected === "lists" ? "tab-active" : ""
           }`}
         >
@@ -49,7 +59,7 @@ export function ProfileInfo({
         </button>
         <button
           onClick={() => toggleTabs("reviews")}
-          className={`tab tab-lifted ${
+          className={`tab-lifted tab ${
             tabSelected === "reviews" ? "tab-active" : ""
           }`}
         >

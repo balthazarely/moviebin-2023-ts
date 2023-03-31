@@ -23,15 +23,7 @@ interface IListMovieItemProps {
   image: string;
 }
 
-export function ListMovieItem({
-  image,
-  id,
-  title,
-  deleteMovie,
-  idx,
-  gridType,
-  isDraggingCustom,
-}: any) {
+export function Test({ image, id, title, deleteMovie, idx, gridType }: any) {
   const {
     attributes,
     isDragging,
@@ -50,8 +42,7 @@ export function ListMovieItem({
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    // opacity: isDragging ? 0 : 1,
-    // opacity: isDragging && isDraggingCustom ? 0 : 1,
+    opacity: isDragging ? 0 : 1,
   };
 
   return (
