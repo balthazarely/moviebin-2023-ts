@@ -1,0 +1,1 @@
+export { CollectionGroupSkeletonCard } from "./CollectionGroupSkeletonCard";

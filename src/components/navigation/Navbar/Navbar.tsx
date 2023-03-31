@@ -1,10 +1,7 @@
 // import { UserContext } from "lib/context";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useContext, useState } from "react";
-// import { auth, firestore } from "lib/firebase";
-
-// import { signUserInViaGoogle, signUserOut } from "lib/firebaseFunctions";
+import React, { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../../../lib/firebase";
 import { signUserOut } from "../../../../lib/firebaseFunctions";
@@ -21,7 +18,6 @@ export function Navbar({ children }: any) {
     router.push(link);
   };
 
-  console.log(user);
   return (
     <div className="drawer 0">
       <input
@@ -55,19 +51,54 @@ export function Navbar({ children }: any) {
               </svg>
             </label>
           </div>
-          <div className="flex-1 px-2 mx-2">MovieBox</div>
+          <div className="flex-1 px-2 mx-2 text-xl font-black ">
+            <div className=" ">movieMate</div>
+          </div>
           <div className="flex-none hidden lg:block">
             <ul className="menu menu-horizontal">
               {/* <!-- Navbar menu content here --> */}
-              <li>
-                <Link href="/movies">Movies</Link>
-              </li>
-              <li>
-                <Link href="/profile">Profile</Link>
-              </li>
-              <li>
-                <Link href="/users">Users</Link>
-              </li>
+              {user ? (
+                <>
+                  <li>
+                    <Link href="/movies">Movies</Link>
+                  </li>
+                  <li>
+                    <Link href="/profile">Profile</Link>
+                  </li>
+                  <li>
+                    <Link href="/users">Users</Link>
+                  </li>
+                  <div className="dropdown dropdown-end">
+                    <label
+                      tabIndex={0}
+                      className="btn btn-ghost btn-circle avatar"
+                    >
+                      <div className="w-8 rounded-full">
+                        <img src={user?.photoURL ?? ""} />
+                      </div>
+                    </label>
+                    <ul
+                      tabIndex={0}
+                      className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
+                    >
+                      <li className="">
+                        <Link href="/" className=" w-full">
+                          Settings
+                        </Link>
+                      </li>
+                      <li>
+                        <button onClick={signUserOut} className="w-full">
+                          Logout
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                </>
+              ) : (
+                <Link href="/login">
+                  <button className="btn btn-primary">Login</button>
+                </Link>
+              )}
             </ul>
           </div>
         </div>
@@ -84,150 +115,49 @@ export function Navbar({ children }: any) {
           onClick={() => setIsDrawerOpen(false)}
           className="drawer-overlay "
         ></label>
-        <ul className="menu p-4 w-80 bg-base-100">
+        <ul className="menu p-4 w-80 bg-base-100 flex flex-col justify-between">
           {/* <!-- Sidebar content here --> */}
-          <li>
-            <div onClick={() => navigateToLink("/movies")}>Movies</div>
-          </li>
-          <li>
-            <div onClick={() => navigateToLink("/profile")}>Profile</div>
-          </li>
-          <li>
-            <div onClick={() => navigateToLink("/users")}>Users</div>
-          </li>
+          {user ? (
+            <>
+              <div>
+                <li>
+                  <div onClick={() => navigateToLink("/movies")}>Movies</div>
+                </li>
+                <li>
+                  <div onClick={() => navigateToLink("/profile")}>Profile</div>
+                </li>
+                <li>
+                  <div onClick={() => navigateToLink("/users")}>Users</div>
+                </li>
+              </div>
+              <div className="w-full">
+                <div className="flex gap-2 items-center mb-4">
+                  <img
+                    className="rounded-full w-12"
+                    referrerPolicy="no-referrer"
+                    src={user?.photoURL ?? ""}
+                    alt="Image"
+                  />
+                  <h2 className="text-sm font-bold">
+                    <span className="font-normal">Signed in as </span>
+                    {user?.displayName}
+                  </h2>
+                </div>
+                <button
+                  className="btn-primary btn  w-full"
+                  onClick={signUserOut}
+                >
+                  Sign Out
+                </button>
+              </div>
+            </>
+          ) : (
+            <li>
+              <div onClick={() => navigateToLink("/login")}>Login</div>
+            </li>
+          )}
         </ul>
       </div>
     </div>
   );
 }
-
-// import { UserContext } from "lib/context";
-// import { useContext } from "react";
-// import {
-//   Box,
-//   Flex,
-//   Avatar,
-//   Button,
-//   Menu,
-//   MenuButton,
-//   IconButton,
-//   MenuList,
-//   MenuItem,
-//   MenuDivider,
-//   useColorModeValue,
-//   Stack,
-//   useColorMode,
-//   useDisclosure,
-//   HStack,
-//   Text,
-// } from "@chakra-ui/react";
-// import { HamburgerIcon, CloseIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
-// import NextLink from "next/link";
-// import { useRouter } from "next/router";
-// import { signUserInViaGoogle, signUserOut } from "lib/firebaseFunctions";
-
-// const Links = [
-//   { name: "Films", href: "/Films" },
-//   { name: "Top Rated", href: "/movies/top_rated" },
-//   { name: "Profile", href: "/profile" },
-//   { name: "Users", href: "/users" },
-// ];
-
-// const NavLink = ({ children, href }) => (
-//   <NextLink
-//     px={2}
-//     py={1}
-//     rounded={"md"}
-//     _hover={{
-//       textDecoration: "none",
-//       bg: useColorModeValue("gray.200", "gray.700"),
-//     }}
-//     href={href}
-//   >
-//     {children}
-//   </NextLink>
-// );
-
-// export function Navbar() {
-//   const router = useRouter();
-//   const { user } = useContext(UserContext);
-//   const { colorMode, toggleColorMode } = useColorMode();
-//   const { isOpen, onOpen, onClose } = useDisclosure();
-
-//   const navigateToLogin = () => {
-//     router.push("/enter");
-//   };
-
-//   return (
-//     <>
-//       <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
-//         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
-//           <IconButton
-//             size={"md"}
-//             icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
-//             aria-label={"Open Menu"}
-//             display={{ md: "none" }}
-//             onClick={isOpen ? onClose : onOpen}
-//           />
-//           <HStack spacing={8} alignItems={"center"}>
-//             <Box>Moviebox</Box>
-//             <HStack
-//               as={"nav"}
-//               spacing={4}
-//               display={{ base: "none", md: "flex" }}
-//             >
-//               {Links.map((link) => (
-//                 <NavLink href={link.href} key={link.href}>
-//                   {link.name}
-//                 </NavLink>
-//               ))}
-//             </HStack>
-//           </HStack>
-//           <Stack direction={"row"} spacing={2}>
-//             <Button onClick={toggleColorMode}>
-//               {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
-//             </Button>
-
-//             {user ? (
-//               <Menu>
-//                 <MenuButton
-//                   as={Button}
-//                   rounded={"full"}
-//                   variant={"link"}
-//                   cursor={"pointer"}
-//                   minW={0}
-//                 >
-//                   <Avatar size={"sm"} src={user?.photoURL} />
-//                 </MenuButton>
-//                 <MenuList alignItems={"center"}>
-//                   <MenuItem>
-//                     <Text fontSize="sm">Account Settings</Text>
-//                   </MenuItem>
-//                   <MenuItem>
-//                     <Text fontSize="sm">About</Text>
-//                   </MenuItem>
-//                   <MenuDivider />
-//                   <MenuItem onClick={signUserOut}>
-//                     <Text fontSize="sm">Logout</Text>
-//                   </MenuItem>
-//                 </MenuList>
-//               </Menu>
-//             ) : (
-//               <Button onClick={navigateToLogin}>Link</Button>
-//             )}
-//           </Stack>
-//         </Flex>
-
-//         {isOpen ? (
-//           <Box pb={4} display={{ md: "none" }}>
-//             <Stack as={"nav"} spacing={4}>
-//               {Links.map((link) => (
-//                 <NavLink key={link}>{link}</NavLink>
-//               ))}
-//             </Stack>
-//           </Box>
-//         ) : null}
-//       </Box>
-//     </>
-//   );
-// }

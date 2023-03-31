@@ -1,5 +1,6 @@
 import { FullPageLoader, SearchInput } from "@/components/elements";
 import { PageWidthWrapper } from "@/components/layout";
+import { MovieCard } from "@/components/movieCards";
 import { MiniMovieGrid } from "@/components/movieGrids";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
@@ -12,7 +13,7 @@ async function fetchData(param: string) {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error(error);
+    // console.error(error);
   }
 }
 
@@ -47,21 +48,13 @@ function MovieGrid({ param }: any) {
   return (
     <>
       <Link href={`/movies/${param}`}>
-        <h2 className="text-xl font-bold capitalize">
+        <h2 className="text-xl font-bold capitalize hover:text-white duration-100 transition-all cursor-pointer">
           {param.replace(/_/g, " ")}
         </h2>
       </Link>
       <div className="flex gap-4 justify-between">
         {data?.results?.slice(0, 5).map((movie: any, idx: number) => {
-          return (
-            <Link href={`/movie/${movie.id}`}>
-              <div className="cursor-pointer" key={idx}>
-                <img
-                  src={`https://image.tmdb.org/t/p/w200/${movie.poster_path}`}
-                />
-              </div>
-            </Link>
-          );
+          return <MovieCard key={idx} movie={movie} />;
         })}
       </div>
     </>

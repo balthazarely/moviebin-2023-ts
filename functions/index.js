@@ -11,6 +11,7 @@ exports.createUserDocument = functions.auth.user().onCreate((user) => {
     email: user.email,
     photoURL: user.photoURL,
     theme: "dark",
+    createdAt: admin.firestore.FieldValue.serverTimestamp(),
   });
 });
 
@@ -23,6 +24,16 @@ exports.deleteCollection = functions.https.onRequest(async (req, res) => {
       msg: "this was deleted successfully",
     };
     try {
+      const firestore = admin.firestore();
+      const userDocRef = firestore.collection("users").doc(data.userId);
+      const userDoc = await userDocRef.get();
+      const recentCollection = userDoc.get("recentCollection");
+      const index = recentCollection.indexOf(data.collection);
+      if (index !== -1) {
+        recentCollection.splice(index, 1);
+        await userDocRef.update({ recentCollection });
+      }
+
       const batch = admin.firestore().batch();
       const snapshot = await admin
         .firestore()

@@ -3,9 +3,18 @@ import {
   AddMovieCollectionDropdown,
   FullPageLoader,
 } from "@/components/elements";
-import Link from "next/link";
+import { auth, firestore } from "../../../../lib/firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useDocumentData } from "react-firebase-hooks/firestore";
+import { MovieCard } from "@/components/movieCards";
 
 export function MovieGrid({ fetchFn, title, query }: any) {
+  // @ts-ignore
+  const [user] = useAuthState(auth);
+  const docRef = firestore.collection("users").doc(user?.uid?.toString());
+  // @ts-ignore
+  const [userData, loading, error] = useDocumentData(docRef);
+
   const {
     isLoading,
     isError,
@@ -33,6 +42,7 @@ export function MovieGrid({ fetchFn, title, query }: any) {
   if (isError) {
     return <h2>"error"</h2>;
   }
+  console.log(data);
 
   return (
     <>
@@ -45,29 +55,40 @@ export function MovieGrid({ fetchFn, title, query }: any) {
         }}
       >
         {data?.pages.map((page: any) =>
-          page?.results.map((movie: any, idx: any) => (
-            <MovieCardWrapper key={idx} movie={movie} />
+          page?.results?.map((movie: any, idx: any) => (
+            // <MovieCardWrapper key={idx} movie={movie} userData={userData} />
+            <MovieCard key={idx} movie={movie}>
+              <AddMovieCollectionDropdown
+                movie={movie}
+                recentCollection={userData?.recentCollection}
+              />
+            </MovieCard>
           ))
         )}
       </div>
-      <div className="btn-container">
-        <button onClick={() => fetchNextPage()}>Load More</button>
+      <div className="btn-containe w-full flex justify-center mt-16">
+        <button className="btn btn-primary" onClick={() => fetchNextPage()}>
+          Load More
+        </button>
       </div>
       <div>{isFetching && !isFetchingNextPage ? "Fetching..." : null}</div>
     </>
   );
 }
 
-function MovieCardWrapper({ movie }: any) {
-  return (
-    <div className="relative  group hover:border-white border-4 border-transparent cursor-pointer">
-      <Link href={`/movie/${movie.id}`}>
-        <img
-          className="w-full h-full object-cover"
-          src={`https://image.tmdb.org/t/p/w200/${movie.poster_path}`}
-        />
-      </Link>
-      <AddMovieCollectionDropdown movie={movie} />
-    </div>
-  );
-}
+// function MovieCardWrapper({ movie, userData }: any) {
+//   return (
+//     <div className="relative aspect-2/3 group hover:border-white border-4 border-transparent cursor-pointer">
+//       <Link href={`/movie/${movie.id}`}>
+//         <img
+//           className="w-full h-full object-cover"
+//           src={`https://image.tmdb.org/t/p/w200/${movie.poster_path}`}
+//         />
+//       </Link>
+// <AddMovieCollectionDropdown
+//   movie={movie}
+//   recentCollection={userData?.recentCollection}
+// />
+//     </div>
+//   );
+// }

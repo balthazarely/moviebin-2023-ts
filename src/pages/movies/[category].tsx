@@ -8,7 +8,7 @@ export default function Movies() {
   const router = useRouter();
   const { category } = router.query;
   return (
-    <PageWidthWrapper>
+    <PageWidthWrapper className="pb-16">
       {category ? (
         <MovieGrid query={category} fetchFn={getMovies} title={category} />
       ) : (

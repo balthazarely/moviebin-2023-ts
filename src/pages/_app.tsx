@@ -6,7 +6,21 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Navbar } from "@/components/navigation";
 import { Toaster } from "react-hot-toast";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { AddMovieToCollectionModal, ModalWrapper } from "@/components/elements";
+import { AddMovieToCollectionModal } from "@/components/elements";
+import { AuthCheck } from "@/components/layout";
+
+const toastConfig = {
+  success: {
+    iconTheme: {
+      primary: "#a991f7",
+      secondary: "white",
+    },
+    style: {
+      background: "#3d4451",
+      color: "white",
+    },
+  },
+};
 
 export default function App({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(() => new QueryClient());
@@ -14,11 +28,13 @@ export default function App({ Component, pageProps }: AppProps) {
     <GlobalProvider>
       <QueryClientProvider client={queryClient}>
         <Navbar>
-          <Component {...pageProps} />
-          <Toaster />
+          <AuthCheck>
+            <Component {...pageProps} />
+          </AuthCheck>
+          <Toaster position="top-center" toastOptions={toastConfig} />
         </Navbar>
         <AddMovieToCollectionModal />
-        <ReactQueryDevtools initialIsOpen={false} />
+        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
       </QueryClientProvider>
     </GlobalProvider>
   );

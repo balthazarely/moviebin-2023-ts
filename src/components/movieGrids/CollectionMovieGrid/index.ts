@@ -1,0 +1,1 @@
+export { CollectionMovieGrid } from "./CollectionMovieGrid";

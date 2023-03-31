@@ -1,0 +1,1 @@
+export { CollectionGroupCard } from "./CollectionGroupCard";

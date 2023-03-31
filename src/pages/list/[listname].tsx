@@ -25,7 +25,6 @@ export default function Listname() {
   const [user] = useAuthState(auth);
   const query = collection(db, "users", `${user?.uid}/${listname}`);
   const [docs, loading, error] = useCollectionDataOnce(query);
-  console.log(listname);
 
   // State
   const [movies, setMovies] = useState([]);
@@ -92,7 +91,7 @@ export default function Listname() {
     try {
       deleteMovieFromDB(id, listname);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     } finally {
       const filteredMovies: any = movies
         .filter((movie: any) => movie.movieId !== id)
@@ -115,7 +114,7 @@ export default function Listname() {
         toast.success(`${listname} deleted`);
       });
     } catch (error) {
-      console.error(error);
+      // console.error(error);
     } finally {
     }
   }

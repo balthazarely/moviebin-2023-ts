@@ -5,10 +5,10 @@ import { SmallLoader } from "../SmallLoader";
 import { HiXMark } from "react-icons/hi2";
 
 export function SearchInput() {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState<string>("");
   const [results, setResults] = useState([]);
   const [totalResults, setTotalResults] = useState<number | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(async () => {
@@ -18,7 +18,6 @@ export function SearchInput() {
         setResults(movies.results);
         setTotalResults(movies.total_results);
         setLoading(false);
-        console.log(movies);
       } else {
         setResults([]);
         setTotalResults(null);

@@ -2,7 +2,11 @@
 module.exports = {
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      aspectRatio: {
+        "2/3": "2 / 3",
+      },
+    },
   },
   plugins: [require("daisyui")],
   daisyui: {

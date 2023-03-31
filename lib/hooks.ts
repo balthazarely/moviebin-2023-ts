@@ -16,28 +16,6 @@ export function useUserData() {
   return { user };
 }
 
-export function useNestedUserCollections() {
-  // @ts-ignore
-  const [user] = useAuthState(auth);
-  const [nestedCollections, setNestedCollections] = useState<any>(null);
-  useEffect(() => {
-    async function fetchData() {
-      if (user) {
-        try {
-          const response = await getNestedUserCollections(user.uid);
-          setNestedCollections(response);
-        } catch (error) {
-          console.log(error);
-        }
-      }
-    }
-
-    fetchData();
-  }, [user]);
-
-  return { nestedCollections };
-}
-
 export function useNestedUserCollectionsAndDocs() {
   // @ts-ignore
   const [user] = useAuthState(auth);
@@ -53,7 +31,6 @@ export function useNestedUserCollectionsAndDocs() {
           const response = await getNestedUserCollectionsAndDocs(user.uid);
           setNestedCollectionsAndDocs(response);
         } catch (error) {
-          console.log(error);
         } finally {
           setLoadingLists(false);
         }
@@ -74,9 +51,7 @@ export function useOtherUserNestedCollections(id: any) {
         try {
           const response = await getNestedUserCollections(id);
           setNestedCollections(response);
-        } catch (error) {
-          console.log(error);
-        }
+        } catch (error) {}
       }
     }
 

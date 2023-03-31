@@ -5,7 +5,13 @@ import Image from "next/image";
 import { useState } from "react";
 import { PageWidthWrapper } from "@/components/layout";
 import { useNestedUserCollectionsHook } from "../../../lib/hooks";
-import { AddMovieCollectionDropdown } from "@/components/elements";
+import {
+  AddMovieCollectionDropdown,
+  FullPageLoader,
+} from "@/components/elements";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useDocumentData } from "react-firebase-hooks/firestore";
+import { auth, firestore } from "../../../lib/firebase";
 
 type MovieProps = {
   movie: {
@@ -25,11 +31,17 @@ type MovieProps = {
 };
 
 const MoviePage = ({ movie, imagesProps }: MovieProps) => {
+  // @ts-ignore
+  const [user] = useAuthState(auth);
+  const docRef = firestore.collection("users").doc(user?.uid?.toString());
+  // @ts-ignore
+  const [userData] = useDocumentData(docRef);
+
   const { isLoading, error, nestedCollectionsFromHook, refetch } =
     useNestedUserCollectionsHook();
 
   if (isLoading) {
-    return <div>loading</div>;
+    return <FullPageLoader />;
   }
 
   if (error) {
@@ -38,26 +50,36 @@ const MoviePage = ({ movie, imagesProps }: MovieProps) => {
 
   return (
     <div className="relative">
-      <MovieDetails movie={movie} />
+      <MovieDetails movie={movie} userData={userData} />
       <MovieBackground imagesProps={imagesProps} />
     </div>
   );
 
-  function MovieDetails({ movie }: any) {
+  function MovieDetails({ movie, userData }: any) {
     return (
       <PageWidthWrapper>
-        <div className="relative h-96 z-50  pt-24 flex items-start">
-          <Image
-            src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
-            alt={movie.title}
-            width={200}
-            height={100}
-          />
-          <div>
+        <div className="relative h-96 z-50 sm:pt-24 p-10 gap-4 grid grid-cols-1 sm:grid-cols-4">
+          <div className="flex justify-center col-span-1">
+            <Image
+              src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
+              alt={movie.title}
+              width={200}
+              height={100}
+              className=" aspect-2/3  object-contain"
+            />
+          </div>
+          <div className=" sm:col-span-3 col-span-1 mt-4">
             <div className="ml-4">
-              <h1 className="text-4xl font-extrabold text-gray-100">
-                {movie?.title}
-              </h1>
+              <div className="flex justify-between">
+                <h1 className="text-4xl font-extrabold text-gray-100">
+                  {movie?.title}
+                </h1>
+                <AddMovieCollectionDropdown
+                  btn={true}
+                  movie={movie}
+                  recentCollection={userData?.recentCollection}
+                />
+              </div>
               <h3 className="text-xl text-gray-100">
                 {movie?.release_date.slice(0, 4)}
               </h3>
@@ -74,7 +96,6 @@ const MoviePage = ({ movie, imagesProps }: MovieProps) => {
             </div>
           </div>
         </div>
-        <AddMovieCollectionDropdown btn={true} movie={movie} />
       </PageWidthWrapper>
     );
   }
@@ -95,10 +116,10 @@ const MoviePage = ({ movie, imagesProps }: MovieProps) => {
             objectFit: "cover",
           }}
           fill
-          onLoad={() => setImageLoaded(true)}
+          // onLoad={() => setImageLoaded(true)}
           alt={imagesProps.img.src}
         />
-        <Image
+        {/* <Image
           src={imagesProps.base64}
           placeholder="blur"
           blurDataURL={imagesProps.base64}
@@ -110,8 +131,9 @@ const MoviePage = ({ movie, imagesProps }: MovieProps) => {
           style={{
             objectFit: "cover",
           }}
-          alt={imagesProps.img.src}
+          alt={imagesProps.img.src} 
         />
+          */}
       </div>
     );
   }
