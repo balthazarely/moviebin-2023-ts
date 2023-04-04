@@ -10,9 +10,13 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { getNestedUserCollectionsAndDocs } from "../../lib/api";
 import { auth, FirebaseUser, firestore } from "../../lib/firebase";
 import { PageWidthWrapper } from "@/components/layout";
-import { useDocumentDataOnce } from "react-firebase-hooks/firestore";
+import {
+  useCollection,
+  useDocumentDataOnce,
+} from "react-firebase-hooks/firestore";
 import { CollectionMovieGrid } from "@/components/movieGrids";
 import { UserDoc } from "../../lib/types";
+import { QueryDocumentSnapshot } from "firebase/firestore";
 
 export default function Collections() {
   const router = useRouter();
@@ -21,8 +25,19 @@ export default function Collections() {
   const [user]: FirebaseUser = useAuthState(auth);
   const [tabSelected, setTabSelected] = useState<string>("lists");
   const docRef = firestore.collection("users").doc(user?.uid?.toString());
+  const reviewRef = firestore
+    .collection("usersreviews")
+    .doc(user?.uid?.toString())
+    .collection("reviews");
   // @ts-ignore
   const [userDoc] = useDocumentDataOnce<UserDoc>(docRef);
+  // @ts-ignore
+  const [reviewData] = useCollection(reviewRef);
+
+  const documentSnapshots = reviewData?.docs as QueryDocumentSnapshot[];
+  const reviewDataWithId = documentSnapshots?.map((doc: any) => {
+    return { reviewId: doc.id, ...doc.data() };
+  });
 
   const { isLoading, error, data } = useQuery(
     ["nestedCollectionData", user],
@@ -53,9 +68,6 @@ export default function Collections() {
     return <div>Error: {JSON.stringify(error)}</div>;
   }
 
-  console.log(user);
-  console.log(userDoc);
-
   return (
     <PageWidthWrapper>
       <ProfileInfo
@@ -63,7 +75,8 @@ export default function Collections() {
         userDoc={userDoc}
         setTabSelected={setTabSelected}
         tabSelected={tabSelected}
-        data={data}
+        movieDataLength={data?.length}
+        reviewDataLength={reviewDataWithId?.length}
       />
       <div>
         {tabSelected === "lists" && (
@@ -74,7 +87,9 @@ export default function Collections() {
           />
         )}
 
-        {tabSelected === "reviews" && <ProfileReviews user={user} />}
+        {tabSelected === "reviews" && (
+          <ProfileReviews reviewDataWithId={reviewDataWithId} />
+        )}
       </div>
     </PageWidthWrapper>
   );

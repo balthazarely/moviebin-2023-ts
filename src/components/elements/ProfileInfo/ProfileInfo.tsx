@@ -9,7 +9,8 @@ interface IProfileInfoProps {
   userDoc: UserDoc;
   setTabSelected: (tab: string) => void;
   tabSelected: string;
-  data: NestedDataCollectionDocs[];
+  movieDataLength: any;
+  reviewDataLength: any;
 }
 
 export function ProfileInfo({
@@ -17,7 +18,8 @@ export function ProfileInfo({
   userDoc,
   setTabSelected,
   tabSelected,
-  data,
+  movieDataLength,
+  reviewDataLength,
 }: IProfileInfoProps) {
   const router = useRouter();
   const toggleTabs = (tab: string) => {
@@ -55,7 +57,7 @@ export function ProfileInfo({
             tabSelected === "lists" ? "tab-active" : ""
           }`}
         >
-          My Lists ({data?.length})
+          My Lists ({movieDataLength && movieDataLength})
         </button>
         <button
           onClick={() => toggleTabs("reviews")}
@@ -63,7 +65,7 @@ export function ProfileInfo({
             tabSelected === "reviews" ? "tab-active" : ""
           }`}
         >
-          My Reviews
+          My Reviews ({reviewDataLength && reviewDataLength})
         </button>
       </div>
     </div>

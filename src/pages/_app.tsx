@@ -18,6 +18,7 @@ const toastConfig = {
     style: {
       background: "#3d4451",
       color: "white",
+      zIndex: 100,
     },
   },
 };
@@ -31,8 +32,8 @@ export default function App({ Component, pageProps }: AppProps) {
           <AuthCheck>
             <Component {...pageProps} />
           </AuthCheck>
-          <Toaster position="top-center" toastOptions={toastConfig} />
         </Navbar>
+        <Toaster position="top-center" toastOptions={toastConfig} />
         <AddMovieToCollectionModal />
         {/* <ReactQueryDevtools initialIsOpen={false} /> */}
       </QueryClientProvider>

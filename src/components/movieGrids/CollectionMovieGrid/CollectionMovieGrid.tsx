@@ -42,7 +42,7 @@ export function CollectionMovieGrid({ isLoading, data, users }: any) {
 
   return (
     <>
-      <CollectionSortingPannel />
+      <CollectionSortingPanel />
       {!isLoading ? (
         <div className="w-full">
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
@@ -65,13 +65,13 @@ export function CollectionMovieGrid({ isLoading, data, users }: any) {
     </>
   );
 
-  function CollectionSortingPannel() {
+  function CollectionSortingPanel() {
     return (
-      <div className="flex justify-end mb-4">
+      <div className="mb-4 flex justify-end">
         <div className="btn-group  ">
           <button
             onClick={() => setSortQueryParam("asc")}
-            className={`btn btn-xs   ${
+            className={`btn-xs btn   ${
               reverseOrder === "asc" ? "btn-active" : ""
             }`}
           >
@@ -79,7 +79,7 @@ export function CollectionMovieGrid({ isLoading, data, users }: any) {
           </button>
           <button
             onClick={() => setSortQueryParam("desc")}
-            className={`btn btn-xs  ${
+            className={`btn-xs btn  ${
               reverseOrder === "desc" ? "btn-active" : ""
             }`}
           >

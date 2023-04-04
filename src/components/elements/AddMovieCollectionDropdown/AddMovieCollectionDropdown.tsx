@@ -2,13 +2,18 @@ import { useContext } from "react";
 import { UIContext } from "../../../../lib/context";
 import { addMovieToCollection } from "../../../../lib/firebaseFunctions";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
+import { useDocumentData } from "react-firebase-hooks/firestore";
+import { UserDoc } from "../../../../lib/types";
+import { auth, firestore } from "../../../../lib/firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
 
-export function AddMovieCollectionDropdown({
-  movie,
-  btn = false,
-  recentCollection,
-}: any) {
+export function AddMovieCollectionDropdown({ movie, btn = false }: any) {
   const { dispatch } = useContext(UIContext);
+  // @ts-ignore
+  const [user]: FirebaseUser = useAuthState(auth);
+  const docRef = firestore.collection("users").doc(user?.uid?.toString());
+  // @ts-ignore
+  const [userData] = useDocumentData<UserDoc>(docRef);
 
   async function addMovieToExistingCollection(movie: any, collectionName: any) {
     const elem = document.activeElement as HTMLElement;
@@ -24,26 +29,26 @@ export function AddMovieCollectionDropdown({
 
   return (
     <div
-      className={`dropdown dropdown-end rounded-none ${
+      className={`dropdown-end dropdown rounded-none ${
         btn ? "" : "absolute top-0 right-0 "
       } `}
     >
       <label tabIndex={0}>
         {btn ? (
-          <button className="btn btn-primary">Add to Collection</button>
+          <button className="btn-primary btn">Add to Collection</button>
         ) : (
-          <HiOutlineDotsHorizontal className="text-gray-300 rounded-sm duration-100 transition-all bg-opacity-50 hover:bg-opacity-70 hover:text-white text-sm bg-black w-8 h-6 cursor-pointer" />
+          <HiOutlineDotsHorizontal className="h-6 w-8 cursor-pointer rounded-sm bg-black bg-opacity-50 text-sm text-gray-300 transition-all duration-100 hover:bg-opacity-70 hover:text-white" />
         )}
       </label>
       <ul
         tabIndex={0}
-        className="dropdown-content menu shadow bg-base-100 rounded-md w-52  "
+        className="dropdown-content menu w-52 rounded-md bg-base-100 shadow  "
       >
-        <li className="text-xs p-2 bg-neutral text-gray-500 pointer-events-none">
+        <li className="pointer-events-none bg-neutral p-2 text-xs text-gray-500">
           Recent Collections
         </li>
-        {recentCollection &&
-          recentCollection
+        {userData?.recentCollection &&
+          userData?.recentCollection
             // ?.slice(0, 4)
             .map((list: any, idx: number) => {
               return (
@@ -59,7 +64,7 @@ export function AddMovieCollectionDropdown({
 
         <li>
           <button
-            className="text-xs bg-base-200 text-left font-bold "
+            className="bg-base-200 text-left text-xs font-bold "
             onClick={() => {
               dispatch({ type: "OPEN_ADD_MOVIE_MODAL" });
               dispatch({ type: "ADD_TEMP_MOVIE", payload: movie });

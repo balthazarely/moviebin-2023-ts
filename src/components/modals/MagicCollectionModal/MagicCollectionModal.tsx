@@ -4,6 +4,7 @@ import { UIContext } from "../../../../lib/context";
 import { createAndAddMultipleDocumentsToCollection } from "../../../../lib/firebaseFunctions";
 import { useNestedUserCollectionsHook } from "../../../../lib/hooks";
 import { doesCollectionNameExist } from "../../../../lib/utils";
+import { HiX } from "react-icons/hi";
 
 export function MagicCollectionModal({ movies }: any) {
   const { dispatch } = useContext(UIContext);
@@ -67,26 +68,26 @@ export function MagicCollectionModal({ movies }: any) {
   }
 
   return (
-    <div className=" h-full  w-full text-center relative">
+    <div className=" relative  h-full w-full text-center">
       <button
-        className="btn btn-sm bg-base-100 absolute border-none -top-4 -right-4"
+        className="btn-sm btn absolute -top-4 -right-4 border-none bg-base-100"
         onClick={() => dispatch({ type: "CLOSE_MODAL" })}
       >
-        x
+        <HiX />
       </button>
-      <h3 className="font-bold text-lg">
+      <h3 className="text-lg font-bold">
         Do you want to make a magic playlist?
       </h3>
       <input
         type="text"
         value={magicPlaylistName}
         onChange={handleInputChange}
-        className="input w-full input-bordered input-primary mt-4  "
+        className="input-bordered input-primary input mt-4 w-full  "
       />
-      <div className="flex justify-center mt-4 gap-4">
+      <div className="mt-4 flex justify-center gap-4">
         <button
           disabled={magicPlaylistBtnDisabled}
-          className={`btn btn-primary ${magicPlaylistLoading ? "loading" : ""}`}
+          className={`btn-primary btn ${magicPlaylistLoading ? "loading" : ""}`}
           onClick={() => getRecommendations()}
         >
           {magicPlaylistErrMsg ? magicPlaylistErrMsg : "Create Magic Playlist"}

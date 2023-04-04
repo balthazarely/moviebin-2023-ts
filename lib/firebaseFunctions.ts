@@ -1,4 +1,4 @@
-import { deleteDoc, doc } from "firebase/firestore";
+import { deleteDoc, doc, setDoc } from "firebase/firestore";
 import {
   auth,
   db,
@@ -55,8 +55,131 @@ export async function deleteMovieFromDB(id: any, listname: any) {
       listname,
       id.toString()
     );
+
     await deleteDoc(movieDoc);
     toast.success(`Movie deleted from ${listname}`);
+  } catch (error) {
+    toast.error(`Something went wrong...`);
+  }
+}
+
+export async function addMovieReviewToDB(
+  movieId: any,
+  moveTitle: any,
+  movePoster: any,
+  reviewBody: any,
+  reviewRating: any
+) {
+  console.log(reviewBody, reviewRating);
+
+  const reviewRef = firestore.collection("movies").doc(movieId.toString());
+  const reviewDoc = reviewRef.collection("reviews").doc();
+
+  const userReviewRef = firestore
+    .collection("usersreviews")
+    .doc(auth.currentUser?.uid);
+  const userReviewDoc = userReviewRef
+    .collection("reviews")
+    .doc(movieId.toString());
+  try {
+    await reviewDoc.set({
+      review: reviewBody,
+      rating: reviewRating,
+      userId: auth.currentUser?.uid,
+      userDisplayName: auth.currentUser?.displayName,
+      movieTitle: moveTitle,
+      movieId: movieId,
+      movieImage: movePoster,
+      createdAt: serverTimestamp(),
+    });
+
+    const reviewReferenceId = reviewDoc.id;
+    await userReviewDoc.set({
+      review: reviewBody,
+      rating: reviewRating,
+      userId: auth.currentUser?.uid,
+      userDisplayName: auth.currentUser?.displayName,
+      movieTitle: moveTitle,
+      movieId: movieId,
+      movieImage: movePoster,
+      reviewReferenceId,
+      createdAt: serverTimestamp(),
+    });
+
+    toast.success(`Review added for ${moveTitle}`);
+  } catch (error) {
+    toast.error(`Something went wrong...`);
+  }
+}
+
+export async function deleteMovieReviewToDB(
+  movieId: any,
+  movieTitle: any,
+  reviewId: any
+) {
+  try {
+    console.log(reviewId);
+
+    const reviewDoc = doc(
+      // @ts-ignore
+      db,
+      "movies",
+      movieId.toString(),
+      "reviews",
+      reviewId.toString()
+    );
+    const userReviewDoc = doc(
+      // @ts-ignore
+      db,
+      "usersreviews",
+      auth.currentUser?.uid,
+      "reviews",
+      movieId.toString()
+    );
+    await deleteDoc(reviewDoc);
+    await deleteDoc(userReviewDoc);
+    toast.success(`Review deleted for ${movieTitle}`);
+  } catch (error) {
+    toast.error(`Something went wrong...`);
+  }
+}
+
+export async function editMovieReviewInDB(
+  movieId: any,
+  moveTitle: any,
+  reviewId: any,
+  reviewBody: any,
+  reviewRating: any
+) {
+  console.log(movieId, "movieId");
+  console.log(moveTitle, "moveTitle");
+  console.log(reviewId, "reviewId");
+  console.log(reviewBody, "reviewBody");
+  console.log(reviewRating, "reviewRating");
+
+  const reviewRef = firestore.collection("movies").doc(movieId.toString());
+  const reviewDocCreate = reviewRef.collection("reviews").doc(reviewId);
+
+  const userReviewRef = firestore
+    .collection("usersreviews")
+    .doc(auth.currentUser?.uid);
+  const userReviewDocCreate = userReviewRef
+    .collection("reviews")
+    .doc(movieId.toString());
+
+  try {
+    await setDoc(
+      reviewDocCreate,
+      { review: reviewBody, rating: reviewRating },
+      { merge: true }
+    );
+
+    await setDoc(
+      userReviewDocCreate,
+      { review: reviewBody, rating: reviewRating },
+      { merge: true }
+    );
+    toast.success(`Review updated for ${moveTitle}`);
   } catch (error) {
     toast.error(`Something went wrong...`);
   }
@@ -134,11 +257,39 @@ export async function createAndAddToCollection({
       order: sizeForCount ?? 0,
       createdAt: serverTimestamp(),
     });
+    await collectionRef.doc("metadata").set({
+      type: "metadata",
+      collectionName: newCollectionName,
+      description: "",
+      createdAt: serverTimestamp(),
+      lastEditedAt: serverTimestamp(),
+    });
     updateRecentCollection(userDocRef, newCollectionName);
 
     toast.success(`${movie.title}  added to ${newCollectionName}`);
   } catch (error) {
     toast.error(`Something went wrong: ${error}`);
+  }
+}
+
+export async function updateCollectionMetadata(
+  collectionName: any,
+  descriptionText: string
+) {
+  const userDocRef = firestore.collection("users").doc(auth.currentUser?.uid);
+  const collectionDocRef = userDocRef
+    .collection(collectionName)
+    .doc("metadata");
+
+  try {
+    await setDoc(
+      collectionDocRef,
+      { description: descriptionText },
+      { merge: true }
+    );
+    toast.success(`Description successfully updated`);
+  } catch (error) {
+    toast.error(`Something went wrong...`);
   }
 }
 

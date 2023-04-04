@@ -100,24 +100,34 @@ exports.getNestedUserCollectionsAndDocs = functions.https.onRequest(
           let query = subcollection.limit(4);
           const querySnapshot = await query.get();
 
-          // If querySnapshot only has one document, skip the orderBy method
-          // if (querySnapshot.size > 1) {
-          //   query = query.orderBy("order");
-          // }
+          let metadataQuery = subcollection
+            .where("type", "==", "metadata")
+            .limit(1);
+          const metadataSnapshot = await metadataQuery.get();
 
           const documents = [];
-
-          // Loop through the first 4 documents in the subcollection
           querySnapshot.forEach((doc) => {
             const documentData = doc.data();
-            documents.push(documentData);
+            if (
+              !documentData.hasOwnProperty("type") ||
+              documentData.type !== "metadata"
+            ) {
+              documents.push(documentData);
+            }
           });
 
-          // Add the subcollection name and the first 4 documents to the collectionData array
+          let metadata;
+          metadataSnapshot.forEach((metadataDoc) => {
+            metadata = {
+              ...metadataDoc.data(),
+              collectionLength: querySnapshot.size - 1,
+            };
+          });
+
           collectionData.push({
             name: subcollectionName,
             documents: documents.slice(0, 4),
-            // documents: documents,
+            metadata: metadata,
           });
         }
 

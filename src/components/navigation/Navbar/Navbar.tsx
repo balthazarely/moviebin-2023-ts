@@ -27,7 +27,7 @@ export function Navbar({ children }: { children: React.ReactNode }) {
         readOnly
         className="drawer-toggle"
       />
-      <div className="drawer-content flex flex-col">
+      <div className="drawer-content flex h-screen flex-col  bg-neutral">
         {/* <!-- Navbar --> */}
         <div className="navbar sticky top-0 z-50 w-full bg-base-300">
           <div className="flex-none lg:hidden">
@@ -50,13 +50,12 @@ export function Navbar({ children }: { children: React.ReactNode }) {
                 ></path>
               </svg>
             </label>
-          </div>
+          </div>{" "}
           <div className="mx-2 flex-1 px-2 text-xl font-black ">
             <div className=" ">movieMate</div>
           </div>
           <div className="hidden flex-none lg:block">
             <ul className="menu menu-horizontal">
-              {/* <!-- Navbar menu content here --> */}
               {user ? (
                 <>
                   <li>
@@ -105,11 +104,9 @@ export function Navbar({ children }: { children: React.ReactNode }) {
             </ul>
           </div>
         </div>
-        <div className="flex-grow bg-neutral">
-          <div className="h-full w-full flex-grow ">{children}</div>
-        </div>
-        <div className="bg-neutral ">
-          <div className="mx-auto w-full max-w-4xl px-2 py-10"></div>
+        <div className="z-40 flex flex-col">
+          <main className=" bg-neutra flex-grow">{children}</main>
+          {/* <footer className=" bottom-0 mt-16 h-24 w-full  bg-red-300"></footer> */}
         </div>
       </div>
       <div className="drawer-side">

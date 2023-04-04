@@ -9,16 +9,20 @@ import {
   deleteMovieFromDB,
   updateDocumentOrderInDB,
 } from "../../../lib/firebaseFunctions";
-
 import { ListMovieGrid } from "@/components/movieGrids";
 import { UIContext } from "../../../lib/context";
-import { FullPageLoader, ModalWrapper } from "@/components/elements";
+import {
+  CollectionListHeader,
+  FullPageLoader,
+  ModalWrapper,
+} from "@/components/elements";
 import { PageWidthWrapper } from "@/components/layout";
 import {
   DeleteCollectionModal,
+  EditCollectionModal,
   MagicCollectionModal,
 } from "@/components/modals";
-import { FirestoreMovie, NestedDataDocs } from "../../../lib/types";
+import { FirestoreMovie } from "../../../lib/types";
 
 export default function Listname() {
   // Hooks
@@ -36,7 +40,8 @@ export default function Listname() {
 
   useEffect(() => {
     if (docs) {
-      setMovies(formatMoviesForDnD(docs));
+      const filteredDocuments = docs?.filter((doc) => doc.type !== "metadata");
+      setMovies(formatMoviesForDnD(filteredDocuments));
     }
   }, [docs]);
 
@@ -52,6 +57,11 @@ export default function Listname() {
 
   return (
     <PageWidthWrapper className="">
+      <CollectionListHeader
+        listname={listname}
+        setModalTypeOpen={setModalTypeOpen}
+      />
+
       <ListMovieGrid
         setModalTypeOpen={setModalTypeOpen}
         movies={movies}
@@ -74,9 +84,11 @@ export default function Listname() {
         {modalTypeOpen === "magic-collection" && (
           <MagicCollectionModal movies={movies} />
         )}
-
         {modalTypeOpen === "delete-collection" && (
           <DeleteCollectionModal listname={listname} />
+        )}
+        {modalTypeOpen === "edit-collection" && (
+          <EditCollectionModal user={user} listname={listname} />
         )}
       </ModalWrapper>
     </PageWidthWrapper>

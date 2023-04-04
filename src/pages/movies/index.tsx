@@ -37,7 +37,7 @@ function MovieGrid({ param }: { param: string }) {
   return (
     <>
       <Link href={`/movies/${param}`}>
-        <h2 className="cursor-pointer text-xl font-bold capitalize transition-all duration-100 hover:text-white">
+        <h2 className="cursor-pointer text-xl font-bold capitalize ">
           {param.replace(/_/g, " ")}
         </h2>
       </Link>

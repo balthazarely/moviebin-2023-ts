@@ -7,11 +7,17 @@ import { useNestedUserCollectionsHook } from "../../../lib/hooks";
 import {
   AddMovieCollectionDropdown,
   FullPageLoader,
+  ModalWrapper,
+  MovieReviews,
 } from "@/components/elements";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useDocumentData } from "react-firebase-hooks/firestore";
+import { useCollection } from "react-firebase-hooks/firestore";
 import { auth, FirebaseUser, firestore } from "../../../lib/firebase";
-import { UserDoc } from "../../../lib/types";
+import { useContext, useState } from "react";
+import { DeleteReviewModal, ReviewMovieModal } from "@/components/modals";
+import { UIContext } from "../../../lib/context";
+import { QueryDocumentSnapshot } from "firebase/firestore";
+import { deleteMovieReviewToDB } from "../../../lib/firebaseFunctions";
 
 interface IMovieProps {
   movie: Movie;
@@ -53,10 +59,20 @@ type Movie = {
 const MoviePage = ({ movie, imagesProps }: IMovieProps) => {
   // @ts-ignore
   const [user]: FirebaseUser = useAuthState(auth);
-  const docRef = firestore.collection("users").doc(user?.uid?.toString());
+  const reviewRef = firestore
+    .collection("movies")
+    .doc(movie?.id?.toString())
+    .collection("reviews");
   // @ts-ignore
-  const [userData] = useDocumentData<UserDoc>(docRef);
+  const [reviewData] = useCollection(reviewRef);
   const { isLoading, error } = useNestedUserCollectionsHook();
+  const { dispatch } = useContext(UIContext);
+  const [modalTypeOpen, setModalTypeOpen] = useState<string>("");
+
+  const documentSnapshots = reviewData?.docs as QueryDocumentSnapshot[];
+  const reviewDataWithId = documentSnapshots?.map((doc: any) => {
+    return { reviewId: doc.id, ...doc.data() };
+  });
 
   if (isLoading) {
     return <FullPageLoader />;
@@ -66,43 +82,66 @@ const MoviePage = ({ movie, imagesProps }: IMovieProps) => {
     return <div>error</div>;
   }
 
+  const reviewForEdit = reviewDataWithId?.find(
+    (review: any) => review.userId === user?.uid
+  );
+
   return (
     <div className="relative">
-      <MovieDetails movie={movie} userData={userData} />
+      <MovieDetails movie={movie} />
       <MovieBackground imagesProps={imagesProps} />
+      <ModalWrapper>
+        {modalTypeOpen === "review-modal" && (
+          <ReviewMovieModal
+            modalTypeOpen={modalTypeOpen}
+            movieTitle={movie.title}
+            movieId={movie.id}
+            movieImage={movie.poster_path}
+            reviewToEdit={reviewForEdit}
+          />
+        )}
+        {modalTypeOpen === "edit-review-modal" && (
+          <ReviewMovieModal
+            modalTypeOpen={modalTypeOpen}
+            movieTitle={movie.title}
+            movieId={movie.id}
+            movieImage={movie.poster_path}
+            reviewToEdit={reviewForEdit}
+            reviewToEditIdId={reviewForEdit.reviewId}
+          />
+        )}
+
+        {modalTypeOpen === "delete-review-modal" && (
+          <DeleteReviewModal
+            movieTitle={movie.title}
+            movieId={movie.id}
+            reviewId={reviewForEdit?.reviewId}
+          />
+        )}
+      </ModalWrapper>
     </div>
   );
 
-  function MovieDetails({
-    movie,
-    userData,
-  }: {
-    movie: Movie;
-    userData: UserDoc | undefined;
-  }) {
+  function MovieDetails({ movie }: { movie: Movie }) {
     return (
       <PageWidthWrapper>
         <div className="relative z-50 grid h-96 grid-cols-1 gap-4 p-10 sm:grid-cols-4 sm:pt-24">
-          <div className="col-span-1 flex justify-center">
+          <div className="col-span-1 flex items-start justify-center ">
             <Image
               src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
               alt={movie.title}
               width={200}
               height={100}
-              className=" aspect-2/3  object-contain"
+              className=" block aspect-2/3 object-contain sm:fixed"
             />
           </div>
-          <div className=" col-span-1 mt-4 sm:col-span-3">
+          <div className=" col-span-1 mt-4 ml-2 sm:col-span-3">
             <div className="ml-4">
               <div className="flex justify-between">
                 <h1 className="text-4xl font-extrabold text-gray-100">
                   {movie?.title}
                 </h1>
-                <AddMovieCollectionDropdown
-                  btn={true}
-                  movie={movie}
-                  recentCollection={userData?.recentCollection}
-                />
+                <AddMovieCollectionDropdown btn={true} movie={movie} />
               </div>
               <h3 className="text-xl text-gray-100">
                 {movie?.release_date.slice(0, 4)}
@@ -110,13 +149,19 @@ const MoviePage = ({ movie, imagesProps }: IMovieProps) => {
               <div className="mt-2 flex gap-2 text-sm">
                 {movie?.genres?.map((genre: any, idx: number) => {
                   return (
-                    <div key={idx} className="badge-primary badge badge-sm">
+                    <div key={idx} className="badge badge-primary badge-sm">
                       {genre.name}
                     </div>
                   );
                 })}
               </div>
               <p className="mt-4 text-sm text-gray-100">{movie?.overview}</p>
+
+              <MovieReviews
+                setModalTypeOpen={setModalTypeOpen}
+                loggedInUser={user}
+                reviewData={reviewDataWithId}
+              />
             </div>
           </div>
         </div>

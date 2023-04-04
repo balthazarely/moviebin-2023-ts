@@ -10,6 +10,8 @@ import { UIContext } from "../../../../lib/context";
 import { VscWand } from "react-icons/vsc";
 import { ListMovieItem } from "../ListMovieItem";
 import { Test } from "../Test";
+import { BsGridFill } from "react-icons/bs";
+import { HiMenu } from "react-icons/hi";
 
 export function ListMovieGrid({
   movies,
@@ -36,10 +38,8 @@ export function ListMovieGrid({
     <>
       <div className="mt-2 mb-2 flex items-center justify-between py-2 ">
         <div className="flex items-center gap-4 ">
-          <h1 className="text-3xl font-bold">{listname}</h1>
           <button
             className="btn-sm btn bg-gradient-to-tl from-accent via-secondary to-primary bg-size-200 bg-pos-0 text-white transition-all duration-500 hover:bg-pos-100"
-            // className="btn bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white btn-sm "
             onClick={() => {
               setModalTypeOpen("magic-collection");
               dispatch({ type: "OPEN_MODAL" });
@@ -86,7 +86,7 @@ export function ListMovieGrid({
               ))}
             </div>
           </SortableContext>
-          {/* <DragOverlay>
+          <DragOverlay>
             {activeId ? (
               <Test
                 idx={null}
@@ -100,7 +100,7 @@ export function ListMovieGrid({
             ) : (
               <></>
             )}
-          </DragOverlay> */}
+          </DragOverlay>
         </div>
       </DndContext>
     </>
@@ -146,13 +146,13 @@ function GridTypeSelect({ setSortQueryParam, gridType }: any) {
         onClick={() => setSortQueryParam("grid")}
         className={`btn   ${gridType === "grid" ? "btn-active" : ""}`}
       >
-        Grid
+        <BsGridFill className="" />
       </button>
       <button
         onClick={() => setSortQueryParam("col")}
         className={`btn   ${gridType === "col" ? "btn-active" : ""}`}
       >
-        Col
+        <HiMenu />
       </button>
     </div>
   );

@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { UIContext } from "../../../../lib/context";
 import { deleteCollection } from "../../../../lib/firebaseFunctions";
+import { HiX } from "react-icons/hi";
 
 export function DeleteCollectionModal({ listname }: any) {
   const { dispatch } = useContext(UIContext);
@@ -15,21 +16,21 @@ export function DeleteCollectionModal({ listname }: any) {
   }
 
   return (
-    <div className=" h-full  w-full text-center relative">
+    <div className=" relative  h-full w-full text-center">
       <button
-        className="btn btn-sm bg-base-100 absolute border-none -top-4 -right-4"
+        className="btn-sm btn absolute -top-4 -right-4 border-none bg-base-100"
         onClick={() => dispatch({ type: "CLOSE_MODAL" })}
       >
-        x
+        <HiX />
       </button>
-      <h3 className="font-bold text-lg">
+      <h3 className="text-lg font-bold">
         Are you sure you want to delete this collection?
       </h3>
       <p className="p2-4">This might take a couple seconds so hang tight</p>
-      <div className="flex justify-center mt-4 gap-4">
+      <div className="mt-4 flex justify-center gap-4">
         <button
           onClick={deleteListCollection}
-          className={`btn btn-error ${deleteFnLoading && "loading"}`}
+          className={`btn-error btn ${deleteFnLoading && "loading"}`}
         >
           Proceed
         </button>

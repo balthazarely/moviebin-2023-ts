@@ -7,3 +7,5 @@ export { AddMovieToCollectionModal } from "./AddMovieToCollectionModalOLD";
 export { ModalWrapper } from "./ModalWrapper";
 export { ProfileReviews } from "./ProfileReviews";
 export { ProfileInfo } from "./ProfileInfo";
+export { CollectionListHeader } from "./CollectionListHeader";
+export { MovieReviews } from "./MovieReviews";
