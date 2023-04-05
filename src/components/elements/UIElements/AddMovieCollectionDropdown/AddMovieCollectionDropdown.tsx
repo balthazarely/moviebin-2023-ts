@@ -1,9 +1,9 @@
 import { useContext } from "react";
-import { UIContext } from "../../../../lib/context";
-import { addMovieToCollection } from "../../../../lib/firebaseMovies";
+import { UIContext } from "../../../../../lib/context";
+import { addMovieToCollection } from "../../../../../lib/firebaseMovies";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import { HiHeart } from "react-icons/hi";
-import { addOrRemoveMovieToFavorites } from "../../../../lib/firebaseFavorites";
+import { addOrRemoveMovieToFavorites } from "../../../../../lib/firebaseFavorites";
 
 export function AddMovieCollectionDropdown({
   movie,

@@ -1,8 +1,8 @@
 import React from "react";
-import { addOrRemoveMovieToFavorites } from "../../../../lib/firebaseFavorites";
+import { addOrRemoveMovieToFavorites } from "../../../../../lib/firebaseFavorites";
 import { HiHeart } from "react-icons/hi";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { auth, FirebaseUser, firestore } from "../../../../lib/firebase";
+import { auth, FirebaseUser, firestore } from "../../../../../lib/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 export function AddMovieFavoritesButton({ movie }: any) {

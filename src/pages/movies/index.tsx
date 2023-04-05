@@ -1,4 +1,4 @@
-import { FullPageLoader, SearchInput } from "@/components/elements";
+import { FullPageLoader, SearchInput } from "@/components/elements/UIElements";
 import { PageWidthWrapper } from "@/components/layout";
 import { MovieCard } from "@/components/movieCards";
 import { useQuery } from "@tanstack/react-query";

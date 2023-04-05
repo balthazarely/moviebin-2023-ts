@@ -2,10 +2,10 @@ import { DeleteReviewModal, ReviewMovieModal } from "@/components/modals";
 import { QueryDocumentSnapshot } from "firebase/firestore";
 import Image from "next/image";
 import React, { useContext, useState } from "react";
-import { UIContext } from "../../../../lib/context";
-import { convertToDate } from "../../../../lib/utils";
-import { FullPageLoader } from "../FullPageLoader";
-import { ModalWrapper } from "../ModalWrapper";
+import { UIContext } from "../../../../../lib/context";
+import { convertToDate } from "../../../../../lib/utils";
+import { FullPageLoader } from "../../UIElements/FullPageLoader";
+import { ModalWrapper } from "../../UIElements/ModalWrapper";
 
 export function ProfileReviews({ reviewDataWithId, reviewDataLoading }: any) {
   const { dispatch } = useContext(UIContext);

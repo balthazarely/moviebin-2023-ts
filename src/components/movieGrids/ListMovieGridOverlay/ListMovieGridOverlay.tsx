@@ -23,7 +23,14 @@ interface IListMovieItemProps {
   image: string;
 }
 
-export function Test({ image, id, title, deleteMovie, idx, gridType }: any) {
+export function ListMovieGridOverlay({
+  image,
+  id,
+  title,
+  deleteMovie,
+  idx,
+  gridType,
+}: any) {
   const {
     attributes,
     isDragging,

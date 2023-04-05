@@ -1,7 +1,6 @@
 import { MovieCard } from "@/components/movieCards";
 import React from "react";
-import { AddMovieCollectionDropdown } from "../AddMovieCollectionDropdown";
-import { FullPageLoader } from "../FullPageLoader";
+import { AddMovieCollectionDropdown, FullPageLoader } from "../../UIElements";
 
 export function ProfileFavorites({
   favoritesData,
@@ -16,7 +15,10 @@ export function ProfileFavorites({
     <div
       style={{
         display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(100px, 1fr))",
+        gridTemplateColumns:
+          favoritesData.length < 4
+            ? "1fr 1fr 1fr 1fr"
+            : "repeat(auto-fit, minmax(100px, 1fr)",
         gridGap: 10,
         gridAutoFlow: "row dense",
       }}

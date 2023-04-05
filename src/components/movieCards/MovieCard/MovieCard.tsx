@@ -10,7 +10,7 @@ export function MovieCard({
   children?: React.ReactNode;
 }) {
   return (
-    <div className="group relative  aspect-2/3 cursor-pointer rounded-sm border-4 border-transparent transition-all duration-100 hover:border-gray-100">
+    <div className="group relative aspect-2/3  max-w-sm cursor-pointer rounded-sm border-4 border-transparent transition-all duration-100 hover:border-gray-100">
       <Link href={`/movie/${movie.id}`}>
         <img
           className="h-full w-full rounded-sm object-cover "

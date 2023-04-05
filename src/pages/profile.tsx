@@ -1,9 +1,8 @@
 import {
-  FullPageLoader,
   ProfileFavorites,
   ProfileInfo,
   ProfileReviews,
-} from "@/components/elements";
+} from "@/components/elements/profileElements";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
@@ -19,6 +18,7 @@ import {
 import { CollectionMovieGrid } from "@/components/movieGrids";
 import { UserDoc } from "../../lib/types";
 import { QueryDocumentSnapshot } from "firebase/firestore";
+import { FullPageLoader } from "@/components/elements/UIElements";
 
 export default function Collections() {
   const [tabSelected, setTabSelected] = useState<string>("lists");

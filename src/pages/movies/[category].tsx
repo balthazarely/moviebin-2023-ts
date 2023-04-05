@@ -1,4 +1,4 @@
-import { FullPageLoader } from "@/components/elements";
+import { FullPageLoader } from "@/components/elements/UIElements";
 import { PageWidthWrapper } from "@/components/layout";
 import { MovieGrid } from "@/components/movieGrids";
 import { useRouter } from "next/router";

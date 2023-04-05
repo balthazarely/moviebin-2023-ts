@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { UIContext } from "../../../../lib/context";
+import { UIContext } from "../../../../../lib/context";
 
 export function ModalWrapper({ children }: any) {
   const { state } = useContext(UIContext);

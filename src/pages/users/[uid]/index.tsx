@@ -11,7 +11,7 @@ import { convertToDate } from "../../../../lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { getNestedUserCollectionsAndDocs } from "../../../../lib/api";
 import { useEffect, useState } from "react";
-import { FullPageLoader, ProfileReviewsPublic } from "@/components/elements";
+import { FullPageLoader } from "@/components/elements/UIElements";
 import {
   CollectionMovieGrid,
   CollectionMovieGridPublic,
@@ -19,6 +19,7 @@ import {
 } from "@/components/movieGrids";
 import { QueryDocumentSnapshot } from "firebase/firestore";
 import Image from "next/image";
+import { ProfileReviewsPublic } from "@/components/elements/profileElements";
 
 export default function SingleUser() {
   const router = useRouter();

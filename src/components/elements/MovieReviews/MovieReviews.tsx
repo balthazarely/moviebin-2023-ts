@@ -3,7 +3,7 @@ import { UIContext } from "../../../../lib/context";
 import { likeReviewInDB } from "../../../../lib/firebaseReviews";
 import { convertToDate } from "../../../../lib/utils";
 import { HiHeart } from "react-icons/hi";
-import { FullPageLoader } from "../FullPageLoader";
+import { FullPageLoader } from "../UIElements";
 
 export function MovieReviews({
   reviewData,

@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useCollectionDataOnce } from "react-firebase-hooks/firestore";
 import { collection } from "firebase/firestore";
 import { db } from "../../../../../lib/firebase";
-import { FullPageLoader } from "@/components/elements";
+import { FullPageLoader } from "@/components/elements/UIElements";
 import { PageWidthWrapper } from "@/components/layout";
 import { ListMovieGridPublic } from "@/components/movieGrids";
 

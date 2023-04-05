@@ -2,7 +2,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import {
   AddMovieCollectionDropdown,
   FullPageLoader,
-} from "@/components/elements";
+} from "@/components/elements/UIElements";
 import { auth, firestore } from "../../../../lib/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import {

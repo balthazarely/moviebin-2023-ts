@@ -3,12 +3,12 @@ import fetch from "node-fetch";
 import { getPlaiceholder } from "plaiceholder";
 import Image from "next/image";
 import { PageWidthWrapper } from "@/components/layout";
+import { MovieReviews } from "@/components/elements";
 import {
   AddMovieCollectionButton,
   AddMovieFavoritesButton,
   ModalWrapper,
-  MovieReviews,
-} from "@/components/elements";
+} from "@/components/elements/UIElements";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollection } from "react-firebase-hooks/firestore";
 import { auth, FirebaseUser, firestore } from "../../../lib/firebase";

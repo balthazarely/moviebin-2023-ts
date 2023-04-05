@@ -1,10 +1,10 @@
 import { useContext } from "react";
-import { UIContext } from "../../../../lib/context";
-import { addMovieToCollection } from "../../../../lib/firebaseMovies";
+import { UIContext } from "../../../../../lib/context";
+import { addMovieToCollection } from "../../../../../lib/firebaseMovies";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import { useDocumentData } from "react-firebase-hooks/firestore";
-import { UserDoc } from "../../../../lib/types";
-import { auth, firestore } from "../../../../lib/firebase";
+import { UserDoc } from "../../../../../lib/types";
+import { auth, firestore } from "../../../../../lib/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 export function AddMovieCollectionButton({ movie }: any) {

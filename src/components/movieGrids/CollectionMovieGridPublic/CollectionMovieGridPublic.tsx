@@ -3,7 +3,6 @@ import {
   CollectionGroupSkeletonCard,
 } from "@/components/movieCards";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
 
 export function CollectionMovieGridPublic({ isLoading, data, listLink }: any) {
   const router = useRouter();

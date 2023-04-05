@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { searchForMovies } from "../../../../lib/api";
+import { searchForMovies } from "../../../../../lib/api";
 import { SmallLoader } from "../SmallLoader";
 import { HiXMark } from "react-icons/hi2";
 

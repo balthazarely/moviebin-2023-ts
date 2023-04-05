@@ -11,11 +11,8 @@ import {
 } from "../../../lib/firebaseMovies";
 import { ListMovieGrid } from "@/components/movieGrids";
 import { UIContext } from "../../../lib/context";
-import {
-  CollectionListHeader,
-  FullPageLoader,
-  ModalWrapper,
-} from "@/components/elements";
+import { CollectionListHeader } from "@/components/elements";
+import { FullPageLoader, ModalWrapper } from "@/components/elements/UIElements";
 import { PageWidthWrapper } from "@/components/layout";
 import {
   DeleteCollectionModal,

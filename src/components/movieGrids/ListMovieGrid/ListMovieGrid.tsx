@@ -9,9 +9,9 @@ import { useContext, useEffect, useState } from "react";
 import { UIContext } from "../../../../lib/context";
 import { VscWand } from "react-icons/vsc";
 import { ListMovieItem } from "../ListMovieItem";
-import { Test } from "../Test";
 import { BsGridFill } from "react-icons/bs";
 import { HiMenu } from "react-icons/hi";
+import { ListMovieGridOverlay } from "../ListMovieGridOverlay";
 
 export function ListMovieGrid({
   movies,
@@ -57,6 +57,8 @@ export function ListMovieGrid({
                 gridTemplateColumns:
                   gridType === "col"
                     ? "1fr"
+                    : movies.length < 4
+                    ? "1fr 1fr 1fr 1fr"
                     : "repeat(auto-fit, minmax(120px, 1fr))",
                 gridGap: 10,
                 gridAutoFlow: "row dense",
@@ -78,7 +80,7 @@ export function ListMovieGrid({
           </SortableContext>
           <DragOverlay>
             {activeId ? (
-              <Test
+              <ListMovieGridOverlay
                 idx={null}
                 // className="h-full"
                 gridType={gridType}

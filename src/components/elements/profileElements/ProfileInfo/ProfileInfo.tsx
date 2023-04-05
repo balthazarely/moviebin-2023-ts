@@ -1,9 +1,9 @@
 import { useRouter } from "next/router";
 import React from "react";
-import { FirebaseUser } from "../../../../lib/firebase";
-import { UserDoc } from "../../../../lib/types";
-import { convertToDate } from "../../../../lib/utils";
-import { SmallLoader } from "../SmallLoader";
+import { FirebaseUser } from "../../../../../lib/firebase";
+import { UserDoc } from "../../../../../lib/types";
+import { convertToDate } from "../../../../../lib/utils";
+import { SmallLoader } from "../../UIElements/SmallLoader";
 
 interface IProfileInfoProps {
   user: FirebaseUser;
