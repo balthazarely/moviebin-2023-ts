@@ -13,18 +13,16 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollection } from "react-firebase-hooks/firestore";
 import { auth, FirebaseUser, firestore } from "../../../lib/firebase";
 import { useCallback, useContext, useState } from "react";
-import {
-  DeleteReviewModal,
-  ReviewMovieModal,
-  TestModal,
-} from "@/components/modals";
+import { DeleteReviewModal, ReviewMovieModal } from "@/components/modals";
 import { UIContext } from "../../../lib/context";
 import { QueryDocumentSnapshot } from "firebase/firestore";
+import { getSimilarMovie } from "../../../lib/api";
+import { SimilarMovies } from "@/components/elements/MovieElements";
 
 interface IMovieProps {
   movie: Movie;
   imagesProps: ImageProps;
-  movieCredits: any;
+  similarMovies: any;
 }
 
 type ImageProps = {
@@ -59,7 +57,7 @@ type Movie = {
   // There are more properties to this....
 };
 
-const MoviePage = ({ movie, imagesProps }: IMovieProps) => {
+const MoviePage = ({ movie, imagesProps, similarMovies }: IMovieProps) => {
   const { dispatch } = useContext(UIContext);
   const [modalTypeOpen, setModalTypeOpen] = useState<string>("");
   // @ts-ignore
@@ -85,6 +83,8 @@ const MoviePage = ({ movie, imagesProps }: IMovieProps) => {
     dispatch({ type: "OPEN_MODAL" });
   }, [dispatch]);
 
+  console.log(similarMovies);
+
   return (
     <div className="relative">
       <PageWidthWrapper>
@@ -103,6 +103,7 @@ const MoviePage = ({ movie, imagesProps }: IMovieProps) => {
           reviewData={reviewDataWithId}
           reviewDataLoading={reviewDataLoading}
         />
+        <SimilarMovies similarMovies={similarMovies} />
       </PageWidthWrapper>
       <ModalWrapper>
         {modalTypeOpen === "review-modal" && (
@@ -202,6 +203,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=en-US`
   );
   const movie: any = await movieQuery.json();
+  const similarMovies = await getSimilarMovie(movieId);
+
+  getSimilarMovie(movieId);
 
   const imagesProps = await getPlaiceholder(
     `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`
@@ -211,6 +215,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     props: {
       movie,
       imagesProps,
+      similarMovies,
     },
   };
 };

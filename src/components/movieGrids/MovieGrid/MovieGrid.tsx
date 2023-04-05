@@ -20,7 +20,6 @@ interface IMovieGridProps {
 
 export function MovieGrid({ fetchFn, title, query }: IMovieGridProps) {
   // @ts-ignore
-
   const [user]: FirebaseUser = useAuthState(auth);
   const docRef = firestore
     .collection("usersfavorites")
@@ -63,6 +62,7 @@ export function MovieGrid({ fetchFn, title, query }: IMovieGridProps) {
 
   return (
     <>
+      <h2 className="cursor-pointer text-xl font-bold capitalize ">{title}</h2>
       <div
         style={{
           display: "grid",

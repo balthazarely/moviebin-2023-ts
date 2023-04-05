@@ -32,7 +32,7 @@ export function CollectionMovieGrid({ isLoading, data, listLink }: any) {
     setReverseOrder(param);
     router.push(
       {
-        pathname: `/collections/`,
+        pathname: `/profile/`,
         query: { sortBy: param },
       },
       undefined,

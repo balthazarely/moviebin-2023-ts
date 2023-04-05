@@ -40,7 +40,7 @@ export function MovieReviews({
       <div className="border-b-2 border-base-100"></div>
 
       {reviewDataLoading ? (
-        <FullPageLoader />
+        <FullPageLoader className=" h-56 " />
       ) : (
         reviewData
           ?.sort(

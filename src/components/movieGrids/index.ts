@@ -6,3 +6,4 @@ export { CollectionMovieGrid } from "./CollectionMovieGrid";
 export { ListMovieGridPublic } from "./ListMovieGridPublic";
 export { CollectionMovieGridPublic } from "./CollectionMovieGridPublic";
 export { ListMovieGridOverlay } from "./ListMovieGridOverlay";
+export { GenreBrowseGrid } from "./GenreBrowseGrid";

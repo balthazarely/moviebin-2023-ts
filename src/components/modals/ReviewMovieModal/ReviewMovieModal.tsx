@@ -127,7 +127,7 @@ export function ReviewMovieModal({
           readOnly
           type="radio"
           name="rating-2"
-          className="mask mask-star-2 bg-accent"
+          className="mask mask-star-2 animate-none bg-accent"
           value="1"
           checked={selectedRating === 1}
         />
@@ -135,7 +135,7 @@ export function ReviewMovieModal({
           readOnly
           type="radio"
           name="rating-2"
-          className="mask mask-star-2 bg-accent"
+          className="mask mask-star-2 animate-none bg-accent"
           value="2"
           checked={selectedRating === 2}
         />
@@ -143,7 +143,7 @@ export function ReviewMovieModal({
           readOnly
           type="radio"
           name="rating-2"
-          className="mask mask-star-2 bg-accent"
+          className="mask mask-star-2 animate-none bg-accent"
           value="3"
           checked={selectedRating === 3}
         />
@@ -151,7 +151,7 @@ export function ReviewMovieModal({
           readOnly
           type="radio"
           name="rating-2"
-          className="mask mask-star-2 bg-accent"
+          className="mask mask-star-2 animate-none bg-accent"
           value="4"
           checked={selectedRating === 4}
         />
@@ -159,7 +159,7 @@ export function ReviewMovieModal({
           readOnly
           type="radio"
           name="rating-2"
-          className="mask mask-star-2 bg-accent"
+          className="mask mask-star-2 animate-none bg-accent"
           value="5"
           checked={selectedRating === 5}
         />

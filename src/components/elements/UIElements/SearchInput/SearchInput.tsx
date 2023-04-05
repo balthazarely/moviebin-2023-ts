@@ -38,7 +38,7 @@ export function SearchInput() {
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        placeholder="Type here"
+        placeholder="Search for movies"
         className="input-bordered input input-md w-full max-w-xs"
       />
       <div className="absolute top-3 right-3">
