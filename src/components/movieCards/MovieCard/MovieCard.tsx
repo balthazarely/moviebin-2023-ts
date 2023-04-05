@@ -17,7 +17,11 @@ export function MovieCard({
           src={`https://image.tmdb.org/t/p/w200/${movie.poster_path}`}
         />
       </Link>
-      {children}
+      <div className="absolute bottom-0 left-0 hidden h-10 w-full justify-center group-hover:flex">
+        <div className="h-8 rounded-md bg-black bg-opacity-80 p-1">
+          {children}
+        </div>
+      </div>
     </div>
   );
 }

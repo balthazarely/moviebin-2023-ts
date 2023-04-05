@@ -4,7 +4,7 @@ import { UIContext } from "../../../../lib/context";
 import {
   addMovieReviewToDB,
   editMovieReviewInDB,
-} from "../../../../lib/firebaseFunctions";
+} from "../../../../lib/firebaseReviews";
 import { HiX } from "react-icons/hi";
 
 export function ReviewMovieModal({

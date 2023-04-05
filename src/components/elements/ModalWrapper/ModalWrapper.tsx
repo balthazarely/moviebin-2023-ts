@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { UIContext } from "../../../../lib/context";
 
 export function ModalWrapper({ children }: any) {
-  const { state, dispatch } = useContext(UIContext);
+  const { state } = useContext(UIContext);
 
   return (
     <div className="">

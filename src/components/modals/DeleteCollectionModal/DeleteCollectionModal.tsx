@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { UIContext } from "../../../../lib/context";
-import { deleteCollection } from "../../../../lib/firebaseFunctions";
+import { deleteCollection } from "../../../../lib/firebaseMovies";
 import { HiX } from "react-icons/hi";
 
 export function DeleteCollectionModal({ listname }: any) {

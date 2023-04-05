@@ -2,15 +2,18 @@ import { useContext } from "react";
 import { UIContext } from "../../../../lib/context";
 import { addMovieToCollection } from "../../../../lib/firebaseMovies";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
-import { HiHeart } from "react-icons/hi";
-import { addOrRemoveMovieToFavorites } from "../../../../lib/firebaseFavorites";
+import { useDocumentData } from "react-firebase-hooks/firestore";
+import { UserDoc } from "../../../../lib/types";
+import { auth, firestore } from "../../../../lib/firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
 
-export function AddMovieCollectionDropdown({
-  movie,
-  userFavorites,
-  userRecentCollections,
-}: any) {
+export function AddMovieCollectionButton({ movie }: any) {
   const { dispatch } = useContext(UIContext);
+  // @ts-ignore
+  const [user]: FirebaseUser = useAuthState(auth);
+  const docRef = firestore.collection("users").doc(user?.uid?.toString());
+  // @ts-ignore
+  const [userData] = useDocumentData<UserDoc>(docRef);
 
   async function addMovieToExistingCollection(movie: any, collectionName: any) {
     const elem = document.activeElement as HTMLElement;
@@ -24,30 +27,11 @@ export function AddMovieCollectionDropdown({
     }
   }
 
-  async function addRemoveFavorites() {
-    try {
-      await addOrRemoveMovieToFavorites(movie);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  const isMovieFavorites = (id: any) =>
-    userFavorites?.some((item: any) => item.id === id);
-
   return (
-    <div className="dropdown-end dropdown flex w-full justify-center gap-3 rounded-none ">
+    <div className={`dropdown-end dropdown rounded-none   `}>
       <label tabIndex={0}>
-        <HiOutlineDotsHorizontal className="h-6 w-8 cursor-pointer rounded-sm  text-sm text-gray-300 transition-all duration-100  hover:text-white" />
+        <button className="btn-primary btn  ">Add to Collection</button>
       </label>
-      <HiHeart
-        onClick={addRemoveFavorites}
-        className={`${
-          isMovieFavorites(movie.id)
-            ? "text-accent"
-            : "text-gray-300 hover:text-white"
-        } h-6 w-8 cursor-pointer  text-sm transition-all duration-100  `}
-      />
       <ul
         tabIndex={0}
         className="dropdown-content menu w-52 rounded-md bg-base-100 shadow  "
@@ -55,7 +39,7 @@ export function AddMovieCollectionDropdown({
         <li className="pointer-events-none bg-neutral p-2 text-xs text-gray-500">
           Recent Collections
         </li>
-        {userRecentCollections?.recentCollection
+        {userData?.recentCollection
           // ?.slice(0, 4)
           .map((list: any, idx: number) => {
             return (

@@ -3,7 +3,7 @@ import { UIContext } from "../../../../lib/context";
 import {
   addMovieToCollection,
   createAndAddToCollection,
-} from "../../../../lib/firebaseFunctions";
+} from "../../../../lib/firebaseAuth";
 import { useNestedUserCollectionsHook } from "../../../../lib/hooks";
 import { doesCollectionNameExist } from "../../../../lib/utils";
 
@@ -89,20 +89,20 @@ export function AddMovieToCollectionModal() {
       />
       <div className="modal modal-bottom sm:modal-middle ">
         <div className="modal-box">
-          <div className="h-full w-full text-center relative">
+          <div className="relative h-full w-full text-center">
             {state?.tempMovie?.title}
             <button
               onClick={closeModalAndClearData}
-              className="btn btn-sm bg-base-100 absolute border-none -top-4 -right-4"
+              className="btn-sm btn absolute -top-4 -right-4 border-none bg-base-100"
             >
               x
             </button>
-            <div className="flex justify-center mt-4 gap-4 flex-col ">
+            <div className="mt-4 flex flex-col justify-center gap-4 ">
               {nestedCollectionsFromHook?.length > 0 && (
                 <div>
-                  <h3 className="font-bold text-md mb-2">Add to collecion</h3>
+                  <h3 className="text-md mb-2 font-bold">Add to collecion</h3>
                   <select
-                    className="select select-bordered w-full"
+                    className="select-bordered select w-full"
                     onChange={handleSelectChange}
                     value={selectedItem}
                   >
@@ -132,12 +132,12 @@ export function AddMovieToCollectionModal() {
                 </div>
               )}
 
-              <h3 className="font-bold text-md">Create new collection</h3>
+              <h3 className="text-md font-bold">Create new collection</h3>
               <input
                 type="text"
                 value={newCollectionName}
                 onChange={handleInputChange}
-                className="input w-full input-bordered input-primary  "
+                className="input-bordered input-primary input w-full  "
               />
               <h1 className="text-sm text-warning"></h1>
               <button

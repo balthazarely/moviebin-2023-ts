@@ -1,6 +1,6 @@
 import { UIContext } from "../../../../lib/context";
 import React, { useContext, useEffect, useState } from "react";
-import { updateCollectionMetadata } from "../../../../lib/firebaseFunctions";
+import { updateCollectionMetadata } from "../../../../lib/firebaseMovies";
 import { collection, query, where } from "firebase/firestore";
 import { db } from "../../../../lib/firebase";
 import { useCollectionData } from "react-firebase-hooks/firestore";
@@ -18,7 +18,7 @@ export function EditCollectionModal({ listname, user }: any) {
 
   useEffect(() => {
     if (docs) {
-      setDescriptionText(docs[0].description);
+      setDescriptionText(docs[0]?.description);
     }
   }, [docs]);
 

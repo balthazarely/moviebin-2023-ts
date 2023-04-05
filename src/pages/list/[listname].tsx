@@ -8,7 +8,7 @@ import { formatMoviesForDnD } from "../../../lib/utils";
 import {
   deleteMovieFromDB,
   updateDocumentOrderInDB,
-} from "../../../lib/firebaseFunctions";
+} from "../../../lib/firebaseMovies";
 import { ListMovieGrid } from "@/components/movieGrids";
 import { UIContext } from "../../../lib/context";
 import {
@@ -22,6 +22,7 @@ import {
   EditCollectionModal,
   MagicCollectionModal,
 } from "@/components/modals";
+import { VscWand } from "react-icons/vsc";
 import { FirestoreMovie } from "../../../lib/types";
 
 export default function Listname() {
@@ -61,7 +62,6 @@ export default function Listname() {
         listname={listname}
         setModalTypeOpen={setModalTypeOpen}
       />
-
       <ListMovieGrid
         setModalTypeOpen={setModalTypeOpen}
         movies={movies}
@@ -69,7 +69,7 @@ export default function Listname() {
         deleteMovie={deleteMovie}
         listname={listname?.toString()}
       />
-      <div className="mt-4 flex justify-center">
+      <div className="mt-4 mb-8 flex justify-center gap-2">
         <button
           className="btn-outline  btn-error btn"
           onClick={() => {
@@ -78,6 +78,15 @@ export default function Listname() {
           }}
         >
           Delete Collection
+        </button>
+        <button
+          className="btn-outline btn  bg-gradient-to-tl from-accent via-secondary to-primary bg-size-200 bg-pos-0 text-white transition-all duration-500 hover:bg-pos-100 hover:text-white"
+          onClick={() => {
+            setModalTypeOpen("magic-collection");
+            dispatch({ type: "OPEN_MODAL" });
+          }}
+        >
+          Magic Playlist <VscWand className="ml-2 text-lg " />
         </button>
       </div>
       <ModalWrapper>

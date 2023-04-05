@@ -37,17 +37,7 @@ export function ListMovieGrid({
   return (
     <>
       <div className="mt-2 mb-2 flex items-center justify-between py-2 ">
-        <div className="flex items-center gap-4 ">
-          <button
-            className="btn-sm btn bg-gradient-to-tl from-accent via-secondary to-primary bg-size-200 bg-pos-0 text-white transition-all duration-500 hover:bg-pos-100"
-            onClick={() => {
-              setModalTypeOpen("magic-collection");
-              dispatch({ type: "OPEN_MODAL" });
-            }}
-          >
-            Magic Playlist <VscWand className="ml-2 text-lg " />
-          </button>
-        </div>
+        <div className="flex items-center gap-4 "></div>
         <GridTypeSelect
           setSortQueryParam={setSortQueryParam}
           gridType={gridType}

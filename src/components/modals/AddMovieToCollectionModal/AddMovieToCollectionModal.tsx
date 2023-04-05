@@ -3,7 +3,7 @@ import { UIContext } from "../../../../lib/context";
 import {
   addMovieToCollection,
   createAndAddToCollection,
-} from "../../../../lib/firebaseFunctions";
+} from "../../../../lib/firebaseMovies";
 import { useNestedUserCollectionsHook } from "../../../../lib/hooks";
 import { doesCollectionNameExist } from "../../../../lib/utils";
 import { HiX } from "react-icons/hi";

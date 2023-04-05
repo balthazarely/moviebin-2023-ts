@@ -1,0 +1,1 @@
+export { AddMovieCollectionButton } from "./AddMovieCollectionButton";

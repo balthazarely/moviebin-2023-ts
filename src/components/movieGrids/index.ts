@@ -3,3 +3,5 @@ export { ListMovieGrid } from "./ListMovieGrid";
 export { ListMovieItem } from "./ListMovieItem";
 export { MovieGrid } from "./MovieGrid";
 export { CollectionMovieGrid } from "./CollectionMovieGrid";
+export { ListMovieGridPublic } from "./ListMovieGridPublic";
+export { CollectionMovieGridPublic } from "./CollectionMovieGridPublic";

@@ -1,9 +1,11 @@
 import Link from "next/link";
 
-export function CollectionGroupCard({ list }: any) {
+export function CollectionGroupCard({ list, listLink }: any) {
   return (
     <Link
-      href={`/list/${list.name}`}
+      href={
+        listLink ? `/users/${listLink}/list/${list.name}` : `/list/${list.name}`
+      }
       className=" flex h-52 cursor-pointer flex-col items-start justify-center rounded-lg border-2  border-gray-700 p-2 transition-colors duration-200 hover:border-gray-500 hover:bg-base-200"
     >
       <div className="flex">

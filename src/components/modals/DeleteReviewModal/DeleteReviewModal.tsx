@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { HiX } from "react-icons/hi";
 import { UIContext } from "../../../../lib/context";
-import { deleteMovieReviewToDB } from "../../../../lib/firebaseFunctions";
+import { deleteMovieReviewToDB } from "../../../../lib/firebaseReviews";
 
 export function DeleteReviewModal({ movieTitle, movieId, reviewId }: any) {
   async function deleteReview(reviewId: string) {

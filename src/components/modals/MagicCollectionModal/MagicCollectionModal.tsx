@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { getMovieRecommendations } from "../../../../lib/api";
 import { UIContext } from "../../../../lib/context";
-import { createAndAddMultipleDocumentsToCollection } from "../../../../lib/firebaseFunctions";
+import { createAndAddMultipleDocumentsToCollection } from "../../../../lib/firebaseMovies";
 import { useNestedUserCollectionsHook } from "../../../../lib/hooks";
 import { doesCollectionNameExist } from "../../../../lib/utils";
 import { HiX } from "react-icons/hi";

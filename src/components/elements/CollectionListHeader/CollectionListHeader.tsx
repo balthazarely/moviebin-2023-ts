@@ -5,8 +5,6 @@ import { useCollectionData } from "react-firebase-hooks/firestore";
 import { db, FirebaseUser, auth } from "../../../../lib/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { collection, query, where } from "firebase/firestore";
-import { ModalWrapper } from "../ModalWrapper";
-import { EditCollectionModal } from "@/components/modals";
 
 export function CollectionListHeader({
   listname,

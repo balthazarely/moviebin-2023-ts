@@ -33,13 +33,13 @@ export function SearchInput() {
   };
 
   return (
-    <div className="mb-4 relative w-full  flex justify-end">
+    <div className="relative z-50 mb-4 flex w-full justify-end">
       <input
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Type here"
-        className="input input-md input-bordered w-full max-w-xs"
+        className="input-bordered input input-md w-full max-w-xs"
       />
       <div className="absolute top-3 right-3">
         {loading ? <SmallLoader /> : <></>}
@@ -47,7 +47,7 @@ export function SearchInput() {
       <div className="absolute top-3 right-3">
         {!loading && query.length ? (
           <HiXMark
-            className="text-2xl text-gray-400 cursor-pointer "
+            className="cursor-pointer text-2xl text-gray-400 "
             onClick={clearAll}
           />
         ) : (
@@ -59,7 +59,7 @@ export function SearchInput() {
         <></>
       ) : (
         <div
-          className={`results-container bg-base-100 max-w-xs w-full  absolute top-12 ${
+          className={`results-container absolute top-12 w-full  max-w-xs bg-base-100 ${
             totalResults < 1 ? "h-16" : "h-64 overflow-y-scroll"
           }`}
         >
@@ -79,7 +79,7 @@ export function SearchInput() {
               return (
                 <div
                   key={result?.id}
-                  className="card card-side bg-base-100 shadow-xl rounded-none hover:bg-primary cursor-pointer transition duration-75 "
+                  className="card card-side cursor-pointer rounded-none bg-base-100 shadow-xl transition duration-75 hover:bg-primary "
                 >
                   <Link href={`/movie/${result?.id}`}>
                     <div className="card-body py-2 px-4">
@@ -95,8 +95,8 @@ export function SearchInput() {
               );
             })
         ) : (
-          <div className="card card-side bg-base-100 shadow-xl h-16 hover:bg-neutral cursor-pointer transition duration-75 flex justify-center items-center">
-            <div className=" font-extrabold text-sm">Hmmm no results</div>
+          <div className="card card-side flex h-16 cursor-pointer items-center justify-center bg-base-100 shadow-xl transition duration-75 hover:bg-neutral">
+            <div className=" text-sm font-extrabold">Hmmm no results</div>
           </div>
         )}
       </>

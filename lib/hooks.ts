@@ -62,6 +62,8 @@ export function useOtherUserNestedCollections(id: any) {
 }
 
 export const useNestedUserCollectionsHook = () => {
+  console.log("AJSFASFLKASFHKLASHFKLASHKLAHSFL");
+
   // @ts-ignore
   const [user] = useAuthState(auth);
 

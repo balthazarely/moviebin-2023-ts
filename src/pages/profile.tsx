@@ -1,5 +1,6 @@
 import {
   FullPageLoader,
+  ProfileFavorites,
   ProfileInfo,
   ProfileReviews,
 } from "@/components/elements";
@@ -12,6 +13,7 @@ import { auth, FirebaseUser, firestore } from "../../lib/firebase";
 import { PageWidthWrapper } from "@/components/layout";
 import {
   useCollection,
+  useCollectionData,
   useDocumentDataOnce,
 } from "react-firebase-hooks/firestore";
 import { CollectionMovieGrid } from "@/components/movieGrids";
@@ -19,20 +21,29 @@ import { UserDoc } from "../../lib/types";
 import { QueryDocumentSnapshot } from "firebase/firestore";
 
 export default function Collections() {
+  const [tabSelected, setTabSelected] = useState<string>("lists");
   const router = useRouter();
   const { tab } = router.query;
   // @ts-ignore
   const [user]: FirebaseUser = useAuthState(auth);
-  const [tabSelected, setTabSelected] = useState<string>("lists");
-  const docRef = firestore.collection("users").doc(user?.uid?.toString());
-  const reviewRef = firestore
+
+  //
+  const userDocRef = firestore.collection("users").doc(user?.uid?.toString());
+  const reviewsCollectionRef = firestore
     .collection("usersreviews")
     .doc(user?.uid?.toString())
     .collection("reviews");
+  const favoritesCollectionRef = firestore
+    .collection("usersfavorites")
+    .doc(user?.uid?.toString())
+    .collection("favorites");
+
   // @ts-ignore
-  const [userDoc] = useDocumentDataOnce<UserDoc>(docRef);
+  const [userDoc, userDocLoading] = useDocumentDataOnce<any>(userDocRef);
   // @ts-ignore
-  const [reviewData] = useCollection(reviewRef);
+  const [reviewData, reviewDataLoading] = useCollection(reviewsCollectionRef);
+  // @ts-ignore
+  const [favData, favsDataLoading] = useCollectionData(favoritesCollectionRef);
 
   const documentSnapshots = reviewData?.docs as QueryDocumentSnapshot[];
   const reviewDataWithId = documentSnapshots?.map((doc: any) => {
@@ -60,7 +71,7 @@ export default function Collections() {
     }
   }, [tab]);
 
-  if (!user || !userDoc) {
+  if (!user) {
     return <FullPageLoader />;
   }
 
@@ -73,11 +84,14 @@ export default function Collections() {
       <ProfileInfo
         user={user}
         userDoc={userDoc}
+        userDocLoading={userDocLoading}
         setTabSelected={setTabSelected}
         tabSelected={tabSelected}
         movieDataLength={data?.length}
         reviewDataLength={reviewDataWithId?.length}
+        ProfileFavoritesLength={favData?.length}
       />
+
       <div>
         {tabSelected === "lists" && (
           <CollectionMovieGrid
@@ -86,9 +100,18 @@ export default function Collections() {
             users={userDoc}
           />
         )}
-
         {tabSelected === "reviews" && (
-          <ProfileReviews reviewDataWithId={reviewDataWithId} />
+          <ProfileReviews
+            reviewDataWithId={reviewDataWithId}
+            reviewDataLoading={reviewDataLoading}
+          />
+        )}
+        {tabSelected === "favorites" && (
+          <ProfileFavorites
+            favoritesData={favData}
+            favoritesDataLoading={favsDataLoading}
+            userRecentCollections={userDoc}
+          />
         )}
       </div>
     </PageWidthWrapper>

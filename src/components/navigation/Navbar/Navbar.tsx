@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../../../lib/firebase";
-import { signUserOut } from "../../../../lib/firebaseFunctions";
+import { signUserOut } from "../../../../lib/firebaseAuth";
 
 export function Navbar({ children }: { children: React.ReactNode }) {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -62,7 +62,7 @@ export function Navbar({ children }: { children: React.ReactNode }) {
                     <Link href="/movies">Movies</Link>
                   </li>
                   <li>
-                    <Link href="/collections">Collections</Link>
+                    <Link href="/profile">Profile</Link>
                   </li>
                   <li>
                     <Link href="/users">Users</Link>

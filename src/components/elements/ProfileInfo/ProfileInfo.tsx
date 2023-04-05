@@ -1,32 +1,37 @@
 import { useRouter } from "next/router";
 import React from "react";
 import { FirebaseUser } from "../../../../lib/firebase";
-import { NestedDataCollectionDocs, UserDoc } from "../../../../lib/types";
+import { UserDoc } from "../../../../lib/types";
 import { convertToDate } from "../../../../lib/utils";
+import { SmallLoader } from "../SmallLoader";
 
 interface IProfileInfoProps {
   user: FirebaseUser;
   userDoc: UserDoc;
+  userDocLoading: any;
   setTabSelected: (tab: string) => void;
   tabSelected: string;
   movieDataLength: any;
   reviewDataLength: any;
+  ProfileFavoritesLength: any;
 }
 
 export function ProfileInfo({
   user,
   userDoc,
+  userDocLoading,
   setTabSelected,
   tabSelected,
   movieDataLength,
   reviewDataLength,
+  ProfileFavoritesLength,
 }: IProfileInfoProps) {
   const router = useRouter();
   const toggleTabs = (tab: string) => {
     setTabSelected(tab);
     router.push(
       {
-        pathname: `/collections`,
+        pathname: `/profile`,
         query: { tab: tab },
       },
       undefined,
@@ -44,10 +49,16 @@ export function ProfileInfo({
           alt="Image"
         />
         <div>
-          <h2 className="text-xl font-bold">{user?.displayName}</h2>
-          <h4 className="text-xs">
-            Member since {convertToDate(userDoc?.createdAt.toDate())}
-          </h4>
+          {userDocLoading ? (
+            <SmallLoader />
+          ) : (
+            <>
+              <h2 className="text-xl font-bold">{user?.displayName}</h2>
+              <h4 className="text-xs">
+                Member since {convertToDate(userDoc?.createdAt?.toDate())}
+              </h4>
+            </>
+          )}
         </div>
       </div>
       <div className="tabs mt-6 mb-4">
@@ -66,6 +77,14 @@ export function ProfileInfo({
           }`}
         >
           My Reviews ({reviewDataLength && reviewDataLength})
+        </button>
+        <button
+          onClick={() => toggleTabs("favorites")}
+          className={`tab-lifted tab ${
+            tabSelected === "favorites" ? "tab-active" : ""
+          }`}
+        >
+          My Favorites ({ProfileFavoritesLength && ProfileFavoritesLength})
         </button>
       </div>
     </div>

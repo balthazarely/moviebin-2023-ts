@@ -5,7 +5,10 @@ import {
 } from "@/components/elements";
 import { auth, firestore } from "../../../../lib/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useDocumentData } from "react-firebase-hooks/firestore";
+import {
+  useCollectionData,
+  useDocumentData,
+} from "react-firebase-hooks/firestore";
 import { MovieCard } from "@/components/movieCards";
 import { Movie } from "../../../../lib/types";
 
@@ -17,10 +20,18 @@ interface IMovieGridProps {
 
 export function MovieGrid({ fetchFn, title, query }: IMovieGridProps) {
   // @ts-ignore
-  const [user] = useAuthState(auth);
-  const docRef = firestore.collection("users").doc(user?.uid?.toString());
+
+  const [user]: FirebaseUser = useAuthState(auth);
+  const docRef = firestore
+    .collection("usersfavorites")
+    .doc(user?.uid?.toString())
+    .collection("favorites");
   // @ts-ignore
-  const [userData, loading, error] = useDocumentData(docRef);
+  const [userFavorites, loading, error] = useCollectionData(docRef);
+
+  const docRefs = firestore.collection("users").doc(user?.uid?.toString());
+  // @ts-ignore
+  const [userRecentCollections] = useDocumentData<UserDoc>(docRefs);
 
   const {
     isLoading,
@@ -64,8 +75,9 @@ export function MovieGrid({ fetchFn, title, query }: IMovieGridProps) {
           page?.results?.map((movie: Movie) => (
             <MovieCard key={movie.id} movie={movie}>
               <AddMovieCollectionDropdown
+                userFavorites={userFavorites}
+                userRecentCollections={userRecentCollections}
                 movie={movie}
-                recentCollection={userData?.recentCollection}
               />
             </MovieCard>
           ))

@@ -1,28 +1,6 @@
-import { deleteDoc, doc, setDoc } from "firebase/firestore";
-import {
-  auth,
-  db,
-  firestore,
-  googleProvider,
-  serverTimestamp,
-} from "./firebase";
-
-import { signInWithPopup, signOut } from "firebase/auth";
+import { deleteDoc, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { auth, db, firestore, serverTimestamp } from "./firebase";
 import toast from "react-hot-toast";
-
-export async function signUserInViaGoogle() {
-  try {
-    await signInWithPopup(auth, googleProvider);
-    window.location.href = "/collections";
-  } catch (error) {}
-}
-
-export async function signUserOut() {
-  try {
-    await signOut(auth);
-    window.location.href = "/login";
-  } catch (error) {}
-}
 
 export async function updateDocumentOrderInDB(movies: any, listname: string) {
   try {
@@ -63,128 +41,6 @@ export async function deleteMovieFromDB(id: any, listname: any) {
   }
 }
 
-export async function addMovieReviewToDB(
-  movieId: any,
-  moveTitle: any,
-  movePoster: any,
-  reviewBody: any,
-  reviewRating: any
-) {
-  console.log(reviewBody, reviewRating);
-
-  const reviewRef = firestore.collection("movies").doc(movieId.toString());
-  const reviewDoc = reviewRef.collection("reviews").doc();
-
-  const userReviewRef = firestore
-    .collection("usersreviews")
-    .doc(auth.currentUser?.uid);
-  const userReviewDoc = userReviewRef
-    .collection("reviews")
-    .doc(movieId.toString());
-  try {
-    await reviewDoc.set({
-      review: reviewBody,
-      rating: reviewRating,
-      userId: auth.currentUser?.uid,
-      userDisplayName: auth.currentUser?.displayName,
-      movieTitle: moveTitle,
-      movieId: movieId,
-      movieImage: movePoster,
-      createdAt: serverTimestamp(),
-    });
-
-    const reviewReferenceId = reviewDoc.id;
-    await userReviewDoc.set({
-      review: reviewBody,
-      rating: reviewRating,
-      userId: auth.currentUser?.uid,
-      userDisplayName: auth.currentUser?.displayName,
-      movieTitle: moveTitle,
-      movieId: movieId,
-      movieImage: movePoster,
-      reviewReferenceId,
-      createdAt: serverTimestamp(),
-    });
-
-    toast.success(`Review added for ${moveTitle}`);
-  } catch (error) {
-    toast.error(`Something went wrong...`);
-  }
-}
-
-export async function deleteMovieReviewToDB(
-  movieId: any,
-  movieTitle: any,
-  reviewId: any
-) {
-  try {
-    console.log(reviewId);
-
-    const reviewDoc = doc(
-      // @ts-ignore
-      db,
-      "movies",
-      movieId.toString(),
-      "reviews",
-      reviewId.toString()
-    );
-    const userReviewDoc = doc(
-      // @ts-ignore
-      db,
-      "usersreviews",
-      auth.currentUser?.uid,
-      "reviews",
-      movieId.toString()
-    );
-    await deleteDoc(reviewDoc);
-    await deleteDoc(userReviewDoc);
-    toast.success(`Review deleted for ${movieTitle}`);
-  } catch (error) {
-    toast.error(`Something went wrong...`);
-  }
-}
-
-export async function editMovieReviewInDB(
-  movieId: any,
-  moveTitle: any,
-  reviewId: any,
-  reviewBody: any,
-  reviewRating: any
-) {
-  console.log(movieId, "movieId");
-  console.log(moveTitle, "moveTitle");
-  console.log(reviewId, "reviewId");
-  console.log(reviewBody, "reviewBody");
-  console.log(reviewRating, "reviewRating");
-
-  const reviewRef = firestore.collection("movies").doc(movieId.toString());
-  const reviewDocCreate = reviewRef.collection("reviews").doc(reviewId);
-
-  const userReviewRef = firestore
-    .collection("usersreviews")
-    .doc(auth.currentUser?.uid);
-  const userReviewDocCreate = userReviewRef
-    .collection("reviews")
-    .doc(movieId.toString());
-
-  try {
-    await setDoc(
-      reviewDocCreate,
-      { review: reviewBody, rating: reviewRating },
-      { merge: true }
-    );
-
-    await setDoc(
-      userReviewDocCreate,
-      { review: reviewBody, rating: reviewRating },
-      { merge: true }
-    );
-    toast.success(`Review updated for ${moveTitle}`);
-  } catch (error) {
-    toast.error(`Something went wrong...`);
-  }
-}
-
 export async function deleteCollection(collectionName: any) {
   try {
     const res = await fetch(
@@ -203,7 +59,7 @@ export async function deleteCollection(collectionName: any) {
       }
     );
     const response = await res.json();
-    window.location.href = "/collections";
+    window.location.href = "/profile";
     toast.success(`${collectionName} deleted`);
     return response;
   } catch (error) {}
@@ -315,6 +171,15 @@ export async function createAndAddMultipleDocumentsToCollection(
       });
       promises.push(promise);
     }
+    const metadatPromise = collectionRef.doc("metadata").set({
+      type: "metadata",
+      collectionName: newCollectionName,
+      description: "",
+      createdAt: serverTimestamp(),
+      lastEditedAt: serverTimestamp(),
+    });
+    promises.push(metadatPromise);
+
     await Promise.all(promises);
     toast.success(`${movies.length} movies added to ${newCollectionName}`);
     return Promise.resolve(

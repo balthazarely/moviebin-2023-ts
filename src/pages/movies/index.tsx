@@ -12,7 +12,7 @@ export default function Index() {
   return (
     <PageWidthWrapper className="mt-6 ">
       <SearchInput />
-      <div>
+      <div className="z-0">
         {params.map((param) => (
           <MovieGrid key={param} param={param} />
         ))}

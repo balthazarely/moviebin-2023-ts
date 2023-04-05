@@ -1,21 +1,11 @@
-import { useRouter } from "next/router";
-import { MovieGrid } from "@/components/MovieGrid";
-// import { getMovie, getMovies, getNowPlayingMovies } from "lib/api";
-// import { UserContext } from "lib/context";
-import { useContext, useEffect, useState } from "react";
-// import { getNestedUserCollections } from "lib/api";
-// import { auth, db, firestore } from "lib/firebase";
-import {
-  useCollectionData,
-  useDocument,
-  useDocumentData,
-} from "react-firebase-hooks/firestore";
-import { collection } from "firebase/firestore";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 import Link from "next/link";
 import { firestore } from "../../../lib/firebase";
+import { PageWidthWrapper } from "@/components/layout";
 
 export default function Users() {
   const docRef = firestore.collection("users");
+  // @ts-ignore
   const [users, loading, error] = useCollectionData(docRef);
 
   if (loading) {
@@ -26,14 +16,22 @@ export default function Users() {
     return <div>Error: {error.message}</div>;
   }
   return (
-    <div>
-      {users?.map((user) => (
-        <div>
+    <PageWidthWrapper>
+      <div className="grid grid-cols-4">
+        {users?.map((user) => (
           <Link href={`/users/${user.uid}`}>
-            {user.displayName}: {user.email}
+            <div className="mt-6 flex flex-col items-center justify-center gap-6">
+              <img
+                className="w-16 rounded-full"
+                referrerPolicy="no-referrer"
+                src={user?.photoURL ?? ""}
+                alt="Image"
+              />
+              <div>{user.displayName}</div>
+            </div>
           </Link>
-        </div>
-      ))}
-    </div>
+        ))}
+      </div>
+    </PageWidthWrapper>
   );
 }

@@ -5,7 +5,7 @@ import {
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
-export function CollectionMovieGrid({ isLoading, data, users }: any) {
+export function CollectionMovieGrid({ isLoading, data, listLink }: any) {
   const router = useRouter();
   const { sortBy } = router.query;
   const [reverseOrder, setReverseOrder] = useState("asc");
@@ -44,22 +44,37 @@ export function CollectionMovieGrid({ isLoading, data, users }: any) {
     <>
       <CollectionSortingPanel />
       {!isLoading ? (
-        <div className="w-full">
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
-            {sortedData.map((list: any, idx: any) => (
-              <CollectionGroupCard list={list} key={idx} />
-            ))}
+        sortedData.length ? (
+          <div className="w-full">
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
+              {sortedData.map((list: any, idx: any) => (
+                <CollectionGroupCard
+                  list={list}
+                  key={idx}
+                  listLink={listLink}
+                />
+              ))}
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="h-44 w-full ">
+            <div className="flex h-full flex-col items-center justify-center gap-2 ">
+              <div className="text-xl font-bold">No Lists yet!</div>
+              <div className="text-sm font-normal">
+                To create a list, go to the Movies section and start adding.
+              </div>
+            </div>
+          </div>
+        )
       ) : (
         <>
-          {users?.recentCollection?.length !== 0 && (
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9]?.map((list: any, idx: any) => {
-                return <CollectionGroupSkeletonCard key={idx} />;
-              })}
-            </div>
-          )}
+          {/* {users?.recentCollection?.length !== 0 && ( */}
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9]?.map((list: any, idx: any) => {
+              return <CollectionGroupSkeletonCard key={idx} />;
+            })}
+          </div>
+          {/* )} */}
         </>
       )}
     </>
