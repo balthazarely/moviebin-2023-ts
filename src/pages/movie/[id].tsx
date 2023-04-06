@@ -197,9 +197,8 @@ const MoviePage = ({ movie, imagesProps, similarMovies }: IMovieProps) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const movieId = context.query.id;
-  const apiKey = "5e9bd2fa585826bdfc4233fb6424f425";
   const movieQuery = await fetch(
-    `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=en-US`
+    `https://api.themoviedb.org/3/movie/${movieId}?api_key=${process.env.NEXT_PUBLIC_OMDB_API_KEY}&language=en-US`
   );
   const movie: any = await movieQuery.json();
   const similarMovies = await getSimilarMovie(movieId);

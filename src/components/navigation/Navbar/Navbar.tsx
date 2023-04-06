@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useContext, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { SiGithub } from "react-icons/si";
 import { auth } from "../../../../lib/firebase";
 import { signUserOut } from "../../../../lib/firebaseAuth";
 import { UserContext } from "../../../../lib/userContext";
@@ -116,9 +117,20 @@ export function Navbar({ children }: { children: React.ReactNode }) {
         </div>
         <div className="z-40 flex flex-grow flex-col ">
           <main className="flex-grow  bg-neutral pb-24">{children}</main>
-          {currentRoute !== "/login" && (
-            <footer className="h-24 w-full  bg-base-100"></footer>
-          )}
+          <footer
+            className={`"h-24 w-full  ${
+              currentRoute === "/login" ? "bg-neutral" : "bg-base-100"
+            }`}
+          >
+            <div className="absolute bottom-4 right-4">
+              <a
+                href="https://github.com/balthazarely/moviebin-2023-ts"
+                target="_BLANK"
+              >
+                <SiGithub className="text-2xl" />
+              </a>
+            </div>
+          </footer>
         </div>
       </div>
       <div className="drawer-side">

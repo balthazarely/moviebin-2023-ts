@@ -5,12 +5,14 @@ import {
   SiDaisyui,
   SiNextdotjs,
   SiFirebase,
+  SiGithub,
 } from "react-icons/si";
+import { CgWebsite } from "react-icons/cg";
 
 export default function Login() {
   return (
-    <div className="flex h-full w-full flex-col items-center justify-around gap-4">
-      <div className="flex flex-col gap-4 text-center">
+    <div className="relative flex h-full w-full flex-col items-center justify-between gap-4">
+      <div className="mt-32 flex flex-col gap-4 text-center">
         <div className="text-4xl font-extrabold">Welcome to MovieMate</div>
         <div className="max-w-md  text-xl">
           Make and organize your own watchlists, review movies, and more!
