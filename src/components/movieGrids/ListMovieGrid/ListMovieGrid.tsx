@@ -7,7 +7,6 @@ import {
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import { UIContext } from "../../../../lib/context";
-import { VscWand } from "react-icons/vsc";
 import { ListMovieItem } from "../ListMovieItem";
 import { BsGridFill } from "react-icons/bs";
 import { HiMenu } from "react-icons/hi";
@@ -18,7 +17,6 @@ export function ListMovieGrid({
   setMovies,
   deleteMovie,
   listname,
-  setModalTypeOpen,
 }: any) {
   const router = useRouter();
   const { sortBy } = router.query;
@@ -50,34 +48,36 @@ export function ListMovieGrid({
         onDragStart={handleDragStart}
       >
         <div>
-          <SortableContext items={movies} strategy={rectSortingStrategy}>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns:
-                  gridType === "col"
-                    ? "1fr"
-                    : movies.length < 4
-                    ? "1fr 1fr 1fr 1fr"
-                    : "repeat(auto-fit, minmax(120px, 1fr))",
-                gridGap: 10,
-                gridAutoFlow: "row dense",
-              }}
-            >
-              {movies.map((movie: any, idx: number) => (
-                <ListMovieItem
-                  idx={idx}
-                  gridType={gridType}
-                  deleteMovie={deleteMovie}
-                  key={movie.id}
-                  id={movie.id}
-                  title={movie.movieTitle}
-                  image={movie.image}
-                  isDraggingCustom={isDraggingCustom}
-                />
-              ))}
-            </div>
-          </SortableContext>
+          <div className="">
+            <SortableContext items={movies} strategy={rectSortingStrategy}>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns:
+                    gridType === "col"
+                      ? "1fr"
+                      : movies.length < 4
+                      ? "1fr 1fr 1fr 1fr"
+                      : "repeat(auto-fit, minmax(120px, 1fr))",
+                  gridGap: 10,
+                  gridAutoFlow: "row dense",
+                }}
+              >
+                {movies.map((movie: any, idx: number) => (
+                  <ListMovieItem
+                    idx={idx}
+                    gridType={gridType}
+                    deleteMovie={deleteMovie}
+                    key={movie.id}
+                    id={movie.id}
+                    title={movie.movieTitle}
+                    image={movie.image}
+                    isDraggingCustom={isDraggingCustom}
+                  />
+                ))}
+              </div>
+            </SortableContext>
+          </div>
           <DragOverlay>
             {activeId ? (
               <ListMovieGridOverlay

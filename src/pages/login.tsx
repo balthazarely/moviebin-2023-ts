@@ -1,29 +1,40 @@
 import { FcGoogle } from "react-icons/fc";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../lib/firebase";
-import { signUserInViaGoogle, signUserOut } from "../../lib/firebaseAuth";
+import { signUserInViaGoogle } from "../../lib/firebaseAuth";
+import {
+  SiTailwindcss,
+  SiDaisyui,
+  SiNextdotjs,
+  SiFirebase,
+} from "react-icons/si";
 
 export default function Login() {
-  // @ts-ignore
-  const [user] = useAuthState(auth);
-
   return (
-    <div className="flex h-96 w-full items-center justify-center">
-      {user ? (
-        <button onClick={signUserOut} className="btn-primary btn">
-          SignOut
-        </button>
-      ) : (
-        <div className="flex flex-col items-center justify-center">
-          <h1 className="mb-4 text-center text-2xl">
-            Login/Register to <br />{" "}
-            <span className="font-black">MovieMate</span>
-          </h1>
+    <div className="flex h-full w-full flex-col items-center justify-around gap-4">
+      <div className="flex flex-col gap-4 text-center">
+        <div className="text-4xl font-extrabold">Welcome to MovieMate</div>
+        <div className="max-w-md  text-xl">
+          Make and organize your own watchlists, review movies, and more!
+        </div>
+        <div>
           <button onClick={signUserInViaGoogle} className="btn-primary btn">
             <FcGoogle className="mr-2 text-2xl" /> Log in Via Google
           </button>
         </div>
-      )}
+      </div>
+      <div className="flex flex-col items-center gap-4">
+        <div className="max-w-md text-center text-base ">
+          Made with
+          <div className="text-lg font-bold">
+            NextJS + TailwindCSS + Firebase + DaisyUI
+          </div>
+        </div>
+        <div className="flex gap-4">
+          <SiNextdotjs className="text-3xl" />
+          <SiTailwindcss className="text-3xl" />
+          <SiFirebase className="text-3xl" />
+          <SiDaisyui className="text-3xl" />
+        </div>
+      </div>
     </div>
   );
 }

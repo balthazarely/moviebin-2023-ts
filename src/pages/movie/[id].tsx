@@ -18,6 +18,7 @@ import { UIContext } from "../../../lib/context";
 import { QueryDocumentSnapshot } from "firebase/firestore";
 import { getSimilarMovie } from "../../../lib/api";
 import { SimilarMovies } from "@/components/elements/MovieElements";
+import { Review } from "../../../lib/types";
 
 interface IMovieProps {
   movie: Movie;
@@ -75,15 +76,13 @@ const MoviePage = ({ movie, imagesProps, similarMovies }: IMovieProps) => {
   });
 
   const reviewForEdit = reviewDataWithId?.find(
-    (review: any) => review.userId === user?.uid
+    (review: Review) => review.userId === user?.uid
   );
 
   const openModalTest = useCallback(() => {
     setModalTypeOpen("review-modal");
     dispatch({ type: "OPEN_MODAL" });
   }, [dispatch]);
-
-  console.log(similarMovies);
 
   return (
     <div className="relative">
@@ -162,7 +161,7 @@ const MoviePage = ({ movie, imagesProps, similarMovies }: IMovieProps) => {
             <div className="mt-2 flex gap-2 text-sm">
               {movie?.genres?.map((genre: any, idx: number) => {
                 return (
-                  <div key={idx} className="badge badge-primary badge-sm">
+                  <div key={idx} className="badge-primary badge badge-sm">
                     {genre.name}
                   </div>
                 );
@@ -177,7 +176,7 @@ const MoviePage = ({ movie, imagesProps, similarMovies }: IMovieProps) => {
 
   function MovieBackground({ imagesProps }: { imagesProps: ImageProps }) {
     return (
-      <div className="absolute top-0 left-0 -z-50 h-96	w-full bg-base-100 bg-transparent bg-cover bg-center bg-no-repeat">
+      <div className="absolute top-0 left-0 z-0 h-96	w-full bg-base-100 bg-transparent bg-cover bg-center bg-no-repeat">
         <div className="absolute top-0 left-0 z-10 h-full w-full bg-neutral bg-opacity-40"></div>
         <div className=" from-10% to-90% absolute top-0 left-0 z-10 h-full w-full bg-gradient-to-t from-neutral to-transparent"></div>
         <Image

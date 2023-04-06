@@ -7,6 +7,7 @@ import { getMovies } from "../../../lib/api";
 export default function Movies() {
   const router = useRouter();
   const { category } = router.query;
+
   return (
     <PageWidthWrapper className="pb-16">
       {category ? (
@@ -16,7 +17,7 @@ export default function Movies() {
           title={category.toString()}
         />
       ) : (
-        <FullPageLoader />
+        <FullPageLoader className="h-96" />
       )}
     </PageWidthWrapper>
   );

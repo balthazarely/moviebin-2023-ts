@@ -12,7 +12,7 @@ export function CollectionGridCard({
   id,
 }: any) {
   return (
-    <div className="relative">
+    <div className="relative rounded-md bg-base-100 bg-opacity-50 ">
       <div
         className={`absolute top-0 left-0 bg-black p-1 text-xs transition-opacity duration-500 ${
           idx === null ? "opacity-0" : "opacity-100"
@@ -34,7 +34,7 @@ export function CollectionGridCard({
       <div className="flex w-full justify-between">
         <h2 className="p-2 text-left text-xs font-bold">{title}</h2>
         <div className="dropdown-end dropdown dropdown-top">
-          <label tabIndex={0} className="btn  ">
+          <label tabIndex={0} className="btn bg-transparent ">
             <HiOutlineDotsHorizontal className="h-4 w-4 text-sm" />
           </label>
 
