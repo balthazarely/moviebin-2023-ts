@@ -5,6 +5,7 @@ import { convertToDate } from "../../../../../lib/utils";
 import { SmallLoader } from "../../UIElements/SmallLoader";
 
 interface IProfileInfoProps {
+  userDoc: any;
   setTabSelected: (tab: string) => void;
   tabSelected: string;
   movieDataLength: any;
@@ -13,13 +14,14 @@ interface IProfileInfoProps {
 }
 
 export function ProfileInfo({
+  userDoc,
   setTabSelected,
   tabSelected,
   movieDataLength,
   reviewDataLength,
   ProfileFavoritesLength,
 }: IProfileInfoProps) {
-  const { state } = useContext(UserContext);
+  // const { state } = useContext(UserContext);
   const router = useRouter();
   const toggleTabs = (tab: string) => {
     setTabSelected(tab);
@@ -36,14 +38,14 @@ export function ProfileInfo({
   return (
     <div>
       <div className="mt-6 flex items-center justify-start gap-6">
-        {state.userDoc?.photoURL ? (
+        {userDoc?.photoURL ? (
           <img
             className="w-16 rounded-full"
             referrerPolicy="no-referrer"
             src={
-              state.userDoc?.customProfileImage
-                ? state.userDoc?.customProfileImage
-                : state.userDoc?.photoURL
+              userDoc?.customProfileImage
+                ? userDoc?.customProfileImage
+                : userDoc?.photoURL
             }
             alt="Image"
           />
@@ -51,17 +53,15 @@ export function ProfileInfo({
           <div className="h-16 w-16 rounded-full bg-primary "></div>
         )}
         <div>
-          {!state.userDoc ? (
+          {!userDoc ? (
             <SmallLoader />
           ) : (
             <>
               <h2 className="text-xl font-bold">
-                {state.userDoc?.username
-                  ? state.userDoc?.username
-                  : state.userDoc?.displayName}
+                {userDoc?.username ? userDoc?.username : userDoc?.displayName}
               </h2>
               <h4 className="text-xs">
-                Member since {convertToDate(state.userDoc?.createdAt?.toDate())}
+                Member since {convertToDate(userDoc?.createdAt?.toDate())}
               </h4>
             </>
           )}

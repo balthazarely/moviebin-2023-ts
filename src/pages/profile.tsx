@@ -77,6 +77,7 @@ export default function Collections() {
   return (
     <PageWidthWrapper>
       <ProfileInfo
+        userDoc={userDoc}
         setTabSelected={setTabSelected}
         tabSelected={tabSelected}
         movieDataLength={data?.length}

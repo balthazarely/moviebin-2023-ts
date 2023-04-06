@@ -5,9 +5,7 @@ import {
   SiDaisyui,
   SiNextdotjs,
   SiFirebase,
-  SiGithub,
 } from "react-icons/si";
-import { CgWebsite } from "react-icons/cg";
 
 export default function Login() {
   return (

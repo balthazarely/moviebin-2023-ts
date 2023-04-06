@@ -3,8 +3,13 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useContext, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import {
+  useCollectionDataOnce,
+  useDocumentData,
+  useDocumentDataOnce,
+} from "react-firebase-hooks/firestore";
 import { SiGithub } from "react-icons/si";
-import { auth } from "../../../../lib/firebase";
+import { auth, firestore } from "../../../../lib/firebase";
 import { signUserOut } from "../../../../lib/firebaseAuth";
 import { UserContext } from "../../../../lib/userContext";
 
@@ -20,6 +25,10 @@ export function Navbar({ children }: { children: React.ReactNode }) {
     setIsDrawerOpen(!isDrawerOpen);
     router.push(link);
   };
+
+  const userDocRef = firestore.collection("users").doc(user?.uid?.toString());
+  // @ts-ignore
+  const [userDoc] = useDocumentData<any>(userDocRef);
 
   return (
     <div className="0 drawer">
@@ -75,15 +84,15 @@ export function Navbar({ children }: { children: React.ReactNode }) {
                       tabIndex={0}
                       className="btn-ghost btn-circle avatar btn"
                     >
-                      {state.userDoc?.photoURL ? (
+                      {userDoc?.photoURL ? (
                         <div className="w-8 rounded-full">
                           <img
                             className="w-16 rounded-full"
                             referrerPolicy="no-referrer"
                             src={
-                              state.userDoc?.customProfileImage
-                                ? state.userDoc?.customProfileImage
-                                : state.userDoc?.photoURL
+                              userDoc?.customProfileImage
+                                ? userDoc?.customProfileImage
+                                : userDoc?.photoURL
                             }
                             alt="Image"
                           />
@@ -156,14 +165,14 @@ export function Navbar({ children }: { children: React.ReactNode }) {
               </div>
               <div className="w-full">
                 <div className="mb-4 flex items-center gap-2">
-                  {state.userDoc?.photoURL ? (
+                  {userDoc?.photoURL ? (
                     <img
                       className="w-12 rounded-full"
                       referrerPolicy="no-referrer"
                       src={
-                        state.userDoc?.customProfileImage
-                          ? state.userDoc?.customProfileImage
-                          : state.userDoc?.photoURL
+                        userDoc?.customProfileImage
+                          ? userDoc?.customProfileImage
+                          : userDoc?.photoURL
                       }
                       alt="Image"
                     />
@@ -173,9 +182,9 @@ export function Navbar({ children }: { children: React.ReactNode }) {
 
                   <h2 className="text-sm font-bold">
                     <span className="font-normal">Signed in as </span>
-                    {state.userDoc?.username
-                      ? state.userDoc?.username
-                      : state.userDoc?.displayName}
+                    {userDoc?.username
+                      ? userDoc?.username
+                      : userDoc?.displayName}
                   </h2>
                 </div>
                 <button

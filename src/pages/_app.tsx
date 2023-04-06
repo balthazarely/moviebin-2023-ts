@@ -13,18 +13,25 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, FirebaseUser, firestore } from "../../lib/firebase";
 import { useDocumentDataOnce } from "react-firebase-hooks/firestore";
 import GlobalUserProvider from "../../lib/userContext";
+import { useRouter } from "next/router";
 
 export default function App({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(() => new QueryClient());
+  const router = useRouter();
+  const currentRoute = router.pathname;
 
   return (
     <GlobalProvider>
       <GlobalUserProvider>
         <QueryClientProvider client={queryClient}>
           <AuthCheck>
-            <Navbar>
+            {currentRoute === "/login" ? (
               <Component {...pageProps} />
-            </Navbar>
+            ) : (
+              <Navbar>
+                <Component {...pageProps} />
+              </Navbar>
+            )}
           </AuthCheck>
           <Toaster position="top-center" toastOptions={toastConfig} />
           <AddMovieToCollectionModal />
