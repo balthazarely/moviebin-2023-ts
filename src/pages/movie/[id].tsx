@@ -87,7 +87,7 @@ const MoviePage = ({ movie, imagesProps, similarMovies }: IMovieProps) => {
   return (
     <div className="relative">
       <PageWidthWrapper>
-        {/* <MovieBackground imagesProps={imagesProps} /> */}
+        <MovieBackground imagesProps={imagesProps} />
         <div className="grid grid-cols-1 gap-4 py-16 sm:grid-cols-7 ">
           <MovieDetails movie={movie} />
           <div className="z-50 col-span-2 mt-8 flex justify-center gap-2 sm:mt-0">
@@ -205,14 +205,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   getSimilarMovie(movieId);
 
-  // const imagesProps = await getPlaiceholder(
-  //   `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`
-  // );
+  const imagesProps = await getPlaiceholder(
+    `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`
+  );
 
   return {
     props: {
       movie,
-      // imagesProps,
+      imagesProps,
       similarMovies,
     },
   };
