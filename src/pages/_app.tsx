@@ -17,15 +17,15 @@ import { useRouter } from "next/router";
 
 export default function App({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(() => new QueryClient());
-  const router = useRouter();
-  const currentRoute = router.pathname;
+  // const router = useRouter();
+  // const currentRoute = router.pathname;
 
   return (
     <GlobalProvider>
       <GlobalUserProvider>
         <QueryClientProvider client={queryClient}>
           <AuthCheck>
-            {currentRoute === "/login" ? (
+            {/* {currentRoute === "/login" ? (
               <NavbarNoAuth>
                 <Component {...pageProps} />
               </NavbarNoAuth>
@@ -33,7 +33,10 @@ export default function App({ Component, pageProps }: AppProps) {
               <Navbar>
                 <Component {...pageProps} />
               </Navbar>
-            )}
+            )} */}
+            <Navbar>
+              <Component {...pageProps} />
+            </Navbar>
           </AuthCheck>
           <Toaster position="top-center" toastOptions={toastConfig} />
           <AddMovieToCollectionModal />
