@@ -1,17 +1,19 @@
 // import { UserContext } from "lib/context";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../../../lib/firebase";
 import { signUserOut } from "../../../../lib/firebaseAuth";
+import { UserContext } from "../../../../lib/userContext";
 
 export function Navbar({ children }: { children: React.ReactNode }) {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const router = useRouter();
-  // const { user } = useContext(UserContext);
+  const currentRoute = router.pathname;
   // @ts-ignore
   const [user] = useAuthState(auth);
+  const { state } = useContext(UserContext);
 
   const navigateToLink = (link: string) => {
     setIsDrawerOpen(!isDrawerOpen);
@@ -50,9 +52,9 @@ export function Navbar({ children }: { children: React.ReactNode }) {
                 ></path>
               </svg>
             </label>
-          </div>{" "}
+          </div>
           <div className="mx-2 flex-1 px-2 text-xl font-black ">
-            <div className=" ">movieMate</div>
+            <div className="">movieMate</div>
           </div>
           <div className="hidden flex-none lg:block">
             <ul className="menu menu-horizontal">
@@ -72,19 +74,29 @@ export function Navbar({ children }: { children: React.ReactNode }) {
                       tabIndex={0}
                       className="btn-ghost btn-circle avatar btn"
                     >
-                      <div className="w-8 rounded-full">
-                        <img
-                          referrerPolicy="no-referrer"
-                          src={user?.photoURL ?? ""}
-                        />
-                      </div>
+                      {state.userDoc?.photoURL ? (
+                        <div className="w-8 rounded-full">
+                          <img
+                            className="w-16 rounded-full"
+                            referrerPolicy="no-referrer"
+                            src={
+                              state.userDoc?.customProfileImage
+                                ? state.userDoc?.customProfileImage
+                                : state.userDoc?.photoURL
+                            }
+                            alt="Image"
+                          />
+                        </div>
+                      ) : (
+                        <div className="w-8 rounded-full bg-primary "></div>
+                      )}
                     </label>
                     <ul
                       tabIndex={0}
                       className="dropdown-content menu rounded-box menu-compact mt-3 w-52 bg-base-100 p-2 shadow"
                     >
                       <li className="">
-                        <Link href="/" className=" w-full">
+                        <Link href="/settings" className=" w-full">
                           Settings
                         </Link>
                       </li>
@@ -97,16 +109,16 @@ export function Navbar({ children }: { children: React.ReactNode }) {
                   </div>
                 </>
               ) : (
-                <Link href="/login">
-                  <button className="btn-primary btn">Login</button>
-                </Link>
+                <></>
               )}
             </ul>
           </div>
         </div>
-        <div className="z-40 flex flex-col">
-          <main className=" bg-neutra flex-grow">{children}</main>
-          {/* <footer className=" bottom-0 mt-16 h-24 w-full  bg-red-300"></footer> */}
+        <div className="z-40 flex flex-grow flex-col ">
+          <main className="flex-grow  bg-neutral pb-24">{children}</main>
+          {currentRoute !== "/login" && (
+            <footer className="h-24 w-full  bg-base-100"></footer>
+          )}
         </div>
       </div>
       <div className="drawer-side">
@@ -124,9 +136,7 @@ export function Navbar({ children }: { children: React.ReactNode }) {
                   <div onClick={() => navigateToLink("/movies")}>Movies</div>
                 </li>
                 <li>
-                  <div onClick={() => navigateToLink("/collections")}>
-                    Collections
-                  </div>
+                  <div onClick={() => navigateToLink("/profile")}>Profile</div>
                 </li>
                 <li>
                   <div onClick={() => navigateToLink("/users")}>Users</div>
@@ -134,15 +144,26 @@ export function Navbar({ children }: { children: React.ReactNode }) {
               </div>
               <div className="w-full">
                 <div className="mb-4 flex items-center gap-2">
-                  <img
-                    className="w-12 rounded-full"
-                    referrerPolicy="no-referrer"
-                    src={user?.photoURL ?? ""}
-                    alt="Image"
-                  />
+                  {state.userDoc?.photoURL ? (
+                    <img
+                      className="w-12 rounded-full"
+                      referrerPolicy="no-referrer"
+                      src={
+                        state.userDoc?.customProfileImage
+                          ? state.userDoc?.customProfileImage
+                          : state.userDoc?.photoURL
+                      }
+                      alt="Image"
+                    />
+                  ) : (
+                    <div className="h-12 w-12 rounded-full bg-primary "></div>
+                  )}
+
                   <h2 className="text-sm font-bold">
                     <span className="font-normal">Signed in as </span>
-                    {user?.displayName}
+                    {state.userDoc?.username
+                      ? state.userDoc?.username
+                      : state.userDoc?.displayName}
                   </h2>
                 </div>
                 <button

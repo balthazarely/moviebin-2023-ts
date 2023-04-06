@@ -6,6 +6,7 @@ export type UserDoc = {
   recentCollection: string[];
   theme: string;
   uid: string;
+  customProfileImage?: string;
 };
 
 export type Movie = {
@@ -44,4 +45,18 @@ export type NestedDataDocs = {
   movideId: number;
   movieTitle: string;
   order: number;
+};
+
+export type Review = {
+  createdAt: any;
+  movieId: number;
+  movieTitle: string;
+  movieImage: string;
+  rating: number;
+  review: string;
+  userDisplayName: string;
+  reviewReferenceId: string;
+  userId: string;
+  reviewLikes: any[];
+  reviewId?: string;
 };

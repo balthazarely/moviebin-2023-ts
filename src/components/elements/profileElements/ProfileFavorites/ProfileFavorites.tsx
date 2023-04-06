@@ -2,11 +2,7 @@ import { MovieCard } from "@/components/movieCards";
 import React from "react";
 import { AddMovieCollectionDropdown, FullPageLoader } from "../../UIElements";
 
-export function ProfileFavorites({
-  favoritesData,
-  favoritesDataLoading,
-  userRecentCollections,
-}: any) {
+export function ProfileFavorites({ favoritesData, favoritesDataLoading }: any) {
   if (favoritesDataLoading) {
     return <FullPageLoader />;
   }
@@ -27,7 +23,6 @@ export function ProfileFavorites({
         <MovieCard key={movie.id} movie={movie}>
           <AddMovieCollectionDropdown
             userFavorites={favoritesData}
-            userRecentCollections={userRecentCollections}
             movie={movie}
           />
         </MovieCard>

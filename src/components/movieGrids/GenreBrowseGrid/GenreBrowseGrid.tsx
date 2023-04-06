@@ -12,14 +12,12 @@ export function GenreBrowseGrid() {
   );
 
   if (isLoading) {
-    return <FullPageLoader />;
+    return <FullPageLoader className="h-64 " />;
   }
 
   if (error) {
     return <div>errr</div>;
   }
-
-  console.log(data);
 
   return (
     <div>
@@ -38,7 +36,7 @@ export function GenreBrowseGrid() {
 function GenreCard({ genre }: any) {
   return (
     <Link href={`genre/${genre.id}?name=${genre.name.toLowerCase()}`}>
-      <div className=" flex w-full items-center justify-center rounded-md bg-base-100 p-4 text-sm font-normal transition-all duration-200 hover:bg-primary  hover:shadow-xl">
+      <div className="flex w-full items-center justify-center rounded-md bg-base-100 p-4 text-sm font-normal transition-all duration-200 hover:bg-primary hover:text-white  hover:shadow-xl">
         {genre.name}
       </div>
     </Link>

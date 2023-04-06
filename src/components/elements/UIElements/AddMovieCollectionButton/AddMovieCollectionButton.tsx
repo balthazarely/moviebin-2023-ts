@@ -39,17 +39,15 @@ export function AddMovieCollectionButton({ movie }: any) {
         <li className="pointer-events-none bg-neutral p-2 text-xs text-gray-500">
           Recent Collections
         </li>
-        {userData?.recentCollection
-          // ?.slice(0, 4)
-          .map((list: any, idx: number) => {
-            return (
-              <li className="text-xs" key={idx}>
-                <div onClick={() => addMovieToExistingCollection(movie, list)}>
-                  Add to {list}
-                </div>
-              </li>
-            );
-          })}
+        {userData?.recentCollection?.map((list: any, idx: number) => {
+          return (
+            <li className="text-xs" key={idx}>
+              <div onClick={() => addMovieToExistingCollection(movie, list)}>
+                Add to {list}
+              </div>
+            </li>
+          );
+        })}
 
         <li>
           <button

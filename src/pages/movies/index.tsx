@@ -45,25 +45,19 @@ export default function Index() {
   );
 
   function MovieGrid({ param }: { param: string }) {
-    const { isLoading, error, data } = useQuery([param + "-index-query"], () =>
+    const { isLoading, data } = useQuery([param + "-index-query"], () =>
       getMovie(param)
     );
 
     if (isLoading) {
-      return <FullPageLoader />;
-    }
-
-    if (error) {
-      return <div>errr</div>;
+      return <FullPageLoader className="h-96" />;
     }
 
     return (
-      <>
-        <Link href={`/movies/${param}`}>
-          <h2 className="cursor-pointer text-xl font-bold capitalize ">
-            {param.replace(/_/g, " ")} this week
-          </h2>
-        </Link>
+      <div>
+        <h2 className=" text-xl font-bold capitalize ">
+          {param.replace(/_/g, " ")} this week
+        </h2>
         <div className="flex justify-between gap-4">
           {data?.results?.slice(0, 4).map((movie: Movie, idx: number) => {
             return (
@@ -77,7 +71,14 @@ export default function Index() {
             );
           })}
         </div>
-      </>
+        <div className="my-3 w-full text-center">
+          <Link href="/movies/popular">
+            <button className="btn-primary btn-sm btn  text-end text-sm font-extrabold">
+              See more
+            </button>
+          </Link>
+        </div>
+      </div>
     );
   }
 }

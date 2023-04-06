@@ -17,7 +17,7 @@ export default function GenreID() {
           title={name.toString()}
         />
       ) : (
-        <FullPageLoader />
+        <FullPageLoader className="h-96" />
       )}
     </PageWidthWrapper>
   );

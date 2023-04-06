@@ -4,13 +4,21 @@ import { addMovieToCollection } from "../../../../../lib/firebaseMovies";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import { HiHeart } from "react-icons/hi";
 import { addOrRemoveMovieToFavorites } from "../../../../../lib/firebaseFavorites";
+import { auth, firestore } from "../../../../../lib/firebase";
+import { useDocumentData } from "react-firebase-hooks/firestore";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 export function AddMovieCollectionDropdown({
   movie,
   userFavorites,
-  userRecentCollections,
-}: any) {
+}: // userRecentCollections,
+any) {
   const { dispatch } = useContext(UIContext);
+  // @ts-ignore
+  const [user]: FirebaseUser = useAuthState(auth);
+  const userDocRef = firestore.collection("users").doc(user?.uid?.toString());
+  // @ts-ignore
+  const [userDoc, userDocLoading] = useDocumentData<any>(userDocRef);
 
   async function addMovieToExistingCollection(movie: any, collectionName: any) {
     const elem = document.activeElement as HTMLElement;
@@ -55,17 +63,15 @@ export function AddMovieCollectionDropdown({
         <li className="pointer-events-none bg-neutral p-2 text-xs text-gray-500">
           Recent Collections
         </li>
-        {userRecentCollections?.recentCollection
-          // ?.slice(0, 4)
-          .map((list: any, idx: number) => {
-            return (
-              <li className="text-xs" key={idx}>
-                <div onClick={() => addMovieToExistingCollection(movie, list)}>
-                  Add to {list}
-                </div>
-              </li>
-            );
-          })}
+        {userDoc?.recentCollection?.map((list: any, idx: number) => {
+          return (
+            <li className="text-xs" key={idx}>
+              <div onClick={() => addMovieToExistingCollection(movie, list)}>
+                Add to {list}
+              </div>
+            </li>
+          );
+        })}
 
         <li>
           <button

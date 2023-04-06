@@ -4,16 +4,24 @@ import {
   getNestedUserCollections,
   getNestedUserCollectionsAndDocs,
 } from "./api";
-import { useDocumentData } from "react-firebase-hooks/firestore";
-import { doc } from "firebase/firestore";
-import { auth, db, firestore } from "./firebase";
+import { auth, firestore } from "./firebase";
 import { useQuery } from "@tanstack/react-query";
+import { useDocumentDataOnce } from "react-firebase-hooks/firestore";
 
 // Custom hook to read  auth record and user profile doc
 export function useUserData() {
   // @ts-ignore
   const [user] = useAuthState(auth);
   return { user };
+}
+
+export function useUserProfileData() {
+  // @ts-ignore
+  const [user] = useAuthState(auth);
+  const userDocRef = firestore.collection("users").doc(user?.uid?.toString());
+  // @ts-ignore
+  const [userDoc, userDocLoading] = useDocumentDataOnce<any>(userDocRef);
+  return { userDoc, userDocLoading };
 }
 
 export function useNestedUserCollectionsAndDocs() {
@@ -62,8 +70,6 @@ export function useOtherUserNestedCollections(id: any) {
 }
 
 export const useNestedUserCollectionsHook = () => {
-  console.log("AJSFASFLKASFHKLASHFKLASHKLAHSFL");
-
   // @ts-ignore
   const [user] = useAuthState(auth);
 
@@ -76,8 +82,6 @@ export const useNestedUserCollectionsHook = () => {
     ["nestCats", user],
     async () => {
       try {
-        console.log("fetching via Hoook");
-
         return getNestedUserCollections(user?.uid);
       } catch (error) {
         throw new Error(`An error occurred: ${error}`);

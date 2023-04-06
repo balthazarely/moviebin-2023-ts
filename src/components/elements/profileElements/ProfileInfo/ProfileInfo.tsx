@@ -1,14 +1,10 @@
 import { useRouter } from "next/router";
-import React from "react";
-import { FirebaseUser } from "../../../../../lib/firebase";
-import { UserDoc } from "../../../../../lib/types";
+import React, { useContext } from "react";
+import { UserContext } from "../../../../../lib/userContext";
 import { convertToDate } from "../../../../../lib/utils";
 import { SmallLoader } from "../../UIElements/SmallLoader";
 
 interface IProfileInfoProps {
-  user: FirebaseUser;
-  userDoc: UserDoc;
-  userDocLoading: any;
   setTabSelected: (tab: string) => void;
   tabSelected: string;
   movieDataLength: any;
@@ -17,15 +13,13 @@ interface IProfileInfoProps {
 }
 
 export function ProfileInfo({
-  user,
-  userDoc,
-  userDocLoading,
   setTabSelected,
   tabSelected,
   movieDataLength,
   reviewDataLength,
   ProfileFavoritesLength,
 }: IProfileInfoProps) {
+  const { state } = useContext(UserContext);
   const router = useRouter();
   const toggleTabs = (tab: string) => {
     setTabSelected(tab);
@@ -42,20 +36,32 @@ export function ProfileInfo({
   return (
     <div>
       <div className="mt-6 flex items-center justify-start gap-6">
-        <img
-          className="w-16 rounded-full"
-          referrerPolicy="no-referrer"
-          src={user?.photoURL ?? ""}
-          alt="Image"
-        />
+        {state.userDoc?.photoURL ? (
+          <img
+            className="w-16 rounded-full"
+            referrerPolicy="no-referrer"
+            src={
+              state.userDoc?.customProfileImage
+                ? state.userDoc?.customProfileImage
+                : state.userDoc?.photoURL
+            }
+            alt="Image"
+          />
+        ) : (
+          <div className="h-16 w-16 rounded-full bg-primary "></div>
+        )}
         <div>
-          {userDocLoading ? (
+          {!state.userDoc ? (
             <SmallLoader />
           ) : (
             <>
-              <h2 className="text-xl font-bold">{user?.displayName}</h2>
+              <h2 className="text-xl font-bold">
+                {state.userDoc?.username
+                  ? state.userDoc?.username
+                  : state.userDoc?.displayName}
+              </h2>
               <h4 className="text-xs">
-                Member since {convertToDate(userDoc?.createdAt?.toDate())}
+                Member since {convertToDate(state.userDoc?.createdAt?.toDate())}
               </h4>
             </>
           )}

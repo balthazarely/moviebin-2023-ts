@@ -37,6 +37,8 @@ export function ListMovieGridPublic({ movies, listname }: any) {
             gridTemplateColumns:
               gridType === "col"
                 ? "1fr"
+                : movies.length < 4
+                ? "1fr 1fr 1fr 1fr"
                 : "repeat(auto-fit, minmax(120px, 1fr))",
             gridGap: 10,
             gridAutoFlow: "row dense",

@@ -16,9 +16,9 @@ import {
   useDocumentDataOnce,
 } from "react-firebase-hooks/firestore";
 import { CollectionMovieGrid } from "@/components/movieGrids";
-import { UserDoc } from "../../lib/types";
 import { QueryDocumentSnapshot } from "firebase/firestore";
 import { FullPageLoader } from "@/components/elements/UIElements";
+import { UserContext } from "../../lib/userContext";
 
 export default function Collections() {
   const [tabSelected, setTabSelected] = useState<string>("lists");
@@ -27,7 +27,6 @@ export default function Collections() {
   // @ts-ignore
   const [user]: FirebaseUser = useAuthState(auth);
 
-  //
   const userDocRef = firestore.collection("users").doc(user?.uid?.toString());
   const reviewsCollectionRef = firestore
     .collection("usersreviews")
@@ -75,16 +74,9 @@ export default function Collections() {
     return <FullPageLoader />;
   }
 
-  if (error) {
-    return <div>Error: {JSON.stringify(error)}</div>;
-  }
-
   return (
     <PageWidthWrapper>
       <ProfileInfo
-        user={user}
-        userDoc={userDoc}
-        userDocLoading={userDocLoading}
         setTabSelected={setTabSelected}
         tabSelected={tabSelected}
         movieDataLength={data?.length}
@@ -110,7 +102,6 @@ export default function Collections() {
           <ProfileFavorites
             favoritesData={favData}
             favoritesDataLoading={favsDataLoading}
-            userRecentCollections={userDoc}
           />
         )}
       </div>

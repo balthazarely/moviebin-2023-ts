@@ -5,3 +5,4 @@ export { EditCollectionModal } from "./EditCollectionModal";
 export { ReviewMovieModal } from "./ReviewMovieModal";
 export { DeleteReviewModal } from "./DeleteReviewModal";
 export { TestModal } from "./TestModal";
+export { UpdateProfilePictureModal } from "./UpdateProfilePictureModal";

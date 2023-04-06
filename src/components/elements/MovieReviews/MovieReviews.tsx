@@ -4,6 +4,7 @@ import { likeReviewInDB } from "../../../../lib/firebaseReviews";
 import { convertToDate } from "../../../../lib/utils";
 import { HiHeart } from "react-icons/hi";
 import { FullPageLoader } from "../UIElements";
+import { Review } from "../../../../lib/types";
 
 export function MovieReviews({
   reviewData,
@@ -46,7 +47,7 @@ export function MovieReviews({
           ?.sort(
             (a: any, b: any) => b.reviewLikes.length - a.reviewLikes.length
           )
-          .map((review: any, idx: number) => {
+          .map((review: Review, idx: number) => {
             const doesUserLike = review?.reviewLikes?.some(
               (item: any) => item.userID === loggedInUser?.uid
             );

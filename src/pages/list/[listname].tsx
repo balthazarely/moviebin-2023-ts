@@ -50,7 +50,22 @@ export default function Listname() {
   }, [movies, listname]);
 
   if (loading) {
-    return <FullPageLoader />;
+    return <FullPageLoader className="h-96" />;
+  }
+
+  async function deleteMovie(id: any) {
+    try {
+      await deleteMovieFromDB(id, listname);
+      const filteredMovies: any = movies
+        .filter((movie: any) => movie.movieId !== id)
+        .map((movie: any, idx: any) => {
+          return {
+            ...movie,
+            order: idx,
+          };
+        });
+      setMovies(filteredMovies);
+    } catch (error) {}
   }
 
   return (
@@ -99,19 +114,4 @@ export default function Listname() {
       </ModalWrapper>
     </PageWidthWrapper>
   );
-
-  async function deleteMovie(id: any) {
-    try {
-      await deleteMovieFromDB(id, listname);
-      const filteredMovies: any = movies
-        .filter((movie: any) => movie.movieId !== id)
-        .map((movie: any, idx: any) => {
-          return {
-            ...movie,
-            order: idx,
-          };
-        });
-      setMovies(filteredMovies);
-    } catch (error) {}
-  }
 }

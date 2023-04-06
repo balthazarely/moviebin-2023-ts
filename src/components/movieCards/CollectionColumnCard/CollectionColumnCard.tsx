@@ -12,7 +12,7 @@ export function CollectionColumnCard({
   id,
 }: any) {
   return (
-    <div className="relative flex items-center justify-between ">
+    <div className="relative flex items-center justify-between rounded-md bg-base-100 bg-opacity-50 ">
       <div
         className={`absolute top-0 left-0 bg-black p-1 text-xs transition-opacity duration-500 ${
           idx === null ? "opacity-0" : "opacity-100"
