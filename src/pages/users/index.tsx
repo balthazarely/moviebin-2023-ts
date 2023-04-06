@@ -18,8 +18,8 @@ export default function Users() {
   return (
     <PageWidthWrapper>
       <div className="grid grid-cols-4">
-        {users?.map((user) => (
-          <Link href={`/users/${user.uid}`}>
+        {users?.map((user: any, idx: number) => (
+          <Link key={idx} href={`/users/${user.uid}`}>
             <div className="mt-6 flex flex-col items-center justify-center gap-6">
               <img
                 className="w-16 rounded-full"

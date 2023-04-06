@@ -1,9 +1,8 @@
-import { ModalWrapper } from "@/components/elements";
 import { TestModal } from "@/components/modals";
 import React, { useContext, useState } from "react";
 import { UIContext } from "../../lib/context";
 
-export default function test() {
+export default function Test() {
   const { dispatch } = useContext(UIContext);
   const [modalTypeOpen, setModalTypeOpen] = useState<string>("");
   const [testText, settestText] = useState<string>("test");
@@ -21,9 +20,9 @@ export default function test() {
       </div>
       <ChildComponent testText={testText} />
       <OtherChildComponent setModalTypeOpen={setModalTypeOpen} />
-      <ModalWrapper>
-        {modalTypeOpen === "test-modal" && <TestModal />}
-      </ModalWrapper>
+      {/* <ModalWrapper> */}
+      {modalTypeOpen === "test-modal" && <TestModal />}
+      {/* </ModalWrapper> */}
     </div>
   );
 }

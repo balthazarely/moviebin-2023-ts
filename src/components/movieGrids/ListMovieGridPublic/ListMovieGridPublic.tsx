@@ -45,7 +45,7 @@ export function ListMovieGridPublic({ movies, listname }: any) {
           }}
         >
           {movies.map((movie: any, idx: number) => (
-            <div>
+            <div key={idx}>
               {gridType === "col" ? (
                 <div className="relative flex items-center justify-between ">
                   <div
@@ -58,6 +58,7 @@ export function ListMovieGridPublic({ movies, listname }: any) {
 
                   <div className="flex items-center gap-4">
                     <img
+                      alt="movie-image"
                       className=" h-full w-16 object-cover"
                       src={`https://image.tmdb.org/t/p/w200/${movie.image}`}
                     />
@@ -78,6 +79,7 @@ export function ListMovieGridPublic({ movies, listname }: any) {
 
                   <div>
                     <img
+                      alt="movie-image"
                       className=" h-full w-full object-cover"
                       src={`https://image.tmdb.org/t/p/w200/${movie.image}`}
                     />

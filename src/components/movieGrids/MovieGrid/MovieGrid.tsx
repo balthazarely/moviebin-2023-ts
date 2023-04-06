@@ -56,10 +56,6 @@ export function MovieGrid({ fetchFn, title, query }: IMovieGridProps) {
     return <FullPageLoader />;
   }
 
-  if (isError) {
-    return <h2>"error"</h2>;
-  }
-
   return (
     <>
       <h2 className="cursor-pointer text-xl font-bold capitalize ">{title}</h2>

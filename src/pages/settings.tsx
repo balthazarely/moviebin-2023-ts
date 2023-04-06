@@ -8,7 +8,7 @@ import { ModalWrapper } from "@/components/elements/UIElements";
 import { UpdateProfilePictureModal } from "@/components/modals";
 import { UIContext } from "../../lib/context";
 
-export default function settings() {
+export default function Settings() {
   const { dispatch } = useContext(UIContext);
 
   // @ts-ignore

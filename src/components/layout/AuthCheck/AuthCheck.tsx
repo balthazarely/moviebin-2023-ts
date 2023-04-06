@@ -32,11 +32,11 @@ export function AuthCheck({ children }: any) {
       });
       return unsubscribe;
     }
-  }, [user]);
+  }, [user, userDoc, dispatch]);
 
   useEffect(() => {
     dispatch({ type: "SET_USER_DOC", payload: userDoc });
-  }, [userDoc]);
+  }, [user, userDoc, dispatch]);
 
   return user?.uid ? (
     children
