@@ -137,8 +137,9 @@ export default function Settings() {
                 <span className="label-text-alt">Set Theme</span>
               </label>
               <div className="flex max-w-md flex-wrap gap-2">
-                {themes.map((theme: any) => (
+                {themes.map((theme: any, idx: number) => (
                   <button
+                    key={idx}
                     onClick={() => updateThemeInFirebase(theme.name)}
                     className={`btn-sm btn  text-white ${theme.color} `}
                   >
