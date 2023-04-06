@@ -87,7 +87,7 @@ const MoviePage = ({ movie, imagesProps, similarMovies }: IMovieProps) => {
   return (
     <div className="relative">
       <PageWidthWrapper>
-        <MovieBackground imagesProps={imagesProps} />
+        {/* <MovieBackground imagesProps={imagesProps} /> */}
         <div className="grid grid-cols-1 gap-4 py-16 sm:grid-cols-7 ">
           <MovieDetails movie={movie} />
           <div className="z-50 col-span-2 mt-8 flex justify-center gap-2 sm:mt-0">
@@ -141,8 +141,8 @@ const MoviePage = ({ movie, imagesProps, similarMovies }: IMovieProps) => {
       <div className="relative z-50 col-span-5 grid  grid-cols-7 gap-4  ">
         <div className="col-span-2 flex items-start justify-center ">
           <Image
-            src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
-            alt={movie.title}
+            src={`https://image.tmdb.org/t/p/w200${movie?.poster_path}`}
+            alt={movie?.title}
             width={300}
             height={300}
             className="  aspect-2/3 object-contain" //sm:fixed
@@ -161,7 +161,7 @@ const MoviePage = ({ movie, imagesProps, similarMovies }: IMovieProps) => {
             <div className="mt-2 flex gap-2 text-sm">
               {movie?.genres?.map((genre: any, idx: number) => {
                 return (
-                  <div key={idx} className="badge badge-primary badge-sm">
+                  <div key={idx} className="badge-primary badge badge-sm">
                     {genre.name}
                   </div>
                 );
@@ -205,14 +205,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   getSimilarMovie(movieId);
 
-  const imagesProps = await getPlaiceholder(
-    `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`
-  );
+  // const imagesProps = await getPlaiceholder(
+  //   `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`
+  // );
 
   return {
     props: {
       movie,
-      imagesProps,
+      // imagesProps,
       similarMovies,
     },
   };

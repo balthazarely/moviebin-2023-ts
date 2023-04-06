@@ -37,7 +37,7 @@ export function AddMovieFavoritesButton({ movie }: any) {
     <button onClick={addRemoveFavorites} className="btn-primary btn  w-[72px]">
       <HiHeart
         className={`${
-          isMovieFavorites(movie.id)
+          isMovieFavorites(movie?.id)
             ? "text-accent"
             : "text-gray-300 hover:text-white"
         } h-6 w-8 cursor-pointer  text-sm transition-all duration-100  `}
