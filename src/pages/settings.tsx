@@ -3,7 +3,10 @@ import { useContext, useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useDocumentData } from "react-firebase-hooks/firestore";
 import { auth, firestore, FirebaseUser } from "../../lib/firebase";
-import { addOrUpdateCustomUsername } from "../../lib/firebaseUsernames";
+import {
+  addOrUpdateCustomUsername,
+  updateThemeInFirebase,
+} from "../../lib/firebaseUsernames";
 import { ModalWrapper } from "@/components/elements/UIElements";
 import { UpdateProfilePictureModal } from "@/components/modals";
 import { UIContext } from "../../lib/context";
@@ -65,6 +68,16 @@ export default function Settings() {
     }
   }
 
+  const themes = [
+    { name: "dark", color: "bg-sky-800 " },
+    { name: "night", color: "bg-blue-800" },
+    { name: "business", color: "bg-slate-700 " },
+    { name: "luxury", color: "bg-yellow-800" },
+    { name: "synthwave", color: "bg-pink-400" },
+    { name: "forest", color: "bg-green-600" },
+    { name: "dracula", color: "bg-cyan-900" },
+  ];
+
   return (
     <>
       <PageWidthWrapper>
@@ -95,29 +108,46 @@ export default function Settings() {
             </div>
           </div>
 
-          <form
-            className="form-control w-full p-4  sm:w-72"
-            onSubmit={(e) => updateCustomUsername(e)}
-          >
-            <label className="label">
-              <span className="label-text-alt">Username</span>
-            </label>
-            <input
-              value={username}
-              onChange={handleInputChange}
-              type="text"
-              placeholder="Type here"
-              className={`input-bordered input w-64 ${
-                errorMsg === "" ? "" : "input-error"
-              }`}
-            />
-            <div className=" text-warning"> {errorMsg && errorMsg}</div>
-            <div>
-              <button type="submit" className="btn-primary btn mt-4">
-                Save
-              </button>
+          <div className="2 flex flex-col p-4 ">
+            <form
+              className="form-control w-full  sm:w-72"
+              onSubmit={(e) => updateCustomUsername(e)}
+            >
+              <label className="label">
+                <span className="label-text-alt">Username</span>
+              </label>
+              <input
+                value={username}
+                onChange={handleInputChange}
+                type="text"
+                placeholder="Type here"
+                className={`input-bordered input w-64 ${
+                  errorMsg === "" ? "" : "input-error"
+                }`}
+              />
+              <div className=" text-warning"> {errorMsg && errorMsg}</div>
+              <div>
+                <button type="submit" className="btn-primary btn mt-4">
+                  Save
+                </button>
+              </div>
+            </form>
+            <div className="mt-8">
+              <label className="label">
+                <span className="label-text-alt">Set Theme</span>
+              </label>
+              <div className="flex max-w-md flex-wrap gap-2">
+                {themes.map((theme: any) => (
+                  <button
+                    onClick={() => updateThemeInFirebase(theme.name)}
+                    className={`btn-sm btn  text-white ${theme.color} `}
+                  >
+                    {theme.name}
+                  </button>
+                ))}
+              </div>
             </div>
-          </form>
+          </div>
         </div>
       </PageWidthWrapper>
       <ModalWrapper>

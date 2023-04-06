@@ -1,7 +1,7 @@
 // import { UserContext } from "lib/context";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import {
   useCollectionDataOnce,
@@ -29,6 +29,12 @@ export function Navbar({ children }: { children: React.ReactNode }) {
   const userDocRef = firestore.collection("users").doc(user?.uid?.toString());
   // @ts-ignore
   const [userDoc] = useDocumentData<any>(userDocRef);
+
+  useEffect(() => {
+    if (userDoc) {
+      document.querySelector("html")?.setAttribute("data-theme", userDoc.theme);
+    }
+  }, [userDoc]);
 
   return (
     <div className="0 drawer">

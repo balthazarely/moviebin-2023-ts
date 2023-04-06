@@ -34,3 +34,13 @@ export async function addOrUpdateCustomUsername(username: string) {
     toast.error(`Something went wrong...`);
   }
 }
+
+export async function updateThemeInFirebase(theme: string) {
+  const userDocRef = firestore.collection("users").doc(auth.currentUser?.uid);
+  try {
+    userDocRef.update({
+      theme: theme,
+    });
+    toast.success(`Theme updated to ${theme}`);
+  } catch (error) {}
+}

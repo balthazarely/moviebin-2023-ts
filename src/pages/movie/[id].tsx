@@ -90,7 +90,7 @@ const MoviePage = ({ movie, imagesProps, similarMovies }: IMovieProps) => {
         <MovieBackground imagesProps={imagesProps} />
         <div className="grid grid-cols-1 gap-4 py-16 sm:grid-cols-7 ">
           <MovieDetails movie={movie} />
-          <div className="col-span-2 mt-8 flex justify-center gap-2 sm:mt-0">
+          <div className="z-50 col-span-2 mt-8 flex justify-center gap-2 sm:mt-0">
             <AddMovieCollectionButton movie={movie} />
             <AddMovieFavoritesButton movie={movie} />
           </div>
@@ -161,7 +161,7 @@ const MoviePage = ({ movie, imagesProps, similarMovies }: IMovieProps) => {
             <div className="mt-2 flex gap-2 text-sm">
               {movie?.genres?.map((genre: any, idx: number) => {
                 return (
-                  <div key={idx} className="badge-primary badge badge-sm">
+                  <div key={idx} className="badge badge-primary badge-sm">
                     {genre.name}
                   </div>
                 );

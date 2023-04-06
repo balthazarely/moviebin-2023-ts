@@ -3,7 +3,7 @@ import type { AppProps } from "next/app";
 import { useContext, useEffect, useMemo, useState } from "react";
 import GlobalProvider, { UIContext } from "../../lib/context";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Navbar } from "@/components/navigation";
+import { Navbar, NavbarNoAuth } from "@/components/navigation";
 import { Toaster } from "react-hot-toast";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { AuthCheck } from "@/components/layout";
@@ -26,7 +26,9 @@ export default function App({ Component, pageProps }: AppProps) {
         <QueryClientProvider client={queryClient}>
           <AuthCheck>
             {currentRoute === "/login" ? (
-              <Component {...pageProps} />
+              <NavbarNoAuth>
+                <Component {...pageProps} />
+              </NavbarNoAuth>
             ) : (
               <Navbar>
                 <Component {...pageProps} />
