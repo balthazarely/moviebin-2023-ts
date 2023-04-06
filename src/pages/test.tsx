@@ -3,7 +3,6 @@ import React, { useContext, useState } from "react";
 import { UIContext } from "../../lib/context";
 
 export default function Test() {
-  const { dispatch } = useContext(UIContext);
   const [modalTypeOpen, setModalTypeOpen] = useState<string>("");
   const [testText, settestText] = useState<string>("test");
 
