@@ -68,9 +68,10 @@ export function MovieReviews({
                 <div className="rating rating-xs">
                   {Array(review?.rating)
                     .fill(0)
-                    .map((star: any) => {
+                    .map((star: any, idx: number) => {
                       return (
                         <input
+                          key={idx}
                           type="radio"
                           disabled
                           name="rating-2"

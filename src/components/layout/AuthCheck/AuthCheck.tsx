@@ -23,20 +23,25 @@ export function AuthCheck({ children }: any) {
   }
 
   useEffect(() => {
+    let unsubscribe: any;
     if (user) {
       const userDocRef = firestore
         .collection("users")
         .doc(user?.uid?.toString());
-      const unsubscribe = userDocRef.onSnapshot((snapshot) => {
+      unsubscribe = userDocRef.onSnapshot((snapshot) => {
         setUserDoc(snapshot.data());
       });
-      return unsubscribe;
     }
-  }, [user, userDoc, dispatch]);
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    };
+  }, [user]);
 
   useEffect(() => {
     dispatch({ type: "SET_USER_DOC", payload: userDoc });
-  }, [user, userDoc, dispatch]);
+  }, [userDoc, dispatch]);
 
   return user?.uid ? (
     children
