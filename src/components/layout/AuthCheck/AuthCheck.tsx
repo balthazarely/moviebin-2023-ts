@@ -5,16 +5,16 @@ import { auth } from "../../../../lib/firebase";
 
 // Component's children only shown to logged-in users
 export function AuthCheck({ children }: any) {
-  const router = useRouter();
-  const currentRoute = router.pathname;
-  const allowedRoutes = ["/login"];
+  // const router = useRouter();
+  // const currentRoute = router.pathname;
+  // const allowedRoutes = ["/login"];
 
-  if (allowedRoutes.includes(currentRoute)) {
-    return children;
-  }
+  // if (allowedRoutes.includes(currentRoute)) {
+  //   return children;
+  // }
 
   // @ts-ignore
-  const [user] = useAuthState(auth);
+  // const [user] = useAuthState(auth);
 
   // useEffect(() => {
   //   if (!user?.uid) {
@@ -22,11 +22,12 @@ export function AuthCheck({ children }: any) {
   //   }
   // }, [user]);
 
-  return user?.uid ? (
-    children
-  ) : (
-    <div className="flex h-screen flex-col items-center justify-center gap-4">
-      <FullPageLoader />
-    </div>
-  );
+  // return user?.uid ? (
+  //   children
+  // ) : (
+  //   <div className="flex h-screen flex-col items-center justify-center gap-4">
+  //     <FullPageLoader />
+  //   </div>
+  // );
+  return children;
 }
