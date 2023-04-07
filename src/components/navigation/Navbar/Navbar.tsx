@@ -8,7 +8,6 @@ import { useDocumentData } from "react-firebase-hooks/firestore";
 import { SiGithub } from "react-icons/si";
 import { auth, firestore } from "../../../../lib/firebase";
 import { signUserOut } from "../../../../lib/firebaseAuth";
-import { MdLocalMovies } from "react-icons/md";
 import { RiMovie2Fill } from "react-icons/ri";
 
 export function Navbar({ children }: { children: React.ReactNode }) {

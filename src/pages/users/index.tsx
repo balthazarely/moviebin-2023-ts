@@ -21,13 +21,23 @@ export default function Users() {
         {users?.map((user: any, idx: number) => (
           <Link key={idx} href={`/users/${user.uid}`}>
             <div className="mt-6 flex flex-col items-center justify-center gap-6">
-              <img
-                className="w-16 rounded-full"
-                referrerPolicy="no-referrer"
-                src={user?.photoURL ?? ""}
-                alt="Image"
-              />
-              <div>{user.displayName}</div>
+              {user?.photoURL ? (
+                <div className="h-16 w-16 rounded-full object-cover">
+                  <img
+                    className="h-16 w-16  rounded-full object-cover"
+                    referrerPolicy="no-referrer"
+                    src={
+                      user?.customProfileImage
+                        ? user?.customProfileImage
+                        : user?.photoURL
+                    }
+                    alt="Image"
+                  />
+                </div>
+              ) : (
+                <div className="w-8 rounded-full bg-primary "></div>
+              )}
+              <div> {user?.username ? user?.username : user?.displayName}</div>
             </div>
           </Link>
         ))}

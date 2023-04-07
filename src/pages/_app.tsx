@@ -3,27 +3,34 @@ import type { AppProps } from "next/app";
 import { useState } from "react";
 import GlobalProvider from "../../lib/context";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Navbar } from "@/components/navigation";
+import { Navbar, NavbarNoAuth } from "@/components/navigation";
 import { Toaster } from "react-hot-toast";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { AuthCheck } from "@/components/layout";
 import { AddMovieToCollectionModal } from "@/components/modals";
 import GlobalUserProvider from "../../lib/userContext";
-import { useRouter } from "next/router";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../lib/firebase";
+import Login from "./login";
 
 export default function App({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(() => new QueryClient());
-  const router = useRouter();
+
+  // @ts-ignore
+  const [user] = useAuthState(auth);
 
   return (
     <GlobalProvider>
       <GlobalUserProvider>
         <QueryClientProvider client={queryClient}>
-          <AuthCheck>
+          {user?.uid ? (
             <Navbar>
               <Component {...pageProps} />
             </Navbar>
-          </AuthCheck>
+          ) : (
+            <NavbarNoAuth>
+              <Login />
+            </NavbarNoAuth>
+          )}
           <Toaster position="top-center" toastOptions={toastConfig} />
           <AddMovieToCollectionModal />
           {/* <ReactQueryDevtools initialIsOpen={false} /> */}

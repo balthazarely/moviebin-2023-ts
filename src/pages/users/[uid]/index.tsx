@@ -74,14 +74,25 @@ export default function SingleUser() {
   return (
     <PageWidthWrapper>
       <div className="mt-6 flex items-center justify-start gap-6">
-        <img
-          className="w-16 rounded-full"
-          referrerPolicy="no-referrer"
-          src={user?.photoURL ?? ""}
-          alt="Image"
-        />
+        {user?.photoURL ? (
+          <img
+            className="aspect-square w-16 rounded-full object-cover"
+            referrerPolicy="no-referrer"
+            src={
+              user?.customProfileImage
+                ? user?.customProfileImage
+                : user?.photoURL
+            }
+            alt="Image"
+          />
+        ) : (
+          <div className="h-12 w-12 rounded-full bg-primary "></div>
+        )}
         <div>
-          <h2 className="text-xl font-bold">{user?.displayName}</h2>
+          <h2 className="text-xl font-bold">
+            {" "}
+            {user?.username ? user?.username : user?.displayName}
+          </h2>
           <h4 className="text-xs">
             Member since {convertToDate(user?.createdAt.toDate())}
           </h4>

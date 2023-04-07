@@ -5,8 +5,6 @@ import { auth } from "../../../../lib/firebase";
 
 // Component's children only shown to logged-in users
 export function AuthCheck({ children }: any) {
-  // @ts-ignore
-  const [user] = useAuthState(auth);
   const router = useRouter();
   const currentRoute = router.pathname;
   const allowedRoutes = ["/login"];
@@ -14,6 +12,15 @@ export function AuthCheck({ children }: any) {
   if (allowedRoutes.includes(currentRoute)) {
     return children;
   }
+
+  // @ts-ignore
+  const [user] = useAuthState(auth);
+
+  // useEffect(() => {
+  //   if (!user?.uid) {
+  //     router.push("/login");
+  //   }
+  // }, [user]);
 
   return user?.uid ? (
     children

@@ -1,17 +1,9 @@
 // import { UserContext } from "lib/context";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useContext, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import {
-  useCollectionDataOnce,
-  useDocumentData,
-  useDocumentDataOnce,
-} from "react-firebase-hooks/firestore";
+import React, { useState } from "react";
+import { RiMovie2Fill } from "react-icons/ri";
 import { SiGithub } from "react-icons/si";
-import { auth, firestore } from "../../../../lib/firebase";
-import { signUserOut } from "../../../../lib/firebaseAuth";
-import { UserContext } from "../../../../lib/userContext";
 
 export function NavbarNoAuth({ children }: { children: React.ReactNode }) {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -57,7 +49,10 @@ export function NavbarNoAuth({ children }: { children: React.ReactNode }) {
             </label>
           </div>
           <div className="mx-2 flex-1 px-2 text-xl font-black ">
-            <div className="">movieMate</div>
+            <Link href="/" className="flex items-center gap-1">
+              <RiMovie2Fill className="text-3xl" />
+              <div className="">moviemate</div>
+            </Link>
           </div>
         </div>
         <div className="z-40 flex flex-grow flex-col ">
