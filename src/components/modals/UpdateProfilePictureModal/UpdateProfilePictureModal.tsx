@@ -93,6 +93,7 @@ export function UpdateProfilePictureModal({ user, userDoc }: any) {
       <button
         className={`btn-primary btn ${imageUploading ? "loading" : ""}`}
         onClick={uploadCustomProfileImage}
+        disabled={!imageUpload}
       >
         Update Image
       </button>

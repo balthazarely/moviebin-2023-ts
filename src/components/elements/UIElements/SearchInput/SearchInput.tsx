@@ -4,6 +4,8 @@ import { searchForMovies } from "../../../../../lib/api";
 import { SmallLoader } from "../SmallLoader";
 import { HiXMark } from "react-icons/hi2";
 
+import { MobileSearchInput } from "../MobileSearchInput";
+
 export function SearchInput() {
   const [query, setQuery] = useState<string>("");
   const [results, setResults] = useState([]);
@@ -33,39 +35,41 @@ export function SearchInput() {
   };
 
   return (
-    <div className="relative z-50 mb-4 flex w-full justify-end">
-      <input
-        type="text"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        placeholder="Search for movies"
-        className="input-bordered input input-md w-full max-w-xs"
-      />
-      <div className="absolute top-3 right-3">
-        {loading ? <SmallLoader /> : <></>}
-      </div>
-      <div className="absolute top-3 right-3">
-        {!loading && query.length ? (
-          <HiXMark
-            className="cursor-pointer text-2xl text-gray-400 "
-            onClick={clearAll}
-          />
-        ) : (
+    <div className="mb-4 ">
+      <div className="desktop-search relative z-50 hidden w-full justify-end sm:flex">
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search for movies"
+          className="input-bordered input input-md w-full max-w-xs"
+        />
+        <div className="absolute top-3 right-3">
+          {loading ? <SmallLoader /> : <></>}
+        </div>
+        <div className="absolute top-3 right-3">
+          {!loading && query.length ? (
+            <HiXMark
+              className="cursor-pointer text-2xl text-gray-400 "
+              onClick={clearAll}
+            />
+          ) : (
+            <></>
+          )}
+        </div>
+        {totalResults === null ? (
           <></>
+        ) : (
+          <div
+            className={`results-container absolute top-12 w-full  max-w-xs bg-base-100 ${
+              totalResults < 1 ? "h-16" : "h-64 overflow-y-scroll"
+            }`}
+          >
+            <ResultsDrawer results={results} totalResults={totalResults} />
+          </div>
         )}
       </div>
-
-      {totalResults === null ? (
-        <></>
-      ) : (
-        <div
-          className={`results-container absolute top-12 w-full  max-w-xs bg-base-100 ${
-            totalResults < 1 ? "h-16" : "h-64 overflow-y-scroll"
-          }`}
-        >
-          <ResultsDrawer results={results} totalResults={totalResults} />
-        </div>
-      )}
+      <MobileSearchInput className="visible sm:hidden" />
     </div>
   );
 

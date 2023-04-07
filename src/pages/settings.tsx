@@ -69,13 +69,16 @@ export default function Settings() {
   }
 
   const themes = [
-    { name: "dark", color: "bg-sky-800 " },
-    { name: "night", color: "bg-blue-800" },
-    { name: "business", color: "bg-slate-700 " },
-    { name: "luxury", color: "bg-yellow-800" },
-    { name: "synthwave", color: "bg-pink-400" },
-    { name: "forest", color: "bg-green-600" },
-    { name: "dracula", color: "bg-cyan-900" },
+    { name: "dark", color: "bg-sky-800", textColor: "text-white" },
+    { name: "night", color: "bg-blue-800", textColor: "text-white" },
+    { name: "business", color: "bg-slate-700 ", textColor: "text-white" },
+    { name: "luxury", color: "bg-yellow-800", textColor: "text-white" },
+    { name: "synthwave", color: "bg-pink-400", textColor: "text-white" },
+    { name: "forest", color: "bg-green-600", textColor: "text-white" },
+    { name: "dracula", color: "bg-cyan-900", textColor: "text-white" },
+    { name: "light", color: "bg-white", textColor: "text-black" },
+    { name: "garden", color: "bg-lime-400", textColor: "text-black" },
+    { name: "corporate", color: "bg-blue-500", textColor: "text-white" },
   ];
 
   return (
@@ -108,29 +111,31 @@ export default function Settings() {
             </div>
           </div>
 
-          <div className="2 flex flex-col p-4 ">
+          <div className="flex flex-col p-4 ">
             <form
-              className="form-control w-full  sm:w-72"
+              className="form-control w-full sm:w-72"
               onSubmit={(e) => updateCustomUsername(e)}
             >
               <label className="label">
                 <span className="label-text-alt">Username</span>
               </label>
-              <input
-                value={username}
-                onChange={handleInputChange}
-                type="text"
-                placeholder="Type here"
-                className={`input-bordered input w-64 ${
-                  errorMsg === "" ? "" : "input-error"
-                }`}
-              />
-              <div className=" text-warning"> {errorMsg && errorMsg}</div>
-              <div>
-                <button type="submit" className="btn-primary btn mt-4">
-                  Save
+
+              <div className="input-group">
+                <input
+                  value={username}
+                  onChange={handleInputChange}
+                  type="text"
+                  placeholder="Type here"
+                  className={`input-bordered input w-64 ${
+                    errorMsg === "" ? "" : "input-error"
+                  }`}
+                />
+                <button className="btn-primary btn" type="submit">
+                  save
                 </button>
               </div>
+
+              <div className=" text-warning"> {errorMsg && errorMsg}</div>
             </form>
             <div className="mt-8">
               <label className="label">
@@ -141,7 +146,7 @@ export default function Settings() {
                   <button
                     key={idx}
                     onClick={() => updateThemeInFirebase(theme.name)}
-                    className={`btn-sm btn  text-white ${theme.color} `}
+                    className={`btn-sm ${theme.color} ${theme.textColor} `}
                   >
                     {theme.name}
                   </button>

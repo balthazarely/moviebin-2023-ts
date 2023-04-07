@@ -131,7 +131,7 @@ export function Navbar({ children }: { children: React.ReactNode }) {
           </div>
         </div>
         <div className="z-40 flex flex-grow flex-col ">
-          <main className="flex-grow  bg-neutral pb-24">{children}</main>
+          <main className="flex-grow  bg-base-100 pb-24">{children}</main>
           <footer
             className={`"h-24 w-full  ${
               currentRoute === "/login" ? "bg-neutral" : "bg-base-100"
@@ -154,7 +154,7 @@ export function Navbar({ children }: { children: React.ReactNode }) {
           onClick={() => setIsDrawerOpen(false)}
           className="drawer-overlay "
         ></label>
-        <ul className="menu flex w-80 flex-col justify-between bg-base-100 p-4">
+        <ul className="menu flex w-80 flex-col justify-between  bg-base-100 p-6">
           {/* <!-- Sidebar content here --> */}
           {user ? (
             <>
@@ -168,12 +168,17 @@ export function Navbar({ children }: { children: React.ReactNode }) {
                 <li>
                   <div onClick={() => navigateToLink("/users")}>Users</div>
                 </li>
+                <li>
+                  <div onClick={() => navigateToLink("/settings")}>
+                    Settings
+                  </div>
+                </li>
               </div>
               <div className="w-full">
                 <div className="mb-4 flex items-center gap-2">
                   {userDoc?.photoURL ? (
                     <img
-                      className="w-12 rounded-full"
+                      className="aspect-square w-12 rounded-full"
                       referrerPolicy="no-referrer"
                       src={
                         userDoc?.customProfileImage

@@ -55,7 +55,7 @@ export function MovieReviews({
             return (
               <div key={idx} className="relative rounded-lg bg-base-200 p-2">
                 {loggedInUser?.uid === review.userId && (
-                  <div className="op-2 badge badge-primary badge-sm absolute right-2">
+                  <div className="op-2 badge-primary badge badge-sm absolute right-2">
                     My Review
                   </div>
                 )}
@@ -75,7 +75,7 @@ export function MovieReviews({
                           type="radio"
                           disabled
                           name="rating-2"
-                          className="mask mask-star-2 bg-accent "
+                          className="mask mask-star-2 bg-primary "
                         />
                       );
                     })}

@@ -47,7 +47,7 @@ export function ProfileReviews({ reviewDataWithId, reviewDataLoading }: any) {
                               type="radio"
                               disabled
                               name="rating-2"
-                              className="mask mask-star-2 bg-accent "
+                              className="mask mask-star-2 bg-primary "
                             />
                           );
                         })}

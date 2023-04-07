@@ -26,9 +26,9 @@ export const getSimilarMovie = async (id: any) => {
   return res.json();
 };
 
-export const searchForMovies = async (query: any) => {
+export const searchForMovies = async ({ query, pageParam = 1 }: any) => {
   const res = await fetch(
-    `https://api.themoviedb.org/3/search/movie?api_key=${process.env.NEXT_PUBLIC_OMDB_API_KEY}&language=en-US&page=1&include_adult=false&query=${query}`
+    `https://api.themoviedb.org/3/search/movie?api_key=${process.env.NEXT_PUBLIC_OMDB_API_KEY}&language=en-US&include_adult=false&query=${query}&page=${pageParam}`
   );
   return res.json();
 };

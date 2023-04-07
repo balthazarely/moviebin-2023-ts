@@ -20,21 +20,19 @@ export function CollectionGridCard({
       >
         {/* {idx === null ? "" : idx + 1} */}
       </div>
-      <RiDragMoveFill
-        {...attributes}
-        {...listeners}
-        className="absolute top-0 right-0 h-10 w-10 rounded-sm bg-base-200 bg-opacity-70 p-3 text-3xl  hover:bg-base-100"
-      />
+
       <div>
         <img
-          className=" h-full w-full object-cover"
+          {...attributes}
+          {...listeners}
+          className=" h-full w-full cursor-move object-cover"
           src={`https://image.tmdb.org/t/p/w200/${image}`}
         />
       </div>
       <div className="flex w-full justify-between">
         <h2 className="p-2 text-left text-xs font-bold">{title}</h2>
         <div className="dropdown-end dropdown dropdown-top">
-          <label tabIndex={0} className="btn bg-transparent ">
+          <label tabIndex={0} className="btn-ghost btn ">
             <HiOutlineDotsHorizontal className="h-4 w-4 text-sm" />
           </label>
 

@@ -58,7 +58,7 @@ export default function Index() {
         <h2 className=" text-xl font-bold capitalize ">
           {param.replace(/_/g, " ")} this week
         </h2>
-        <div className="flex justify-between gap-4">
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
           {data?.results?.slice(0, 4).map((movie: Movie, idx: number) => {
             return (
               <MovieCard key={idx} movie={movie}>

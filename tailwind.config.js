@@ -26,6 +26,9 @@ module.exports = {
       "business",
       "luxury",
       "dracula",
+      "light",
+      "garden",
+      "corporate",
     ],
   },
 };

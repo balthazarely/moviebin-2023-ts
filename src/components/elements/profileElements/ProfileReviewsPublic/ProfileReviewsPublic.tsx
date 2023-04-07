@@ -28,13 +28,12 @@ export function ProfileReviewsPublic({ reviewDataWithId }: any) {
                           type="radio"
                           disabled
                           name="rating-2"
-                          className="mask mask-star-2 bg-accent "
+                          className="mask mask-star-2 bg-primary "
                         />
                       );
                     })}
                 </div>
                 <div className="mt-2 text-sm">{review?.review}</div>
-                <div className="my-4 border-b-2 border-base-100"></div>
               </div>
             </div>
           </div>

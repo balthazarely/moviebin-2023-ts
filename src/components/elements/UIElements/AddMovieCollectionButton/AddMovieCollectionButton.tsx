@@ -30,7 +30,7 @@ export function AddMovieCollectionButton({ movie }: any) {
   return (
     <div className={`dropdown-end dropdown rounded-none   `}>
       <label tabIndex={0}>
-        <button className="btn-primary btn  ">Add to Collection</button>
+        <button className="btn-primary btn">Add to Collection</button>
       </label>
       <ul
         tabIndex={0}

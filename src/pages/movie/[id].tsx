@@ -88,9 +88,10 @@ const MoviePage = ({ movie, imagesProps, similarMovies }: IMovieProps) => {
     <div className="relative">
       <PageWidthWrapper>
         <MovieBackground imagesProps={imagesProps} />
-        <div className="grid grid-cols-1 gap-4 py-16 sm:grid-cols-7 ">
+        <div className="grid grid-cols-1 gap-4  py-16 sm:grid-cols-7">
           <MovieDetails movie={movie} />
-          <div className="z-50 col-span-2 mt-8 flex justify-center gap-2 sm:mt-0">
+
+          <div className="z-50 mt-8 flex w-full  justify-center gap-2  sm:col-span-2 sm:mt-0">
             <AddMovieCollectionButton movie={movie} />
             <AddMovieFavoritesButton movie={movie} />
           </div>
@@ -138,7 +139,7 @@ const MoviePage = ({ movie, imagesProps, similarMovies }: IMovieProps) => {
 
   function MovieDetails({ movie }: { movie: Movie }) {
     return (
-      <div className="relative z-50 col-span-5 grid  grid-cols-7 gap-4  ">
+      <div className="relative z-50 grid grid-cols-7 gap-4 sm:col-span-5  ">
         <div className="col-span-2 flex items-start justify-center ">
           <Image
             src={`https://image.tmdb.org/t/p/w200${movie?.poster_path}`}
@@ -158,7 +159,7 @@ const MoviePage = ({ movie, imagesProps, similarMovies }: IMovieProps) => {
             <h3 className="text-xl text-gray-100">
               {movie?.release_date.slice(0, 4)}
             </h3>
-            <div className="mt-2 flex gap-2 text-sm">
+            <div className="mt-2 flex flex-wrap gap-2 text-sm">
               {movie?.genres?.map((genre: any, idx: number) => {
                 return (
                   <div key={idx} className="badge-primary badge badge-sm">
@@ -179,17 +180,19 @@ const MoviePage = ({ movie, imagesProps, similarMovies }: IMovieProps) => {
       <div className="absolute top-0 left-0 z-0 h-96	w-full bg-base-100 bg-transparent bg-cover bg-center bg-no-repeat">
         <div className="absolute top-0 left-0 z-10 h-full w-full bg-neutral bg-opacity-40"></div>
         <div className=" from-10% to-90% absolute top-0 left-0 z-10 h-full w-full bg-gradient-to-t from-neutral to-transparent"></div>
-        <Image
-          src={imagesProps.img.src}
-          placeholder="blur"
-          blurDataURL={imagesProps.base64}
-          sizes="100vw"
-          style={{
-            objectFit: "cover",
-          }}
-          fill
-          alt={imagesProps.img.src}
-        />
+        {imagesProps !== null && (
+          <Image
+            src={imagesProps.img.src}
+            placeholder="blur"
+            blurDataURL={imagesProps.base64}
+            sizes="100vw"
+            style={{
+              objectFit: "cover",
+            }}
+            fill
+            alt={imagesProps.img.src}
+          />
+        )}
       </div>
     );
   }
@@ -203,11 +206,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const movie: any = await movieQuery.json();
   const similarMovies = await getSimilarMovie(movieId);
 
-  getSimilarMovie(movieId);
-
-  const imagesProps = await getPlaiceholder(
-    `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`
-  );
+  const backdropPath = movie.backdrop_path;
+  const imagesProps = backdropPath
+    ? await getPlaiceholder(`https://image.tmdb.org/t/p/w500${backdropPath}`)
+    : null;
 
   return {
     props: {

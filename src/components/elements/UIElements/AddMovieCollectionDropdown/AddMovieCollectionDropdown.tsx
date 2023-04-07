@@ -11,6 +11,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 export function AddMovieCollectionDropdown({
   movie,
   userFavorites,
+  idx,
 }: // userRecentCollections,
 any) {
   const { dispatch } = useContext(UIContext);
@@ -44,7 +45,13 @@ any) {
     userFavorites?.some((item: any) => item.id === id);
 
   return (
-    <div className="dropdown-end dropdown flex w-full justify-center gap-3 rounded-none ">
+    <div
+      className={`dropdown flex w-full justify-center gap-3 rounded-none ${
+        idx % 2 === 0
+          ? "dropdown-bottom sm:dropdown-end"
+          : "dropdown-end dropdown-bottom"
+      }`}
+    >
       <label tabIndex={0}>
         <HiOutlineDotsHorizontal className="h-6 w-8 cursor-pointer rounded-sm  text-sm text-gray-300 transition-all duration-100  hover:text-white" />
       </label>

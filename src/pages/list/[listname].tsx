@@ -92,7 +92,7 @@ export default function Listname() {
           Delete Collection
         </button>
         <button
-          className="btn-outline btn  bg-gradient-to-tl from-accent via-secondary to-primary bg-size-200 bg-pos-0 text-white transition-all duration-500 hover:bg-pos-100 hover:text-white"
+          className="btn-outline btn  bg-gradient-to-tl from-accent via-secondary to-primary text-white "
           onClick={() => {
             setModalTypeOpen("magic-collection");
             dispatch({ type: "OPEN_MODAL" });

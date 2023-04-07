@@ -58,22 +58,26 @@ export function MovieGrid({ fetchFn, title, query }: IMovieGridProps) {
 
   return (
     <>
-      <h2 className="cursor-pointer text-xl font-bold capitalize ">{title}</h2>
+      <h2 className="mt-8 cursor-pointer text-2xl font-bold capitalize ">
+        {title}
+      </h2>
       <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
-          gridGap: 10,
-          gridAutoFlow: "row dense",
-        }}
+        className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5"
+        // style={{
+        //   display: "grid",
+        //   gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
+        //   gridGap: 10,
+        //   gridAutoFlow: "row dense",
+        // }}
       >
         {data?.pages.map((page: any) =>
-          page?.results?.map((movie: Movie) => (
+          page?.results?.map((movie: Movie, idx: number) => (
             <MovieCard key={movie.id} movie={movie}>
               <AddMovieCollectionDropdown
                 userFavorites={userFavorites}
                 userRecentCollections={userRecentCollections}
                 movie={movie}
+                idx={idx}
               />
             </MovieCard>
           ))
