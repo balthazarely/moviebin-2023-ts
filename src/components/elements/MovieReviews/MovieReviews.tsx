@@ -58,6 +58,7 @@ export function MovieReviews({
             const doesUserLike = review?.reviewLikes?.some(
               (item: any) => item.userID === loggedInUser?.uid
             );
+            console.log(review.reviewId);
 
             return (
               <div

@@ -6,13 +6,17 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Navbar } from "@/components/navigation";
 import { Toaster } from "react-hot-toast";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { useEffect } from "react";
 import { AuthCheck } from "@/components/layout";
 import { AddMovieToCollectionModal } from "@/components/modals";
 
 import GlobalUserProvider from "../../lib/userContext";
+import { useScrollUp } from "../../lib/hooks";
+import { useRouter } from "next/router";
 
 export default function App({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(() => new QueryClient());
+  const router = useRouter();
 
   return (
     <GlobalProvider>

@@ -29,6 +29,8 @@ module.exports = {
       "light",
       "garden",
       "corporate",
+      "pastel",
+      "autumn",
     ],
   },
 };

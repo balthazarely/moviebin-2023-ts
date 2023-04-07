@@ -26,7 +26,7 @@ export function SearchResultsCard({ movie }: { movie: Movie }) {
             </span>
           </div>
         </Link>
-        <div className="text-sm">
+        <div className="text-xs">
           {movie.overview.slice(0, 100)}{" "}
           <span className="font-bold">
             {" "}

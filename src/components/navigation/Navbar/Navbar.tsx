@@ -1,17 +1,13 @@
 // import { UserContext } from "lib/context";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import {
-  useCollectionDataOnce,
-  useDocumentData,
-  useDocumentDataOnce,
-} from "react-firebase-hooks/firestore";
+import { useDocumentData } from "react-firebase-hooks/firestore";
 import { SiGithub } from "react-icons/si";
 import { auth, firestore } from "../../../../lib/firebase";
 import { signUserOut } from "../../../../lib/firebaseAuth";
-import { UserContext } from "../../../../lib/userContext";
 
 export function Navbar({ children }: { children: React.ReactNode }) {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -19,12 +15,6 @@ export function Navbar({ children }: { children: React.ReactNode }) {
   const currentRoute = router.pathname;
   // @ts-ignore
   const [user] = useAuthState(auth);
-  const { state } = useContext(UserContext);
-
-  const navigateToLink = (link: string) => {
-    setIsDrawerOpen(!isDrawerOpen);
-    router.push(link);
-  };
 
   const userDocRef = firestore.collection("users").doc(user?.uid?.toString());
   // @ts-ignore
@@ -35,6 +25,16 @@ export function Navbar({ children }: { children: React.ReactNode }) {
       document.querySelector("html")?.setAttribute("data-theme", userDoc.theme);
     }
   }, [userDoc]);
+
+  const pathname = usePathname();
+  useEffect(() => {
+    document.querySelector(".drawer-content")?.scrollTo({ top: 0 });
+  }, [pathname]);
+
+  const navigateToLink = (link: string) => {
+    setIsDrawerOpen(!isDrawerOpen);
+    router.push(link);
+  };
 
   return (
     <div className="0 drawer">
@@ -70,14 +70,16 @@ export function Navbar({ children }: { children: React.ReactNode }) {
             </label>
           </div>
           <div className="mx-2 flex-1 px-2 text-xl font-black ">
-            <div className="">movieMate</div>
+            <Link href="/">
+              <div className="">movieMate</div>
+            </Link>
           </div>
           <div className="hidden flex-none lg:block">
             <ul className="menu menu-horizontal">
               {user ? (
                 <>
                   <li>
-                    <Link href="/movies">Movies</Link>
+                    <Link href="/">Movies</Link>
                   </li>
                   <li>
                     <Link href="/profile">Profile</Link>
@@ -154,13 +156,13 @@ export function Navbar({ children }: { children: React.ReactNode }) {
           onClick={() => setIsDrawerOpen(false)}
           className="drawer-overlay "
         ></label>
-        <ul className="menu flex w-80 flex-col justify-between  bg-base-100 p-6">
+        <ul className="menu flex w-80 flex-col justify-between bg-base-100  p-6 pb-24 sm:pb-6">
           {/* <!-- Sidebar content here --> */}
           {user ? (
             <>
               <div>
                 <li>
-                  <div onClick={() => navigateToLink("/movies")}>Movies</div>
+                  <div onClick={() => navigateToLink("/")}>Movies</div>
                 </li>
                 <li>
                   <div onClick={() => navigateToLink("/profile")}>Profile</div>

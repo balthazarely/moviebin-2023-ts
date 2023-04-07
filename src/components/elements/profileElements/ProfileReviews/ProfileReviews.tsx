@@ -1,6 +1,7 @@
 import { DeleteReviewModal, ReviewMovieModal } from "@/components/modals";
 import { QueryDocumentSnapshot } from "firebase/firestore";
 import Image from "next/image";
+import Link from "next/link";
 import React, { useContext, useState } from "react";
 import { UIContext } from "../../../../../lib/context";
 import { convertToDate } from "../../../../../lib/utils";
@@ -16,6 +17,8 @@ export function ProfileReviews({ reviewDataWithId, reviewDataLoading }: any) {
     return <FullPageLoader />;
   }
 
+  console.log(reviewDataWithId);
+
   return (
     <div className="grid w-full grid-cols-1 gap-2">
       {reviewDataWithId?.length !== 0 ? (
@@ -25,16 +28,18 @@ export function ProfileReviews({ reviewDataWithId, reviewDataLoading }: any) {
               <div key={idx} className="relative rounded-lg bg-base-200 p-2">
                 <div className="grid grid-cols-6 gap-2">
                   <div className="col-span-1 flex items-start justify-center ">
-                    <Image
-                      src={`https://image.tmdb.org/t/p/w200${review?.movieImage}`}
-                      alt={review.movieTitle}
-                      width={80}
-                      height={100}
-                      className=" block aspect-2/3 object-contain sm:fixed"
-                    />
+                    <Link href={`/movie/${review.movieId}}`}>
+                      <Image
+                        src={`https://image.tmdb.org/t/p/w200${review?.movieImage}`}
+                        alt={review.movieTitle}
+                        width={80}
+                        height={100}
+                        className=" block aspect-2/3 object-contain "
+                      />
+                    </Link>
                   </div>
                   <div className="col-span-5">
-                    <div className="text-sm font-bold">
+                    <div className="text-xs font-bold">
                       {review?.movieTitle}
                     </div>
                     <div className="rating rating-xs">
@@ -52,9 +57,9 @@ export function ProfileReviews({ reviewDataWithId, reviewDataLoading }: any) {
                           );
                         })}
                     </div>
-                    <div className="mt-2 text-sm">{review?.review}</div>
+                    <div className="mt-2 text-xs">{review?.review}</div>
                     <div className="my-4 border-b-2 border-base-100"></div>
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col  items-start justify-between sm:flex-row sm:items-center">
                       <div className="text-xs font-semibold italic ">
                         Reviewed on {convertToDate(review?.createdAt?.toDate())}{" "}
                         by <span>{review?.userDisplayName}</span>

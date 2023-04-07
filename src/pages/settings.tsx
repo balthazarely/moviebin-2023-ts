@@ -79,12 +79,20 @@ export default function Settings() {
     { name: "light", color: "bg-white", textColor: "text-black" },
     { name: "garden", color: "bg-lime-400", textColor: "text-black" },
     { name: "corporate", color: "bg-blue-500", textColor: "text-white" },
+    { name: "pastel", color: "bg-fuchsia-200", textColor: "text-black" },
+    { name: "autumn", color: " bg-red-800", textColor: "text-white" },
   ];
+
+  const updateTheme = async (theme: any) => {
+    if (theme !== userDoc.theme) {
+      await updateThemeInFirebase(theme);
+    }
+  };
 
   return (
     <>
       <PageWidthWrapper>
-        <div className="mt-8 mb-4 text-2xl font-bold">Settings</div>
+        <div className=" mt-8 mb-4 text-2xl font-bold">Settings</div>
 
         <div className="flex flex-col items-center gap-4  sm:flex-row sm:items-start">
           <div className="flex w-full flex-col items-center gap-4   bg-base-100 p-4 sm:w-72">
@@ -111,7 +119,7 @@ export default function Settings() {
             </div>
           </div>
 
-          <div className="flex flex-col p-4 ">
+          <div className="flex flex-col  p-4 ">
             <form
               className="form-control w-full sm:w-72"
               onSubmit={(e) => updateCustomUsername(e)}
@@ -120,13 +128,13 @@ export default function Settings() {
                 <span className="label-text-alt">Username</span>
               </label>
 
-              <div className="input-group">
+              <div className="input-group ">
                 <input
                   value={username}
                   onChange={handleInputChange}
                   type="text"
                   placeholder="Type here"
-                  className={`input-bordered input w-64 ${
+                  className={`input-bordered input w-full ${
                     errorMsg === "" ? "" : "input-error"
                   }`}
                 />
@@ -145,7 +153,7 @@ export default function Settings() {
                 {themes.map((theme: any, idx: number) => (
                   <button
                     key={idx}
-                    onClick={() => updateThemeInFirebase(theme.name)}
+                    onClick={() => updateTheme(theme.name)}
                     className={`btn-sm ${theme.color} ${theme.textColor} `}
                   >
                     {theme.name}

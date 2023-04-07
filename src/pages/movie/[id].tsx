@@ -46,7 +46,7 @@ type Movie = {
 
 const MoviePage = ({ movie, imagesProps, similarMovies }: IMovieProps) => {
   return (
-    <div className="relative">
+    <div className="relative" id="top">
       <MovieBackground imagesProps={imagesProps} />
       <PageWidthWrapper>
         <MovieDetails movie={movie} />
@@ -59,13 +59,19 @@ const MoviePage = ({ movie, imagesProps, similarMovies }: IMovieProps) => {
     return (
       <div className="relative z-50 grid grid-cols-1 gap-4 pt-16 pb-8 sm:grid-cols-7   ">
         <div className=" col-span-1 flex items-start justify-center sm:col-span-2 ">
-          <Image
-            src={`https://image.tmdb.org/t/p/w200${movie?.poster_path}`}
-            alt={movie?.title}
-            width={300}
-            height={300}
-            className="  aspect-2/3 object-contain" //sm:fixed
-          />
+          {movie?.poster_path ? (
+            <Image
+              src={`https://image.tmdb.org/t/p/w200${movie?.poster_path}`}
+              alt={movie?.title}
+              width={300}
+              height={300}
+              className="  aspect-2/3 object-contain"
+            />
+          ) : (
+            <div className="flex aspect-2/3  h-full w-full items-center justify-center rounded-lg  object-cover p-2 text-center">
+              {movie?.title}
+            </div>
+          )}
         </div>
         <div className=" col-span-1 sm:col-span-5">
           <div className="flex justify-between">
@@ -74,7 +80,7 @@ const MoviePage = ({ movie, imagesProps, similarMovies }: IMovieProps) => {
             </h1>
           </div>
           <h3 className="text-xl text-gray-100">
-            {movie?.release_date.slice(0, 4)}
+            {movie?.release_date?.slice(0, 4)}
           </h3>
           <div className="mt-2 flex flex-wrap gap-2 text-sm">
             {movie?.genres?.map((genre: any, idx: number) => {
@@ -85,7 +91,7 @@ const MoviePage = ({ movie, imagesProps, similarMovies }: IMovieProps) => {
               );
             })}
           </div>
-          <p className="mt-4 text-sm text-gray-100">{movie?.overview}</p>
+          <p className="mt-4 text-sm ">{movie?.overview}</p>
         </div>
       </div>
     );
@@ -96,18 +102,19 @@ const MoviePage = ({ movie, imagesProps, similarMovies }: IMovieProps) => {
       <div className="absolute top-0 left-0 z-0 h-96	w-full bg-base-100 bg-transparent bg-cover bg-center bg-no-repeat">
         <div className="absolute top-0 left-0 z-10 h-full w-full bg-neutral bg-opacity-40"></div>
         <div className=" from-10% to-90% absolute top-0 left-0 z-10 h-full w-full bg-gradient-to-t from-base-100 to-transparent"></div>
-
-        <Image
-          src={imagesProps.img.src}
-          placeholder="blur"
-          blurDataURL={imagesProps.base64}
-          sizes="100vw"
-          style={{
-            objectFit: "cover",
-          }}
-          fill
-          alt={imagesProps.img.src}
-        />
+        {imagesProps?.img.src && imagesProps?.base64 && (
+          <Image
+            src={imagesProps.img.src}
+            placeholder="blur"
+            blurDataURL={imagesProps.base64}
+            sizes="100vw"
+            style={{
+              objectFit: "cover",
+            }}
+            fill
+            alt={imagesProps.img.src}
+          />
+        )}
       </div>
     );
   }
@@ -125,8 +132,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const imagesProps = backdropPath
     ? await getPlaiceholder(`https://image.tmdb.org/t/p/w500${backdropPath}`)
     : null;
-
-  console.log("getServerSideProps");
 
   return {
     props: {
