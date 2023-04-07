@@ -94,7 +94,7 @@ export function AddMovieToCollectionModal() {
             {state?.tempMovie?.title}
             <button
               onClick={closeModalAndClearData}
-              className="btn-sm btn absolute -top-4 -right-4 border-none bg-base-100"
+              className="btn-ghost btn-sm btn absolute -top-4 -right-4 border-none "
             >
               <HiX />
             </button>

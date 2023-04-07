@@ -49,7 +49,7 @@ any) {
       className={`dropdown flex w-full justify-center gap-3 rounded-none ${
         idx % 2 === 0
           ? "dropdown-bottom sm:dropdown-end"
-          : "dropdown-end dropdown-bottom"
+          : "dropdown-bottom dropdown-end"
       }`}
     >
       <label tabIndex={0}>

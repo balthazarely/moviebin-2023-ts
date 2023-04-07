@@ -23,8 +23,15 @@ export function MovieReviews({
 
   return (
     <div className="z-50 mb-16 mt-4 grid grid-cols-1 gap-2">
-      <div className="flex w-full items-center justify-between ">
-        <h1 className="text-xl font-extrabold">Reviews</h1>
+      <div
+        className={`flex w-full items-center  ${
+          reviewData?.length > 0 ? "justify-between" : "justify-center"
+        }`}
+      >
+        {reviewData?.length > 0 && (
+          <h1 className="text-xl font-extrabold">Reviews</h1>
+        )}
+
         {checkIfUserReviewExists() && (
           <button
             className="btn-outline  btn-sm btn"
@@ -41,7 +48,7 @@ export function MovieReviews({
       <div className="border-b-2 border-base-100"></div>
 
       {reviewDataLoading ? (
-        <FullPageLoader className=" h-56 " />
+        <FullPageLoader className=" border2 h-56 " />
       ) : (
         reviewData
           ?.sort(
@@ -53,7 +60,10 @@ export function MovieReviews({
             );
 
             return (
-              <div key={idx} className="relative rounded-lg bg-base-200 p-2">
+              <div
+                key={idx}
+                className="relative rounded-lg bg-base-200 p-2 shadow-md"
+              >
                 {loggedInUser?.uid === review.userId && (
                   <div className="op-2 badge-primary badge badge-sm absolute right-2">
                     My Review

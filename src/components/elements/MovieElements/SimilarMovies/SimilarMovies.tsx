@@ -24,20 +24,29 @@ export function SimilarMovies({ similarMovies }: any) {
 
   return (
     <>
-      <h1 className="text-xl font-extrabold">Users also liked</h1>
-      <div className="mb-16 grid grid-cols-5 gap-2">
-        {similarMovies?.results?.slice(0, 5).map((movie: any) => {
-          return (
-            <MovieCard key={movie.id} movie={movie}>
-              <AddMovieCollectionDropdown
-                userFavorites={userFavorites}
-                userRecentCollections={userRecentCollections}
-                movie={movie}
-              />
-            </MovieCard>
-          );
-        })}
-      </div>
+      {similarMovies?.results?.length ? (
+        <>
+          <h1 className="mb-2 text-xl font-extrabold">Users also liked</h1>
+          <div className="mb-16 grid grid-cols-2 gap-2 sm:grid-cols-4">
+            {similarMovies?.results
+              ?.slice(0, 4)
+              .map((movie: any, idx: number) => {
+                return (
+                  <MovieCard key={movie.id} movie={movie}>
+                    <AddMovieCollectionDropdown
+                      userFavorites={userFavorites}
+                      userRecentCollections={userRecentCollections}
+                      movie={movie}
+                      idx={idx}
+                    />
+                  </MovieCard>
+                );
+              })}
+          </div>
+        </>
+      ) : (
+        <></>
+      )}
     </>
   );
 }

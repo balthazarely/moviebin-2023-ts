@@ -16,7 +16,7 @@ export function SearchInput() {
     const delayDebounceFn = setTimeout(async () => {
       if (query.length >= 2) {
         setLoading(true);
-        let movies = await searchForMovies(query);
+        let movies = await searchForMovies({ query });
         setResults(movies.results);
         setTotalResults(movies.total_results);
         setLoading(false);

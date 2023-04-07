@@ -39,7 +39,7 @@ export function EditCollectionModal({ listname, user }: any) {
   return (
     <div className=" relative  h-full w-full text-center">
       <button
-        className="btn-sm btn absolute -top-4 -right-4 border-none bg-base-100"
+        className="btn-ghost btn-sm btn absolute -top-4 -right-4 border-none "
         onClick={() => dispatch({ type: "CLOSE_MODAL" })}
       >
         <HiX />

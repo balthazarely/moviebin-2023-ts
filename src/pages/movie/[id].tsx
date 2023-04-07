@@ -179,7 +179,7 @@ const MoviePage = ({ movie, imagesProps, similarMovies }: IMovieProps) => {
     return (
       <div className="absolute top-0 left-0 z-0 h-96	w-full bg-base-100 bg-transparent bg-cover bg-center bg-no-repeat">
         <div className="absolute top-0 left-0 z-10 h-full w-full bg-neutral bg-opacity-40"></div>
-        <div className=" from-10% to-90% absolute top-0 left-0 z-10 h-full w-full bg-gradient-to-t from-neutral to-transparent"></div>
+        <div className=" from-10% to-90% absolute top-0 left-0 z-10 h-full w-full bg-gradient-to-t from-base-100 to-transparent"></div>
         {imagesProps !== null && (
           <Image
             src={imagesProps.img.src}

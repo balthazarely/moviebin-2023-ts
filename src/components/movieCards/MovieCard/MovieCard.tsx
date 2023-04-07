@@ -13,7 +13,7 @@ export function MovieCard({
     <div className="group relative aspect-2/3  max-w-sm cursor-pointer rounded-sm border-0 transition-all duration-100 sm:border-4 sm:border-transparent sm:hover:border-gray-100">
       <Link href={`/movie/${movie.id}`}>
         <img
-          className="h-full w-full rounded-sm object-cover "
+          className="h-full w-full rounded-lg object-cover "
           src={`https://image.tmdb.org/t/p/w200/${movie.poster_path}`}
         />
       </Link>

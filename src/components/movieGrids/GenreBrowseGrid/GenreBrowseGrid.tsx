@@ -36,7 +36,7 @@ export function GenreBrowseGrid() {
 function GenreCard({ genre }: any) {
   return (
     <Link href={`genre/${genre.id}?name=${genre.name.toLowerCase()}`}>
-      <div className="flex w-full items-center justify-center rounded-md bg-base-100 p-4 text-sm font-normal transition-all duration-200 hover:bg-primary hover:text-white  hover:shadow-xl">
+      <div className="flex w-full items-center justify-center rounded-md bg-base-200 p-4 text-sm font-normal shadow transition-all duration-200 hover:text-white  hover:shadow-xl sm:hover:bg-primary">
         {genre.name}
       </div>
     </Link>
