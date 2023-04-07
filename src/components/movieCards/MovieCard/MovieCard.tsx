@@ -7,9 +7,11 @@ import { Movie } from "../../../../lib/types";
 export function MovieCard({
   movie,
   children,
+  useLoader = false,
 }: {
   movie: Movie;
   children?: React.ReactNode;
+  useLoader?: boolean;
 }) {
   const [imgLoaded, setImageLoaded] = useState(false);
 
@@ -31,10 +33,14 @@ export function MovieCard({
               loader={({ src }) => `${src}`}
               onLoad={handleImageLoaded}
             />
-            {!imgLoaded && (
-              <div className="absolute inset-0 flex items-center justify-center bg-neutral">
-                <SmallLoader />
-              </div>
+            {useLoader === true ? (
+              !imgLoaded && (
+                <div className="absolute inset-0 flex items-center justify-center bg-neutral">
+                  <SmallLoader />
+                </div>
+              )
+            ) : (
+              <></>
             )}
           </>
         ) : (

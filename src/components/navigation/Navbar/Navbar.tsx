@@ -2,12 +2,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useDocumentData } from "react-firebase-hooks/firestore";
 import { SiGithub } from "react-icons/si";
 import { auth, firestore } from "../../../../lib/firebase";
 import { signUserOut } from "../../../../lib/firebaseAuth";
+import { MdLocalMovies } from "react-icons/md";
+import { RiMovie2Fill } from "react-icons/ri";
 
 export function Navbar({ children }: { children: React.ReactNode }) {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -20,7 +22,14 @@ export function Navbar({ children }: { children: React.ReactNode }) {
   // @ts-ignore
   const [userDoc] = useDocumentData<any>(userDocRef);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    const appThemeColor = localStorage.getItem("moviebin-theme");
+    if (appThemeColor) {
+      document.querySelector("html")?.setAttribute("data-theme", appThemeColor);
+    }
+  }, []);
+
+  useLayoutEffect(() => {
     if (userDoc) {
       document.querySelector("html")?.setAttribute("data-theme", userDoc.theme);
     }
@@ -69,9 +78,10 @@ export function Navbar({ children }: { children: React.ReactNode }) {
               </svg>
             </label>
           </div>
-          <div className="mx-2 flex-1 px-2 text-xl font-black ">
-            <Link href="/">
-              <div className="">movieMate</div>
+          <div className="mx-2  flex-1 px-2 text-xl font-black ">
+            <Link href="/" className="flex items-center gap-1">
+              <RiMovie2Fill className="text-3xl" />
+              <div className="">moviemate</div>
             </Link>
           </div>
           <div className="hidden flex-none lg:block">

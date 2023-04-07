@@ -85,6 +85,7 @@ export default function Settings() {
 
   const updateTheme = async (theme: any) => {
     if (theme !== userDoc.theme) {
+      localStorage.setItem("moviebin-theme", theme);
       await updateThemeInFirebase(theme);
     }
   };

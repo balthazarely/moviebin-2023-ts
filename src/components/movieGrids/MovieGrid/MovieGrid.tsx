@@ -63,7 +63,7 @@ export function MovieGrid({ fetchFn, title, query }: IMovieGridProps) {
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
         {data?.pages.map((page: any) =>
           page?.results?.map((movie: Movie, idx: number) => (
-            <MovieCard key={movie.id} movie={movie}>
+            <MovieCard key={movie.id} movie={movie} useLoader={true}>
               <AddMovieCollectionDropdown
                 userFavorites={userFavorites}
                 userRecentCollections={userRecentCollections}

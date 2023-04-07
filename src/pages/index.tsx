@@ -49,9 +49,9 @@ export default function Index() {
       getMovie(param)
     );
 
-    if (isLoading) {
-      return <FullPageLoader className="h-96" />;
-    }
+    // if (isLoading) {
+    //   return <FullPageLoader className="h-96" />;
+    // }
 
     return (
       <div>

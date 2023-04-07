@@ -99,11 +99,3 @@ export const useNestedUserCollectionsHook = () => {
     refetch,
   };
 };
-
-export const useScrollUp = () => {
-  useEffect(() => {
-    setTimeout(() => {
-      window.scroll(0, 0);
-    }, 50);
-  }, []);
-};
