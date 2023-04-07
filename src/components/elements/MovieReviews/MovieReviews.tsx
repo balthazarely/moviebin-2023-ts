@@ -52,7 +52,7 @@ export function MovieReviews({
       ) : (
         reviewData
           ?.sort(
-            (a: any, b: any) => b.reviewLikes.length - a.reviewLikes.length
+            (a: any, b: any) => b?.reviewLikes?.length - a?.reviewLikes?.length
           )
           .map((review: Review, idx: number) => {
             const doesUserLike = review?.reviewLikes?.some(

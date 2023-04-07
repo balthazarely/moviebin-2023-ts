@@ -1,7 +1,7 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { useState } from "react";
-import GlobalProvider, { UIContext } from "../../lib/context";
+import GlobalProvider from "../../lib/context";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Navbar } from "@/components/navigation";
 import { Toaster } from "react-hot-toast";

@@ -20,11 +20,13 @@ export function CollectionGridCard({
       >
         {/* {idx === null ? "" : idx + 1} */}
       </div>
-
+      <RiDragMoveFill
+        {...attributes}
+        {...listeners}
+        className="absolute top-0 right-0 h-10 w-10 rounded-sm bg-base-200 bg-opacity-70 p-3 text-3xl  hover:bg-base-100"
+      />
       <div>
         <img
-          {...attributes}
-          {...listeners}
           className=" h-full w-full cursor-move object-cover"
           src={`https://image.tmdb.org/t/p/w200/${image}`}
         />

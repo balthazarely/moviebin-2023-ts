@@ -23,15 +23,18 @@ export function CollectionColumnCard({
 
       <div className="flex items-center gap-4">
         <img
-          {...attributes}
-          {...listeners}
           className=" h-full w-16 cursor-move object-cover"
           src={`https://image.tmdb.org/t/p/w200/${image}`}
         />
         <h2 className="p-2 text-left text-xs font-bold">{title}</h2>
       </div>
       <div className="flex items-center justify-center">
-        <div className="dropdown-end dropdown dropdown-bottom">
+        <RiDragMoveFill
+          {...attributes}
+          {...listeners}
+          className=" btn-ghost btn h-12 w-12  rounded-sm p-3 text-3xl text-primary "
+        />
+        <div className="dropdown-end dropdown-bottom dropdown">
           <label tabIndex={0} className=" btn-ghost btn ">
             <HiOutlineDotsHorizontal className="h-6 w-6 " />
           </label>
@@ -50,12 +53,6 @@ export function CollectionColumnCard({
             </li>
           </ul>
         </div>
-
-        <RiDragMoveFill
-          {...attributes}
-          {...listeners}
-          className=" h-12 w-12 rounded-sm  p-3  text-3xl  text-primary"
-        />
       </div>
     </div>
   );

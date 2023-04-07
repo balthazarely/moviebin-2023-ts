@@ -3,22 +3,8 @@ import fetch from "node-fetch";
 import { getPlaiceholder } from "plaiceholder";
 import Image from "next/image";
 import { PageWidthWrapper } from "@/components/layout";
-import { MovieReviews } from "@/components/elements";
-import {
-  AddMovieCollectionButton,
-  AddMovieFavoritesButton,
-  ModalWrapper,
-} from "@/components/elements/UIElements";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { useCollection } from "react-firebase-hooks/firestore";
-import { auth, FirebaseUser, firestore } from "../../../lib/firebase";
-import { useCallback, useContext, useState } from "react";
-import { DeleteReviewModal, ReviewMovieModal } from "@/components/modals";
-import { UIContext } from "../../../lib/context";
-import { QueryDocumentSnapshot } from "firebase/firestore";
 import { getSimilarMovie } from "../../../lib/api";
-import { SimilarMovies } from "@/components/elements/MovieElements";
-import { Review } from "../../../lib/types";
+import { MoviePageContents } from "@/components/elements/MovieElements";
 
 interface IMovieProps {
   movie: Movie;
@@ -59,88 +45,20 @@ type Movie = {
 };
 
 const MoviePage = ({ movie, imagesProps, similarMovies }: IMovieProps) => {
-  const { dispatch } = useContext(UIContext);
-  const [modalTypeOpen, setModalTypeOpen] = useState<string>("");
-  // @ts-ignore
-  const [user]: FirebaseUser = useAuthState(auth);
-  const reviewRef = firestore
-    .collection("movies")
-    .doc(movie?.id?.toString())
-    .collection("reviews");
-  // @ts-ignore
-  const [reviewData, reviewDataLoading] = useCollection(reviewRef);
-
-  const documentSnapshots = reviewData?.docs as QueryDocumentSnapshot[];
-  const reviewDataWithId = documentSnapshots?.map((doc: any) => {
-    return { reviewId: doc.id, ...doc.data() };
-  });
-
-  const reviewForEdit = reviewDataWithId?.find(
-    (review: Review) => review.userId === user?.uid
-  );
-
-  const openModalTest = useCallback(() => {
-    setModalTypeOpen("review-modal");
-    dispatch({ type: "OPEN_MODAL" });
-  }, [dispatch]);
-
   return (
     <div className="relative">
+      <MovieBackground imagesProps={imagesProps} />
       <PageWidthWrapper>
-        <MovieBackground imagesProps={imagesProps} />
-        <div className="grid grid-cols-1 gap-4  py-16 sm:grid-cols-7">
-          <MovieDetails movie={movie} />
-
-          <div className="z-50 mt-8 flex w-full  justify-center gap-2  sm:col-span-2 sm:mt-0">
-            <AddMovieCollectionButton movie={movie} />
-            <AddMovieFavoritesButton movie={movie} />
-          </div>
-        </div>
-        <MovieReviews
-          openModalTest={openModalTest}
-          setModalTypeOpen={setModalTypeOpen}
-          loggedInUser={user}
-          reviewData={reviewDataWithId}
-          reviewDataLoading={reviewDataLoading}
-        />
-        <SimilarMovies similarMovies={similarMovies} />
+        <MovieDetails movie={movie} />
+        <MoviePageContents movie={movie} similarMovies={similarMovies} />
       </PageWidthWrapper>
-      <ModalWrapper>
-        {modalTypeOpen === "review-modal" && (
-          <ReviewMovieModal
-            modalTypeOpen={modalTypeOpen}
-            movieTitle={movie.title}
-            movieId={movie.id}
-            movieImage={movie.poster_path}
-            reviewToEdit={reviewForEdit}
-          />
-        )}
-        {modalTypeOpen === "edit-review-modal" && (
-          <ReviewMovieModal
-            modalTypeOpen={modalTypeOpen}
-            movieTitle={movie.title}
-            movieId={movie.id}
-            movieImage={movie.poster_path}
-            reviewToEdit={reviewForEdit}
-            reviewToEditIdId={reviewForEdit.reviewId}
-          />
-        )}
-
-        {modalTypeOpen === "delete-review-modal" && (
-          <DeleteReviewModal
-            movieTitle={movie.title}
-            movieId={movie.id}
-            reviewId={reviewForEdit?.reviewId}
-          />
-        )}
-      </ModalWrapper>
     </div>
   );
 
   function MovieDetails({ movie }: { movie: Movie }) {
     return (
-      <div className="relative z-50 grid grid-cols-7 gap-4 sm:col-span-5  ">
-        <div className="col-span-2 flex items-start justify-center ">
+      <div className="relative z-50 grid grid-cols-1 gap-4 pt-16 pb-8 sm:grid-cols-7   ">
+        <div className=" col-span-1 flex items-start justify-center sm:col-span-2 ">
           <Image
             src={`https://image.tmdb.org/t/p/w200${movie?.poster_path}`}
             alt={movie?.title}
@@ -149,27 +67,25 @@ const MoviePage = ({ movie, imagesProps, similarMovies }: IMovieProps) => {
             className="  aspect-2/3 object-contain" //sm:fixed
           />
         </div>
-        <div className=" col-span-5">
-          <div className="">
-            <div className="flex justify-between">
-              <h1 className="text-3xl font-extrabold text-gray-100">
-                {movie?.title}
-              </h1>
-            </div>
-            <h3 className="text-xl text-gray-100">
-              {movie?.release_date.slice(0, 4)}
-            </h3>
-            <div className="mt-2 flex flex-wrap gap-2 text-sm">
-              {movie?.genres?.map((genre: any, idx: number) => {
-                return (
-                  <div key={idx} className="badge-primary badge badge-sm">
-                    {genre.name}
-                  </div>
-                );
-              })}
-            </div>
-            <p className="mt-4 text-sm text-gray-100">{movie?.overview}</p>
+        <div className=" col-span-1 sm:col-span-5">
+          <div className="flex justify-between">
+            <h1 className="text-3xl font-extrabold text-gray-100">
+              {movie?.title}
+            </h1>
           </div>
+          <h3 className="text-xl text-gray-100">
+            {movie?.release_date.slice(0, 4)}
+          </h3>
+          <div className="mt-2 flex flex-wrap gap-2 text-sm">
+            {movie?.genres?.map((genre: any, idx: number) => {
+              return (
+                <div key={idx} className="badge-primary badge badge-sm">
+                  {genre.name}
+                </div>
+              );
+            })}
+          </div>
+          <p className="mt-4 text-sm text-gray-100">{movie?.overview}</p>
         </div>
       </div>
     );
@@ -180,19 +96,18 @@ const MoviePage = ({ movie, imagesProps, similarMovies }: IMovieProps) => {
       <div className="absolute top-0 left-0 z-0 h-96	w-full bg-base-100 bg-transparent bg-cover bg-center bg-no-repeat">
         <div className="absolute top-0 left-0 z-10 h-full w-full bg-neutral bg-opacity-40"></div>
         <div className=" from-10% to-90% absolute top-0 left-0 z-10 h-full w-full bg-gradient-to-t from-base-100 to-transparent"></div>
-        {imagesProps !== null && (
-          <Image
-            src={imagesProps.img.src}
-            placeholder="blur"
-            blurDataURL={imagesProps.base64}
-            sizes="100vw"
-            style={{
-              objectFit: "cover",
-            }}
-            fill
-            alt={imagesProps.img.src}
-          />
-        )}
+
+        <Image
+          src={imagesProps.img.src}
+          placeholder="blur"
+          blurDataURL={imagesProps.base64}
+          sizes="100vw"
+          style={{
+            objectFit: "cover",
+          }}
+          fill
+          alt={imagesProps.img.src}
+        />
       </div>
     );
   }
@@ -210,6 +125,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const imagesProps = backdropPath
     ? await getPlaiceholder(`https://image.tmdb.org/t/p/w500${backdropPath}`)
     : null;
+
+  console.log("getServerSideProps");
 
   return {
     props: {

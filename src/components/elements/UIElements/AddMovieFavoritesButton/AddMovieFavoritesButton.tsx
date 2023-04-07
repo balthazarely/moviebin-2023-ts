@@ -34,7 +34,10 @@ export function AddMovieFavoritesButton({ movie }: any) {
   }
 
   return (
-    <button onClick={addRemoveFavorites} className="btn-primary btn  w-[72px]">
+    <button
+      onClick={addRemoveFavorites}
+      className="btn-primary btn z-50 w-[72px]"
+    >
       <HiHeart
         className={`${
           isMovieFavorites(movie?.id)
