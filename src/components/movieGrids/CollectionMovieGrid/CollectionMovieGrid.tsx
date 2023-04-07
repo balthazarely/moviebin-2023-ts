@@ -3,7 +3,7 @@ import {
   CollectionGroupSkeletonCard,
 } from "@/components/movieCards";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 export function CollectionMovieGrid({ isLoading, data, listLink }: any) {
   const router = useRouter();
@@ -42,7 +42,10 @@ export function CollectionMovieGrid({ isLoading, data, listLink }: any) {
 
   return (
     <>
-      <CollectionSortingPanel />
+      <CollectionSortingPanel
+        setSortQueryParam={setSortQueryParam}
+        reverseOrder={reverseOrder}
+      />
       {!isLoading ? (
         sortedData.length ? (
           <div className="w-full">
@@ -69,7 +72,7 @@ export function CollectionMovieGrid({ isLoading, data, listLink }: any) {
       ) : (
         <>
           {/* {users?.recentCollection?.length !== 0 && ( */}
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
             {[1, 2, 3, 4, 5, 6, 7, 8, 9]?.map((list: any, idx: any) => {
               return <CollectionGroupSkeletonCard key={idx} />;
             })}
@@ -79,29 +82,28 @@ export function CollectionMovieGrid({ isLoading, data, listLink }: any) {
       )}
     </>
   );
-
-  function CollectionSortingPanel() {
-    return (
-      <div className="mb-4 flex justify-end">
-        <div className="btn-group  ">
-          <button
-            onClick={() => setSortQueryParam("asc")}
-            className={`btn-xs btn   ${
-              reverseOrder === "asc" ? "btn-active" : ""
-            }`}
-          >
-            Ascending
-          </button>
-          <button
-            onClick={() => setSortQueryParam("desc")}
-            className={`btn-xs btn  ${
-              reverseOrder === "desc" ? "btn-active" : ""
-            }`}
-          >
-            Descending
-          </button>
-        </div>
+}
+function CollectionSortingPanel({ reverseOrder, setSortQueryParam }: any) {
+  return (
+    <div className="mb-4 flex justify-end">
+      <div className="btn-group  ">
+        <button
+          onClick={() => setSortQueryParam("asc")}
+          className={`btn-xs btn   ${
+            reverseOrder === "asc" ? "btn-active" : ""
+          }`}
+        >
+          Ascending
+        </button>
+        <button
+          onClick={() => setSortQueryParam("desc")}
+          className={`btn-xs btn  ${
+            reverseOrder === "desc" ? "btn-active" : ""
+          }`}
+        >
+          Descending
+        </button>
       </div>
-    );
-  }
+    </div>
+  );
 }

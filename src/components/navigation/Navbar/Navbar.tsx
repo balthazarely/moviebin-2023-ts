@@ -1,4 +1,3 @@
-// import { UserContext } from "lib/context";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
@@ -17,18 +16,21 @@ export function Navbar({ children }: { children: React.ReactNode }) {
   // @ts-ignore
   const [user] = useAuthState(auth);
 
-  const userDocRef = firestore.collection("users").doc(user?.uid?.toString());
+  let userDocRef;
+  if (user) {
+    userDocRef = firestore.collection("users").doc(user.uid.toString());
+  }
   // @ts-ignore
-  const [userDoc] = useDocumentData<any>(userDocRef);
+  const [userDoc, loading, error] = useDocumentData<any>(userDocRef);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const appThemeColor = localStorage.getItem("moviebin-theme");
     if (appThemeColor) {
       document.querySelector("html")?.setAttribute("data-theme", appThemeColor);
     }
   }, []);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (userDoc) {
       document.querySelector("html")?.setAttribute("data-theme", userDoc.theme);
     }

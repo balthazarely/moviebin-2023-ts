@@ -11,26 +11,26 @@ import GlobalUserProvider from "../../lib/userContext";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../lib/firebase";
 import Login from "./login";
+import { AuthCheck } from "@/components/layout";
 
 export default function App({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(() => new QueryClient());
-
-  // @ts-ignore
-  const [user] = useAuthState(auth);
 
   return (
     <GlobalProvider>
       <GlobalUserProvider>
         <QueryClientProvider client={queryClient}>
-          {user?.uid ? (
+          <AuthCheck>
+            {/* {user?.uid ? ( */}
             <Navbar>
               <Component {...pageProps} />
             </Navbar>
-          ) : (
+            {/* ) : (
             <NavbarNoAuth>
-              <Login />
+            <Login />
             </NavbarNoAuth>
-          )}
+          )} */}
+          </AuthCheck>
           <Toaster position="top-center" toastOptions={toastConfig} />
           <AddMovieToCollectionModal />
           {/* <ReactQueryDevtools initialIsOpen={false} /> */}

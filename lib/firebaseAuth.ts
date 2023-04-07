@@ -4,7 +4,7 @@ import { signInWithPopup, signOut } from "firebase/auth";
 export async function signUserInViaGoogle() {
   try {
     await signInWithPopup(auth, googleProvider);
-    // window.location.href = "/profile";
+    window.location.href = "/profile";
   } catch (error) {}
 }
 
