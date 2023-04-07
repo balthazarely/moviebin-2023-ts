@@ -101,7 +101,7 @@ export default function Settings() {
               <span className="label-text-alt">Profile Picture</span>
             </label>
             <img
-              className="h-32 w-32 rounded-full"
+              className="h-32 w-32 rounded-full object-cover"
               src={
                 userDoc?.customProfileImage
                   ? userDoc?.customProfileImage

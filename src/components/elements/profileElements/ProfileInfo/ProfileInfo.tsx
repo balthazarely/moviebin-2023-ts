@@ -40,7 +40,7 @@ export function ProfileInfo({
       <div className="mt-6 flex items-center justify-start gap-6">
         {userDoc?.photoURL ? (
           <img
-            className="aspect-square w-16 rounded-full"
+            className="aspect-square w-16 rounded-full object-cover"
             referrerPolicy="no-referrer"
             src={
               userDoc?.customProfileImage
