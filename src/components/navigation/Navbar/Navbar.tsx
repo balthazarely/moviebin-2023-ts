@@ -81,7 +81,7 @@ export function Navbar({ children }: { children: React.ReactNode }) {
           </div>
           <div className="mx-2  flex-1 px-2 text-xl font-black ">
             <Link href="/" className="flex items-center gap-1">
-              <RiMovie2Fill className="text-3xl" />
+              <RiMovie2Fill className="text-3xl text-primary" />
               <div className="">moviemate</div>
             </Link>
           </div>
