@@ -8,25 +8,18 @@ export function ProfileFavorites({ favoritesData, favoritesDataLoading }: any) {
   }
 
   return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns:
-          favoritesData.length < 4
-            ? "1fr 1fr 1fr 1fr"
-            : "repeat(auto-fit, minmax(100px, 1fr)",
-        gridGap: 10,
-        gridAutoFlow: "row dense",
-      }}
-    >
-      {favoritesData?.map((movie: any) => (
-        <MovieCard key={movie.id} movie={movie}>
-          <AddMovieCollectionDropdown
-            userFavorites={favoritesData}
-            movie={movie}
-          />
-        </MovieCard>
-      ))}
-    </div>
+    <>
+      {/* <button onClick={handleCustomToast}>BUTTON</button> */}
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+        {favoritesData?.map((movie: any) => (
+          <MovieCard key={movie.id} movie={movie}>
+            <AddMovieCollectionDropdown
+              userFavorites={favoritesData}
+              movie={movie}
+            />
+          </MovieCard>
+        ))}
+      </div>
+    </>
   );
 }

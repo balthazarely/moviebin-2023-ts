@@ -8,9 +8,7 @@ import { Toaster } from "react-hot-toast";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { AddMovieToCollectionModal } from "@/components/modals";
 import GlobalUserProvider from "../../lib/userContext";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../lib/firebase";
-import Login from "./login";
+
 import { AuthCheck } from "@/components/layout";
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -21,15 +19,9 @@ export default function App({ Component, pageProps }: AppProps) {
       <GlobalUserProvider>
         <QueryClientProvider client={queryClient}>
           <AuthCheck>
-            {/* {user?.uid ? ( */}
             <Navbar>
               <Component {...pageProps} />
             </Navbar>
-            {/* ) : (
-            <NavbarNoAuth>
-            <Login />
-            </NavbarNoAuth>
-          )} */}
           </AuthCheck>
           <Toaster position="top-center" toastOptions={toastConfig} />
           <AddMovieToCollectionModal />

@@ -18,7 +18,6 @@ import {
 import { CollectionMovieGrid } from "@/components/movieGrids";
 import { QueryDocumentSnapshot } from "firebase/firestore";
 import { FullPageLoader } from "@/components/elements/UIElements";
-import { UserContext } from "../../lib/userContext";
 
 export default function Collections() {
   const [tabSelected, setTabSelected] = useState<string>("lists");

@@ -9,7 +9,7 @@ import { auth, firestore } from "../../../../lib/firebase";
 import { signUserOut } from "../../../../lib/firebaseAuth";
 import { RiMovie2Fill } from "react-icons/ri";
 
-export function Navbar({ children }: { children: React.ReactNode }) {
+export function Navbar({ children }: { children: any }) {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const router = useRouter();
   const currentRoute = router.pathname;

@@ -118,7 +118,7 @@ export function AddMovieToCollectionModal() {
                       )}
                   </select>
                   <button
-                    className="btn-primary btn"
+                    className="btn-primary btn mt-2"
                     disabled={selectedItem === "" || submitting}
                     onClick={() =>
                       addMovieToExistingCollection(

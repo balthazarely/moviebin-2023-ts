@@ -66,7 +66,6 @@ export function MovieGrid({ fetchFn, title, query }: IMovieGridProps) {
             <MovieCard key={movie.id} movie={movie} useLoader={true}>
               <AddMovieCollectionDropdown
                 userFavorites={userFavorites}
-                userRecentCollections={userRecentCollections}
                 movie={movie}
                 idx={idx}
               />

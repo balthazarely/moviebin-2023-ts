@@ -1,5 +1,5 @@
 import { auth, firestore, serverTimestamp } from "./firebase";
-import toast from "react-hot-toast";
+import { toast, Toaster, ToastBar } from "react-hot-toast";
 
 export async function addOrRemoveMovieToFavorites(movie: any) {
   const userReviewRef = firestore
